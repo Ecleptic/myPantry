@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const router = express.Router()
 
-app.set('port', (process.env.PORT || 3000))
+app.set('port', (process.env.PORT || 8080))
 
 app.get('/', function (req, res) {
     res.send("<h1 style ='color:green'>Hello World!</h1>")
