@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "strt": "node index.js"
+    "start": "node index.js"
   },
-  "author": "",
+  "author": "AwwSomeSauce",
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.4",
-    "pg": "6.4.2"
+    "pg": "^7.3.0"
   },
   "devDependencies": {
     "eslint": "^4.7.2",
