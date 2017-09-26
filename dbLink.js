@@ -5,18 +5,20 @@ const client = new Client(connectionString)
 
 const dbName = "testing"
 
-module.exports = class dbLink {
+module.exports = class DbLink {
+
     /**
      * Connects to the database from the client variable above. if error, log it.
      * Will need to return error when implemented.
      */
-    connectDB() {
+     connectDB() {
         client.connect((err) => {
             if (err) {
                 console.error('connection error', err.stack)
-                // return('connection error', err.stack)
+                return('Connection error', err.stack)
             } else {
                 console.log('Connected to Postgres')
+                return('Connected to Postgres')
             }
         })
     }
