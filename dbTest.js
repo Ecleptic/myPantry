@@ -1,7 +1,4 @@
-const {
-    Pool,
-    Client
-} = require('pg')
+const {Pool, Client} = require('pg')
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo'
 const client = new Client(connectionString)
 const pool = new Pool()
@@ -20,9 +17,9 @@ client.connect((err) => {
 })
 
 client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-    console.log(err ?
-        err.stack :
-        res.rows[0].message) // Hello World!
+    console.log(err
+        ? err.stack
+        : res.rows[0].message) // Hello World!
     client.end()
 })
 
@@ -32,22 +29,22 @@ function listItems(res) {
         client.end()
     })
 }
-
+let stupid = 'cameron'
 let name = 'Bobert'
 let bool = false
 let id = 11
 
 client.query(`DELETE FROM "testing" WHERE id=(${id})`, (err) => {
-    console.log(err ?
-        err.stack :
-        'Successful insert')
+    console.log(err
+        ? err.stack
+        : 'Successful insert')
     listItems()
 })
 
 client.query(`INSERT INTO testing("text", "complete") VALUES('${name}', ${bool});`, (err, res) => {
-    console.log(err ?
-        err.stack :
-        'Successful insert')
+    console.log(err
+        ? err.stack
+        : 'Successful insert')
     console.log(res)
     // listItems(res)
     client.end()
@@ -60,9 +57,9 @@ client.query(`CREATE TABLE COMPANY(
     ADDRESS        CHAR(50),
     SALARY         REAL
  );`, (err, res) => {
-    console.log(err ?
-        err.stack :
-        'Successful insert')
+    console.log(err
+        ? err.stack
+        : 'Successful insert')
     console.log(res)
     // listItems(res)
     client.end()
