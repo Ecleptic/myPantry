@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const router = express.Router()
+const dbLink = require('./dblink')
+// const router = express.Router()
 
 app.set('port', (process.env.PORT || 8080))
 
@@ -11,3 +12,5 @@ app.get('/', function (req, res) {
 app.listen(app.get('port'), () => {
     console.log('Node app is running on port', app.get('port'))
 })
+
+console.log(dbLink)
