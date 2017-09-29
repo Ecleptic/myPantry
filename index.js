@@ -1,21 +1,46 @@
+'use strict'
+
 const express = require('express')
 const app = express()
+const router = express.Router()
+const bodyParser = require('body-parser')
+
+const port = (process.env.PORT || 8080)
 const dbLink = require('./dblink')
-// const router = express.Router()
-const DbLink = new dbLink()
+const db = new dbLink()
 
-app.set('port', (process.env.PORT || 8080))
-/**
- * sends the html to the browser on loading the page
- */
-app.get('/', function (req, res) {
-    res.send("<h1 style ='color:green'>Hello World!</h1>")
+// Setting up CORS headers
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    next()
 })
 
-app.listen(app.get('port'), () => {
-    console.log('Node app is running on port', app.get('port'))
+app.use(express.static(__dirname + '/public'))
+app.set('views', __dirname + '/public')
+
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html')
 })
 
-//test dbLink is working
+// get the path for where the API is listening
+app.use('/', router)
 
-console.log(DbLink.connectDB())
+db.connect() //connect to Database on server startup.
+app.listen(port, () => {
+    console.log(`The app is running on port: ${port}`)
+})
+
+router
+    .route('/api/pantry')
+    .post(db.insert)
+    .get(db.getAll)
+
+router
+    .route('/api/pantry/:id')
+    .delete(db.delete)
+    .get(db.getSingle)
+    .post(db.update)
