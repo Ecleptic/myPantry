@@ -21,8 +21,25 @@ module.exports = class dbLink {
     }
     insert(req, res) {
         console.log("inserting")
+        let command = (req.query.cmd)
+        let username = req.query.username
+        let password = req.query.password
 
-        dbcommands.insert({name: "NameHereYo!", bool: "TRUE", id: 1})
+        console.log("command", command)
+        console.log("username", username)
+        console.log("password", password)
+
+        if (command == 'register') {
+            console.log('register')
+            dbcommands.insert({
+                username: username,
+                password: password
+            })
+            // console.log(res)
+        } else if (command == 'login') {
+            console.log('login')
+        }
+
         res
             .status(200)
             .json({status: 'success'})
@@ -36,8 +53,11 @@ module.exports = class dbLink {
     }
     delete(req, res) {
         let id = parseInt(req.query.id)
-        console.log("dblink delete id: ", id)
-        dbcommands.delete(id)
+        dbcommands
+            .delete(id)
+            .then((response) => {
+                console.log(response)
+            })
         res
             .status(200)
             .json({status: 'success'})

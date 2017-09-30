@@ -1,9 +1,9 @@
 const {Client} = require('pg')
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/todo'
+const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = new Client(connectionString)
 // const pool = new Pool()
 
-const dbName = "items"
+const dbName = "users"
 
 module.exports = class DbCommands {
 
@@ -36,7 +36,6 @@ module.exports = class DbCommands {
      * List the items in the row of our database
      */
     listItems() {
-
         client.query(`SELECT * FROM ${dbName} ORDER BY id ASC;`, (err, res) => {
             console.log(res.rows)
             client.end()
@@ -61,12 +60,15 @@ module.exports = class DbCommands {
      * @param {object} val
      */
     insert(val) {
-        let bool = val.bool
-        let name = val.name
-        let id = val.id
+        let username = val.username
+        let password = val.password
+        console.log("username,password", username + " " + password)
 
-        client.query(`INSERT INTO ${dbName}("id","text", "complete") VALUES(${id}, '${name}', ${bool});`, (err, res) => {
+        client.query(`INSERT INTO "public"."${dbName}"("username","password") VALUES('${username}', '${password}');`, (err, res) => {
             console.log(err
+                ? err.stack
+                : 'Successful insert')
+            return (err
                 ? err.stack
                 : 'Successful insert')
         })

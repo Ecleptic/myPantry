@@ -5,12 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MyPantry</title>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
+
+    <form class="registerForm">
+        <h2>Register</h2>
+        User name:<input class="RegisterFormUsername" type="text"> </br>
+        Password: <input class="RegisterFormPassword" type="text">
+        <button class="submitButton" type="submit">Register</button>
+    </form>
+    <form class="loginForm">
+        <h2>Login</h2>
+        User name:<input class="LoginFormUsername" type="text"> </br>
+        Password: <input class="LoginFormPassword" type="text">
+        <button class="submitButton" type="submit">Login</button>
+    </form>
+    <!--
     <button class="CreateItem">Create DB Item</button>
     <button class="DeleteItem">Delete DB Item</button>
     <button class="ListItem">List DB Items</button>
+-->
 </body>
 <script src="./index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
