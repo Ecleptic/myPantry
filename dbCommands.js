@@ -1,7 +1,6 @@
 const {Client} = require('pg')
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = new Client(connectionString)
-// const pool = new Pool()
 
 const dbName = "users"
 

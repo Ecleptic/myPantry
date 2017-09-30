@@ -1,15 +1,7 @@
 'use strict'
-// const CreateItem = document.querySelector('.CreateItem')
-// const DeleteItem = document.querySelector('.DeleteItem')
-// const ListItem = document.querySelector('.ListItem')
 
-// CreateItem.addEventListener("click", createItem)
-// DeleteItem.addEventListener("click", deleteItem)
-// ListItem.addEventListener("click", listItem) axios is a really solid http
-// request
-
-let registerForm = document.querySelector('.registerForm')
-let loginForm = document.querySelector('.loginForm')
+const registerForm = document.querySelector('.registerForm')
+const loginForm = document.querySelector('.loginForm')
 
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')

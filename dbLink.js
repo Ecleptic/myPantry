@@ -25,9 +25,6 @@ module.exports = class dbLink {
         let username = req.query.username
         let password = req.query.password
 
-        console.log("command", command)
-        console.log("username", username)
-        console.log("password", password)
 
         if (command == 'register') {
             console.log('register')
@@ -35,7 +32,6 @@ module.exports = class dbLink {
                 username: username,
                 password: password
             })
-            // console.log(res)
         } else if (command == 'login') {
             console.log('login')
         }
