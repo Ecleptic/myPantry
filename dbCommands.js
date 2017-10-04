@@ -1,9 +1,10 @@
-const {Client} = require('pg')
+'use strict'
+const promise = require('bluebird')
+const pgp = require('pg-promise')({promiseLib: promise})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
-const client = new Client(connectionString)
+const client = pgp(connectionString)
 
 const dbName = "users"
-
 module.exports = class DbCommands {
 
     /**
@@ -35,9 +36,9 @@ module.exports = class DbCommands {
      * List the items in the row of our database
      */
     listItems() {
-        client.query(`SELECT * FROM ${dbName} ORDER BY id ASC;`, (err, res) => {
+        client.query(`SELECT * FROM ${dbName} ORDER BY id ASC`, (err, res) => {
             console.log(res.rows)
-            client.end()
+
             return (res.rows)
         })
     }
@@ -47,10 +48,21 @@ module.exports = class DbCommands {
      * @param {string} id
      */
     delete(id) {
-        client.query(`DELETE FROM ${dbName} WHERE id=(${id})`, (err) => {
-            console.log(err
-                ? err.stack
-                : 'Successful delete')
+        console.log("ID at: " + id)
+        console.log(typeof(id))
+        console.log(`DELETE FROM "public"."${dbName}" WHERE "username"="${id}";`)
+        return new Promise((resolve, reject) => {
+            client.query(`DELETE FROM "public"."${dbName}" WHERE "username"="${id}";`, (err) => {
+                console.log(err
+                    ? err.stack
+                    : 'Successful delete')
+                    if(!err){
+                        resolve("Successful Delete")
+                }else{
+                    reject(err)
+
+                }
+            })
         })
     }
     /**
@@ -58,18 +70,23 @@ module.exports = class DbCommands {
      * TODO: setup the base items depending on our tables
      * @param {object} val
      */
-    insert(val) {
-        let username = val.username
-        let password = val.password
-        console.log("username,password", username + " " + password)
+    // new Promise((resolve, reject) => {}
 
-        client.query(`INSERT INTO "public"."${dbName}"("username","password") VALUES('${username}', '${password}');`, (err, res) => {
-            console.log(err
-                ? err.stack
-                : 'Successful insert')
-            return (err
-                ? err.stack
-                : 'Successful insert')
+    insert(val) {
+        return new Promise((resolve, reject) => {
+
+            let username = val.username
+            let password = val.password
+            console.log("username, password: " + username + " " + password)
+            client.tx(t => {
+                return t.batch([t.one(`INSERT INTO "public"."${dbName}"("username","password") VALUES('${username}', '${password}') returning username`)])
+            }).spread((user, event) => {
+                // print new user id + new event id
+                console.log('DATA:', user, event)
+                resolve("RESOLVED!!")
+            }).catch(error => {
+                reject(error)
+            }). finally(e => {})
         })
     }
     /**
@@ -85,7 +102,7 @@ module.exports = class DbCommands {
         AGE            INT     NOT NULL,
         ADDRESS        CHAR(50),
         SALARY         REAL
-     );`, (err, res) => {
+     )`, (err, res) => {
             console.log(err
                 ? err.stack
                 : 'Successful insert')

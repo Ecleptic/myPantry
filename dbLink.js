@@ -1,4 +1,5 @@
 'use strict'
+
 const dbCommands = require('./dbCommands')
 const dbcommands = new dbCommands()
 
@@ -8,6 +9,7 @@ module.exports = class dbLink {
     }
 
     getAll(req, res) {
+        // TODO: Save it to localstorage or in a cache or something.
         res
             .status(200)
             .json({status: 'success'})
@@ -19,27 +21,34 @@ module.exports = class dbLink {
             .status(200)
             .json({status: 'success'})
     }
+
     insert(req, res) {
         console.log("inserting")
         let command = (req.query.cmd)
         let username = req.query.username
         let password = req.query.password
 
-
         if (command == 'register') {
             console.log('register')
-            dbcommands.insert({
-                username: username,
-                password: password
+            let register = dbcommands.insert({username: username, password: password})
+            register.then(resolve => {
+                if (resolve) {
+                    res
+                        .status(200)
+                        .json({status: 'success'})
+                }
+
+            }).catch(error => {
+                res
+                    .status(500)
+                    .json({status: 'Error', error: error})
             })
         } else if (command == 'login') {
             console.log('login')
         }
 
-        res
-            .status(200)
-            .json({status: 'success'})
     }
+
     update(req, res) {
         let id = parseInt(req.query.id)
         console.log(id)
@@ -47,15 +56,24 @@ module.exports = class dbLink {
             .status(200)
             .json({status: 'success'})
     }
+
     delete(req, res) {
-        let id = parseInt(req.query.id)
+        let id = (req.query.id)
+        console.log("deleting in link")
+        console.log("ID:",id)
         dbcommands
             .delete(id)
-            .then((response) => {
-                console.log(response)
+            .then(resolve => {
+                console.log(resolve)
+                if (resolve) {
+                    res
+                        .status(200)
+                        .json({status: 'success'})
+                }
+            }).catch(error => {
+                res
+                    .status(500)
+                    .json({status: 'Error', error: error})
             })
-        res
-            .status(200)
-            .json({status: 'success'})
     }
 }
