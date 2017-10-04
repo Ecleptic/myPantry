@@ -24,7 +24,7 @@ module.exports = class dbLink {
 
     insert(req, res) {
         console.log("inserting")
-        let command = (req.query.cmd)
+        let command = req.query.cmd
         let username = req.query.username
         let password = req.query.password
 
@@ -37,7 +37,6 @@ module.exports = class dbLink {
                         .status(200)
                         .json({status: 'success'})
                 }
-
             }).catch(error => {
                 res
                     .status(500)

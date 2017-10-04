@@ -1,7 +1,9 @@
 'use strict'
-
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
+
+const deleteButton = document.querySelector('.DeleteItem')
+deleteButton.addEventListener('click', deleteItem)
 
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
@@ -12,11 +14,11 @@ registerForm.onsubmit = () => {
 
     axios
         .post(`/api/pantry/?cmd=register&username=${username.value}&password=${password.value}`)
-        .then((response) => {
-            console.log(response)
+        .then(response => {
+            console.log("register response", response)
         })
         .catch((error) => {
-            console.log(error)
+            console.error(error)
         });
 
     username.value = ''
@@ -26,12 +28,12 @@ registerForm.onsubmit = () => {
 
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
-    let password = document.querySelector('.LoginFormUsername')
+    let password = document.querySelector('.LoginFormPassword')
 
     axios
         .post(`/api/pantry/?cmd=login&username=${username.value}&password=${password.value}`)
         .then((response) => {
-            console.log(response)
+            console.log("login response", response)
         })
         .catch((error) => {
             console.log(error)
@@ -62,9 +64,13 @@ function createItem() {
  */
 function deleteItem() {
     console.log("deleted")
-    let id = 1 //TODO: get ID from input
+    let id = "cameron" //TODO: get ID from input
     console.log(id)
-    axios.delete(`/api/pantry/?id=${id}`)
+    axios
+        .delete(`/api/pantry/?id=${id}`)
+        .then(response => {
+            console.log(response)
+        })
 
 }
 function listItem() {

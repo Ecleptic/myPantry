@@ -4,7 +4,7 @@ const pgp = require('pg-promise')({promiseLib: promise})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = pgp(connectionString)
 
-const dbName = "users"
+const tableName = "users"
 module.exports = class DbCommands {
 
     /**
@@ -36,7 +36,7 @@ module.exports = class DbCommands {
      * List the items in the row of our database
      */
     listItems() {
-        client.query(`SELECT * FROM ${dbName} ORDER BY id ASC`, (err, res) => {
+        client.query(`SELECT * FROM ${tableName} ORDER BY id ASC`, (err, res) => {
             console.log(res.rows)
 
             return (res.rows)
@@ -50,18 +50,16 @@ module.exports = class DbCommands {
     delete(id) {
         console.log("ID at: " + id)
         console.log(typeof(id))
-        console.log(`DELETE FROM "public"."${dbName}" WHERE "username"="${id}";`)
+        console.log(`DELETE FROM "public"."${tableName}" WHERE "username"="${id}";`)
         return new Promise((resolve, reject) => {
-            client.query(`DELETE FROM "public"."${dbName}" WHERE "username"="${id}";`, (err) => {
-                console.log(err
-                    ? err.stack
-                    : 'Successful delete')
-                    if(!err){
-                        resolve("Successful Delete")
-                }else{
-                    reject(err)
-
-                }
+            client.query(`DELETE FROM "public".${tableName} WHERE "username"='${id}'`, (err) => {
+                resolve("successful Delete")
+                // console.log(err     ? err.stack     : 'Successful delete')
+                // if (!err) {
+                //     resolve("Successful Delete")
+                // } else {
+                //     reject(err)
+                // }
             })
         })
     }
@@ -79,7 +77,7 @@ module.exports = class DbCommands {
             let password = val.password
             console.log("username, password: " + username + " " + password)
             client.tx(t => {
-                return t.batch([t.one(`INSERT INTO "public"."${dbName}"("username","password") VALUES('${username}', '${password}') returning username`)])
+                return t.batch([t.one(`INSERT INTO "public"."${tableName}"("username","password") VALUES('${username}', '${password}') returning username`)])
             }).spread((user, event) => {
                 // print new user id + new event id
                 console.log('DATA:', user, event)
