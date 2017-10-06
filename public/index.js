@@ -6,9 +6,39 @@ const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
 
-
 const listButton = document.querySelector('.ListItemButton')
 listButton.addEventListener('click', listItem)
+
+let modalButton = document.querySelector('.loginButton')
+let modal = document.querySelector('#myModal')
+let closeSpan = document.getElementsByClassName("close")[0]
+
+let registerButton = document.querySelector('.showRegister')
+let loginButton = document.querySelector('.showLogin')
+
+registerButton.addEventListener('click',()=>{
+    loginForm.classList.add('hidden')
+    registerForm.classList.remove('hidden')
+})
+loginButton.addEventListener('click',()=>{
+    loginForm.classList.remove('hidden')
+    registerForm.classList.add('hidden')
+})
+
+modalButton.addEventListener('click', () => {
+    console.log("click")
+    modal.style.display = "block"
+})
+
+closeSpan.addEventListener('click', () => {
+    modal.style.display = "none"
+})
+
+window.onclick = (event) => {
+    if (event.target == modal) {
+        modal.style.display = "none"
+    }
+}
 
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
