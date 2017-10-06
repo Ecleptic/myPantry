@@ -76,7 +76,7 @@ function deleteItem() {
         .then(response => {
             console.log(response)
         })
-
+    deleteInput.value = ''
 }
 
 function listItem() {
