@@ -37,13 +37,12 @@ module.exports = class DbCommands {
      */
     listItems() {
         console.log("listing in command")
-        console.log(`SELECT * FROM ${tableName}`)
         return new Promise((resolve, reject) => {
             console.log("promising")
             client
                 .any(`SELECT * FROM ${tableName}`)
                 .then(data => {
-                    console.log("data", data)
+                    resolve(data)
                 })
                 .catch(err => {
                     reject(err)
@@ -51,14 +50,37 @@ module.exports = class DbCommands {
         })
     }
     /**
+     * Search to see if one tuple exists
+     * @param {object} val // val contains a username and password. We have allowed for more inputs if required.
+     */
+    getSingle(val) {
+        console.log("getting single")
+        return new Promise((resolve, reject) => {
+            if (val.username && val.password) {
+                client
+                    .any(`SELECT * FROM users where username='${val.username}' and password='${val.password}'`)
+                    .then(data => {
+                        if (data.length > 0) {
+                            resolve(data)
+                        } else {
+                            reject('Invalid Username or Password')
+                        }
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            } else {
+                reject('Invalid Username or Password')
+            }
+        })
+    }
+
+    /**
      * Deletes the row at the database dbName
      * otherwise log error.stack
      * @param {string} id
      */
     delete(id) {
-        console.log("ID at: " + id)
-        console.log(typeof(id))
-        // console.log(`DELETE FROM "public"."${tableName}" WHERE "username"="${id}";`)
         return new Promise((resolve, reject) => {
             client
                 .any(`DELETE FROM "public".${tableName} WHERE "username"='${id}'`)
@@ -73,13 +95,12 @@ module.exports = class DbCommands {
     /**
      * Inserts into the dabase from the object
      * TODO: setup the base items depending on our tables
-     * @param {object} val
+     * @param {object} val //val contains a username and password
      */
     // new Promise((resolve, reject) => {}
 
     insert(val) {
         return new Promise((resolve, reject) => {
-
             let username = val.username
             let password = val.password
             console.log("username, password: " + username + " " + password)

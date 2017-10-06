@@ -2,10 +2,12 @@
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
 
-const deleteButton = document.querySelector('.DeleteItem')
+const deleteInput = document.querySelector('.DeleteItemInput')
+const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
 
-const listButton = document.querySelector('.ListItem')
+
+const listButton = document.querySelector('.ListItemButton')
 listButton.addEventListener('click', listItem)
 
 registerForm.onsubmit = () => {
@@ -32,7 +34,6 @@ registerForm.onsubmit = () => {
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
     let password = document.querySelector('.LoginFormPassword')
-
     axios
         .post(`/api/pantry/?cmd=login&username=${username.value}&password=${password.value}`)
         .then((response) => {
@@ -40,6 +41,7 @@ loginForm.onsubmit = () => {
         })
         .catch((error) => {
             console.log(error)
+            alert(error)
         });
 
     username.value = ''
@@ -67,8 +69,8 @@ function createItem() {
  */
 function deleteItem() {
     console.log("deleted")
-    let id = "cameron" //TODO: get ID from input
-    console.log(id)
+    let id = deleteInput.value //TODO: get ID from input
+    console.log("delete:", id)
     axios
         .delete(`/api/pantry/?id=${id}`)
         .then(response => {
@@ -76,6 +78,7 @@ function deleteItem() {
         })
 
 }
+
 function listItem() {
     console.log("list")
     axios

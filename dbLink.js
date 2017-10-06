@@ -11,7 +11,6 @@ module.exports = class dbLink {
     get(req, res) {
         // TODO: Save it to localstorage or in a cache or something.
         let command = req.query.cmd
-
         if (command == 'list') {
             console.log('list')
             dbcommands
@@ -28,14 +27,6 @@ module.exports = class dbLink {
                         .json({status: 'Error', error: error})
                 })
         }
-
-    }
-    getSingle(req, res) {
-        let id = parseInt(req.query.id)
-        console.log(id)
-        res
-            .status(200)
-            .json({status: 'success'})
     }
 
     insert(req, res) {
@@ -51,7 +42,7 @@ module.exports = class dbLink {
                 if (resolve) {
                     res
                         .status(200)
-                        .json({status: 'success'})
+                        .json({status: 'successful register'})
                 }
             }).catch(error => {
                 res
@@ -59,7 +50,18 @@ module.exports = class dbLink {
                     .json({status: 'Error', error: error})
             })
         } else if (command == 'login') {
-            console.log('login')
+            let login = dbcommands.getSingle({username: username, password: password})
+            login.then(resolve => {
+                if (resolve) {
+                    res
+                        .status(200)
+                        .json({status: 'successful login', data: resolve.username})
+                }
+            }).catch(error => {
+                res
+                    .status(404)
+                    .json({status: 'Not Exist', error: error})
+            })
         }
 
     }
