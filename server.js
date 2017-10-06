@@ -37,6 +37,6 @@ app.listen(port, () => {
 router
     .route('/api/pantry')
     .post(db.insert)
-    .get(db.getAll) //or somehow db.getSingle TODO: Figure that out later
+    .get(db.get) //or somehow db.getSingle TODO: Figure that out later
     .delete(db.delete)
     // .post(db.update)

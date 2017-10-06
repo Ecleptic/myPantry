@@ -36,10 +36,18 @@ module.exports = class DbCommands {
      * List the items in the row of our database
      */
     listItems() {
-        client.query(`SELECT * FROM ${tableName} ORDER BY id ASC`, (err, res) => {
-            console.log(res.rows)
-
-            return (res.rows)
+        console.log("listing in command")
+        console.log(`SELECT * FROM ${tableName}`)
+        return new Promise((resolve, reject) => {
+            console.log("promising")
+            client
+                .any(`SELECT * FROM ${tableName}`)
+                .then(data => {
+                    console.log("data", data)
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     }
     /**
@@ -50,17 +58,16 @@ module.exports = class DbCommands {
     delete(id) {
         console.log("ID at: " + id)
         console.log(typeof(id))
-        console.log(`DELETE FROM "public"."${tableName}" WHERE "username"="${id}";`)
+        // console.log(`DELETE FROM "public"."${tableName}" WHERE "username"="${id}";`)
         return new Promise((resolve, reject) => {
-            client.query(`DELETE FROM "public".${tableName} WHERE "username"='${id}'`, (err) => {
-                resolve("successful Delete")
-                // console.log(err     ? err.stack     : 'Successful delete')
-                // if (!err) {
-                //     resolve("Successful Delete")
-                // } else {
-                //     reject(err)
-                // }
-            })
+            client
+                .any(`DELETE FROM "public".${tableName} WHERE "username"='${id}'`)
+                .then(data => {
+                    resolve("successful Delete", data)
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     }
     /**

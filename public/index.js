@@ -5,6 +5,9 @@ const loginForm = document.querySelector('.loginForm')
 const deleteButton = document.querySelector('.DeleteItem')
 deleteButton.addEventListener('click', deleteItem)
 
+const listButton = document.querySelector('.ListItem')
+listButton.addEventListener('click', listItem)
+
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
@@ -76,8 +79,9 @@ function deleteItem() {
 function listItem() {
     console.log("list")
     axios
-        .get('/api/pantry')
+        .get('/api/pantry/?cmd=list')
         .then((response) => {
+            console.log("response: ")
             console.log(response)
         })
         .catch((error) => {

@@ -8,11 +8,27 @@ module.exports = class dbLink {
         dbcommands.connectDB()
     }
 
-    getAll(req, res) {
+    get(req, res) {
         // TODO: Save it to localstorage or in a cache or something.
-        res
-            .status(200)
-            .json({status: 'success'})
+        let command = req.query.cmd
+
+        if (command == 'list') {
+            console.log('list')
+            dbcommands
+                .listItems()
+                .then(resolve => {
+                    console.log(resolve)
+                    res
+                        .status(200)
+                        .json({status: 'success', data: resolve})
+                })
+                .catch(error => {
+                    res
+                        .status(500)
+                        .json({status: 'Error', error: error})
+                })
+        }
+
     }
     getSingle(req, res) {
         let id = parseInt(req.query.id)
@@ -59,17 +75,18 @@ module.exports = class dbLink {
     delete(req, res) {
         let id = (req.query.id)
         console.log("deleting in link")
-        console.log("ID:",id)
+        console.log("ID:", id)
         dbcommands
             .delete(id)
             .then(resolve => {
-                console.log(resolve)
+                console.log("resolve", resolve)
                 if (resolve) {
                     res
                         .status(200)
                         .json({status: 'success'})
                 }
-            }).catch(error => {
+            })
+            .catch(error => {
                 res
                     .status(500)
                     .json({status: 'Error', error: error})
