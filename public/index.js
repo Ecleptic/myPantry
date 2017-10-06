@@ -9,20 +9,37 @@ deleteButton.addEventListener('click', deleteItem)
 const listButton = document.querySelector('.ListItemButton')
 listButton.addEventListener('click', listItem)
 
-let modalButton = document.querySelector('.loginButton')
-let modal = document.querySelector('#myModal')
-let closeSpan = document.getElementsByClassName("close")[0]
 
-let registerButton = document.querySelector('.showRegister')
-let loginButton = document.querySelector('.showLogin')
+const pantryList = document.querySelector('.pantryList')
 
-registerButton.addEventListener('click',()=>{
-    loginForm.classList.add('hidden')
-    registerForm.classList.remove('hidden')
+const modalButton = document.querySelector('.loginButton')
+const modal = document.querySelector('#myModal')
+const closeSpan = document.getElementsByClassName("close")[0]
+
+const registerButton = document.querySelector('.showRegister')
+const loginButton = document.querySelector('.showLogin')
+const logoutButton = document.querySelector('.logout')
+
+logoutButton.addEventListener('click',()=>{
+    localStorage.setItem("isLoggedIn", false)
+    showPantryList()
+    location.reload()
 })
-loginButton.addEventListener('click',()=>{
-    loginForm.classList.remove('hidden')
-    registerForm.classList.add('hidden')
+registerButton.addEventListener('click', () => {
+    loginForm
+        .classList
+        .add('hidden')
+    registerForm
+        .classList
+        .remove('hidden')
+})
+loginButton.addEventListener('click', () => {
+    loginForm
+        .classList
+        .remove('hidden')
+    registerForm
+        .classList
+        .add('hidden')
 })
 
 modalButton.addEventListener('click', () => {
@@ -40,6 +57,10 @@ window.onclick = (event) => {
     }
 }
 
+window.onload = () => {
+    console.log("loaded")
+    showPantryList()
+}
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
@@ -51,10 +72,13 @@ registerForm.onsubmit = () => {
         .post(`/api/pantry/?cmd=register&username=${username.value}&password=${password.value}`)
         .then(response => {
             console.log("register response", response)
+            localStorage.setItem("isLoggedIn", true)
+            showPantryList()
+            modal.style.display = "none"
         })
         .catch((error) => {
             console.error(error)
-        });
+        })
 
     username.value = ''
     password.value = ''
@@ -68,11 +92,14 @@ loginForm.onsubmit = () => {
         .post(`/api/pantry/?cmd=login&username=${username.value}&password=${password.value}`)
         .then((response) => {
             console.log("login response", response)
+            localStorage.setItem("isLoggedIn", true)
+            showPantryList()
+            modal.style.display = "none"
         })
         .catch((error) => {
             console.log(error)
             alert(error)
-        });
+        })
 
     username.value = ''
     password.value = ''
@@ -120,4 +147,20 @@ function listItem() {
         .catch((error) => {
             console.log(error)
         })
+}
+
+function showPantryList() {
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+    console.log(typeof( isLoggedIn))
+    if (isLoggedIn == 'true') {
+        console.log("logged in")
+        pantryList
+            .classList
+            .remove('hidden')
+    } else if(isLoggedIn == 'false') {
+        console.log("not logged in")
+        pantryList
+            .classList
+            .add('hidden')
+    }
 }

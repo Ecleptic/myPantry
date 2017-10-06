@@ -14,8 +14,8 @@
     <button class="button loginButton" style="background-color: rgb(0, 0, 255)">Login/SignUp</button>
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <button class="showRegister" >Register</button>
-            <button class="showLogin" >Login</button>
+            <button class="showRegister">Register</button>
+            <button class="showLogin">Login</button>
             <span class="close">&times;</span>
             <form class="registerForm">
                 <h2>Register</h2>
@@ -36,7 +36,15 @@
         </div>
 
     </div>
-
+    <div class="pantryList hidden" <ul ng-repeat="todo in todoData">
+        <h1>PANTRY LIST</h1>
+        <li>
+            <h3>
+                <input class="lead" type="checkbox" ng-click="deleteTodo(todo.id)"></h3>
+        </li>
+        <hr>
+        </ul>
+    </div>
     <br>
     <br>
     <br>
@@ -47,6 +55,8 @@
     <br>
     <input type="text" class="DeleteItemInput"></input>
     <button class="DeleteItemButton">Delete DB Item</button>
+    <br>
+    <button class="logout">logout</button>
 
 </body>
 <script src="./index.js"></script>
