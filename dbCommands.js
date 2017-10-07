@@ -4,7 +4,7 @@ const pgp = require('pg-promise')({promiseLib: promise})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = pgp(connectionString)
 
-const tableName = "users"
+const userTable = "users"
 module.exports = class DbCommands {
 
     /**
@@ -40,7 +40,7 @@ module.exports = class DbCommands {
         return new Promise((resolve, reject) => {
             console.log("promising")
             client
-                .any(`SELECT * FROM ${tableName}`)
+                .any(`SELECT * FROM ${userTable}`)
                 .then(data => {
                     resolve(data)
                 })
@@ -83,7 +83,7 @@ module.exports = class DbCommands {
     delete(id) {
         return new Promise((resolve, reject) => {
             client
-                .any(`DELETE FROM "public".${tableName} WHERE "username"='${id}'`)
+                .any(`DELETE FROM "public".${userTable} WHERE "username"='${id}'`)
                 .then(data => {
                     resolve("successful Delete", data)
                 })
@@ -105,7 +105,7 @@ module.exports = class DbCommands {
             let password = val.password
             console.log("username, password: " + username + " " + password)
             client.tx(t => {
-                return t.batch([t.one(`INSERT INTO "public"."${tableName}"("username","password") VALUES('${username}', '${password}') returning username`)])
+                return t.batch([t.one(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)])
             }).spread((user, event) => {
                 // print new user id + new event id
                 console.log('DATA:', user, event)
