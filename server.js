@@ -6,8 +6,8 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 
 const port = (process.env.PORT || 8080)
-const dbLink = require('./dblink')
-const db = new dbLink()
+// const dbLink = require('./dblink')
+// const db = new dbLink()
 
 // Setting up CORS headers
 app.use((req, res, next) => {
