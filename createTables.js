@@ -10,9 +10,9 @@ const client = pgp(connectionString)
  * Creates the tables
  */
 function createTables() {
-    createListsTable()
     createFoodsTable()
     createUsersTable()
+    createListsTable()
 }
 
 /**
@@ -34,7 +34,7 @@ function createListsTable() {
                     "username" text,
                     "foodName" text,
                     "qty/weight" text,
-                    PRIMARY KEY ("username")
+                    FOREIGN KEY ("username") REFERENCES "users"("username")
                 )`)
                     .then(() => {
                         console.log('Created Lists Table')
