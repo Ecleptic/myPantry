@@ -6,8 +6,8 @@ const router = express.Router()
 const bodyParser = require('body-parser')
 
 const port = (process.env.PORT || 8080)
-const dbLink = require('./dblink')
-const db = new dbLink()
+// const dbLink = require('./dblink')
+// const db = new dbLink()
 
 // Setting up CORS headers
 app.use((req, res, next) => {
@@ -29,13 +29,13 @@ app.get('/', (req, res) => {
 // get the path for where the API is listening
 app.use('/', router)
 
-db.connect() //connect to Database on server startup.
+// db.connect() //connect to Database on server startup.
 app.listen(port, () => {
     console.log(`The app is running on port: ${port}`)
 })
 
 router
     .route('/api/pantry')
-    .post(db.insert)
-    .get(db.get)
-    .delete(db.delete)
+    // .post(db.insert)
+    // .get(db.get)
+    // .delete(db.delete)
