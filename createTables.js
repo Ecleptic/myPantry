@@ -1,18 +1,23 @@
 'use strict'
 const promise = require('bluebird')
-const pgp = require('pg-promise')({promiseLib: promise})
+const pgp = require('pg-promise')({
+    promiseLib: promise
+})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = pgp(connectionString)
 
 /**
-     * Creates the tables
-     */
+ * Creates the tables
+ */
 function createTables() {
     createListsTable()
     createFoodsTable()
     createUsersTable()
 }
 
+/**
+ * Create the lists table
+ */
 function createListsTable() {
     client
         .any(`SELECT EXISTS (
@@ -39,6 +44,9 @@ function createListsTable() {
             }
         })
 }
+/**
+ * Create the users table
+ */
 function createUsersTable() {
     client
         .any(`SELECT EXISTS (
@@ -65,6 +73,9 @@ function createUsersTable() {
             }
         })
 }
+/**
+ * Create the foods table
+ */
 function createFoodsTable() {
     client
         .any(`SELECT EXISTS (
@@ -93,4 +104,6 @@ function createFoodsTable() {
         })
 }
 
+
+// runs the script
 createTables()

@@ -52,6 +52,7 @@ module.exports = class DbCommands {
     /**
      * Search to see if one tuple exists
      * @param {object} val // val contains a username and password. We have allowed for more inputs if required.
+     * @returns {Promise} Resolves to the tuple from the username.
      */
     getSingle(val) {
         console.log("getting single")
@@ -76,9 +77,11 @@ module.exports = class DbCommands {
     }
 
     /**
-     * Deletes the row at the database dbName
+     * Deletes the row at the database dbName from id
      * otherwise log error.stack
-     * @param {string} id
+     * @param {string} id //the username of the row where it is deleted
+     * @returns {Promise} Resolves confirm a successful delete
+     * TODO: user ternary operator for whether username or whatever id goes there
      */
     delete(id) {
         return new Promise((resolve, reject) => {
@@ -94,54 +97,22 @@ module.exports = class DbCommands {
     }
     /**
      * Inserts into the dabase from the object
-     * TODO: setup the base items depending on our tables
+     * TODO: setup the base items depending on our tables instead of hard coding username and password
      * @param {object} val //val contains a username and password
+     * @returns {Promise} Resolves confirm the successful insert with the username
      */
-    // new Promise((resolve, reject) => {}
-
     insert(val) {
         return new Promise((resolve, reject) => {
             let username = val.username
             let password = val.password
             console.log("username, password: " + username + " " + password)
-            client.tx(t => {
-                return t.batch([t.one(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)])
-            }).spread((user, event) => {
-                // print new user id + new event id
-                console.log('DATA:', user, event)
-                resolve("RESOLVED!!")
-            }).catch(error => {
+            client.any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
+            .then(data => {
+                resolve("successful insert", data)
+            })
+            .catch(error => {
                 reject(error)
-            }). finally(e => {})
-        })
-    }
-    /**
-     * creates table from input
-     * @param {string} tableName the name of the table
-     * TODO: @param {object}   - the different pieces of the table. maybe hard code this? IDK
-     */
-    createTable(tableName) {
-
-        client.query(`CREATE TABLE ${tableName}(
-        ID INT PRIMARY KEY     NOT NULL,
-        NAME           TEXT    NOT NULL,
-        AGE            INT     NOT NULL,
-        ADDRESS        CHAR(50),
-        SALARY         REAL
-     )`, (err, res) => {
-            console.log(err
-                ? err.stack
-                : 'Successful insert')
-        })
-    }
-    /**
-     * Test the connection to the database (unnecessary because of connect, but still fun)
-     */
-    test() {
-        client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-            console.log(err
-                ? err.stack
-                : res.rows[0].message) // Hello World!
+            })
         })
     }
 
