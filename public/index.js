@@ -16,14 +16,14 @@ const pantryList = document.querySelector('.pantryList')
 
 const modalButton = document.querySelector('.loginButton')
 const modal = document.querySelector('#myModal')
-const closeSpan = document.getElementsByClassName("close")[0]
+const closeSpan = document.querySelector(".close")
 
 const registerButton = document.querySelector('.showRegister')
 const loginButton = document.querySelector('.showLogin')
 const logoutButton = document.querySelector('.logout')
 
 /**
- * when the page is loaded, run showPantryList()
+ * when the page is loaded, run showPantryList() to check if the user is logged in
  */
 window.onload = () => {
     console.log("loaded")
@@ -109,6 +109,7 @@ registerForm.onsubmit = () => {
         .catch((error) => {
             console.error(error)
         });
+    localStorage.setItem('username',username.value)
     username.value = ''
     password.value = ''
     return false
@@ -174,10 +175,12 @@ function deleteItem() {
 function listItem() {
     console.log("list")
     axios
-        .get('/api/pantry/?cmd=list')
+        .get(`/api/pantry/?cmd=list&username=${'username'}`)
         .then((response) => {
             console.log("response: ")
-            console.log(response)
+            console.table(response.data.data)
+            // console.table(response.data.foods)
+            // console.log(response)
         })
         .catch((error) => {
             console.log(error)
@@ -189,7 +192,6 @@ function listItem() {
  */
 function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
-    console.log(typeof(isLoggedIn))
     if (isLoggedIn == 'true') {
         console.log("logged in")
         pantryList

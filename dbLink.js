@@ -53,11 +53,11 @@ module.exports = class dbLink {
             console.log('register')
             let register = dbcommands.insert({username: username, password: password})
             register.then(resolve => {
-                if (resolve) {
-                    res
-                        .status(200)
-                        .json({status: 'successful register'})
-                }
+                console.log(resolve)
+                res
+                    .status(200)
+                    .json({status: 'successful register'})
+
             }).catch(error => {
                 res
                     .status(500)
