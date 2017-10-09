@@ -108,8 +108,8 @@ registerForm.onsubmit = () => {
         })
         .catch((error) => {
             console.error(error)
-        })username
-        .value = ''
+        });
+    username.value = ''
     password.value = ''
     return false
 }
@@ -177,7 +177,7 @@ function listItem() {
         .get('/api/pantry/?cmd=list')
         .then((response) => {
             console.log("response: ")
-            console.table(response)
+            console.log(response)
         })
         .catch((error) => {
             console.log(error)
