@@ -4,7 +4,7 @@
  */
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
-
+// something
 const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
