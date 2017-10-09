@@ -30,14 +30,7 @@ window.onload = () => {
     showPantryList()
 }
 
-/**
- * When the logout button is clicked, set isLoggedIn to false, remove all data off screen and reload the page
- */
-logoutButton.addEventListener('click', () => {
-    localStorage.setItem("isLoggedIn", false)
-    showPantryList()
-    location.reload()
-})
+
 
 /**
  * when the button to show register in the modal is clicked, show it and hide the login form
@@ -103,13 +96,13 @@ registerForm.onsubmit = () => {
         .then(response => {
             console.log("register response", response)
             localStorage.setItem("isLoggedIn", true)
+            localStorage.setItem('username', username.value)
             showPantryList()
             modal.style.display = "none"
         })
         .catch((error) => {
             console.error(error)
         });
-    localStorage.setItem('username',username.value)
     username.value = ''
     password.value = ''
     return false
@@ -127,6 +120,7 @@ loginForm.onsubmit = () => {
         .then((response) => {
             console.log("login response", response)
             localStorage.setItem("isLoggedIn", true)
+            localStorage.setItem('username', username.value)
             showPantryList()
             modal.style.display = "none"
         })
@@ -139,6 +133,16 @@ loginForm.onsubmit = () => {
 
     return false
 }
+
+/**
+ * When the logout button is clicked, set isLoggedIn to false, remove all data off screen and reload the page
+ */
+logoutButton.addEventListener('click', () => {
+    localStorage.setItem("isLoggedIn", false)
+    localStorage.removeItem('username')
+    showPantryList()
+    location.reload()
+})
 
 /**
  * sends a post request to create a new item
@@ -175,12 +179,11 @@ function deleteItem() {
 function listItem() {
     console.log("list")
     axios
-        .get(`/api/pantry/?cmd=list&username=${'username'}`)
+        .get(`/api/pantry/?cmd=list&username=${ 'username'}`)
         .then((response) => {
             console.log("response: ")
             console.table(response.data.data)
-            // console.table(response.data.foods)
-            // console.log(response)
+            // console.table(response.data.foods) console.log(response)
         })
         .catch((error) => {
             console.log(error)
@@ -197,10 +200,17 @@ function showPantryList() {
         pantryList
             .classList
             .remove('hidden')
+        modalButton
+            .classList
+            .add('hidden')
     } else if (isLoggedIn == 'false') {
         console.log("not logged in")
         pantryList
             .classList
             .add('hidden')
+        modalButton
+            .classList
+            .remove('hidden')
+
     }
 }
