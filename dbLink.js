@@ -109,6 +109,13 @@ module.exports = class dbLink {
                     .json({status: 'Error', error: error})
             })
         }
+<<<<<<< HEAD
+=======
+        else if (command == 'CreateItem') {
+            console.log("create item")
+        }
+
+>>>>>>> a984b817ce39f316cd1d43e24b3ff653a51fc44e
     }
 
     /**
