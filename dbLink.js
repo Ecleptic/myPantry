@@ -77,6 +77,9 @@ module.exports = class dbLink {
                     .json({status: 'Not Exist', error: error})
             })
         }
+        else if (command == 'CreateItem') {
+            console.log("create item")
+        }
 
     }
 
