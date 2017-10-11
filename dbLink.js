@@ -102,7 +102,7 @@ module.exports = class dbLink {
                 console.log(resolve)
                 res
                     .status(200)
-                    .json({status: 'successful add'})
+                    .json({status: 'successful add', items: resolve})
             }).catch(error => {
                 res
                     .status(500)

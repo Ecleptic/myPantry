@@ -254,30 +254,36 @@ function getUserInfo() {
     usernameSpan.innerText = username.toUpperCase()
 }
 
- function showListItems() {
-        for (let i of listOfItems) {
-            let li = document.createElement('li')
-            let textNode = document.createTextNode(i.foodName)
-            li.appendChild(textNode)
-            itemsListUL.appendChild(li)
-        }
+function showListItems() {
+    for (let i of listOfItems) {
+        let li = document.createElement('li')
+        let textNode = document.createTextNode(i.foodName)
+        li.appendChild(textNode)
+        itemsListUL.appendChild(li)
+    }
 }
 
-function showNewListItem(newItem){
+function showNewListItem() {
+    let newItem = listOfItems[listOfItems.length - 1]
     let li = document.createElement('li')
-    let textNode = document.createTextNode()
-
+    let textNode = document.createTextNode(newItem.foodName)
+    li.appendChild(textNode)
+    itemsListUL.appendChild(li)
 }
 
 function addItem() {
     let newItem = addItemInput
     let username = localStorage.getItem("username")
+    let qty = null
+
+    listOfItems.push({'username': username, 'foodName': newItem.value, 'qty/weight': qty})
 
     console.log("newItemValue: ", newItem.value)
     axios
         .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
         .then(() => {
-            showPantryList()
+            // showPantryList()
+            showNewListItem()
             modal.style.display = "none"
         })
         .catch((error) => {
@@ -289,12 +295,12 @@ function addItem() {
 /**
  * Clearing the list holding the items so we can rebuild it
  */
-  function clearListItems() {
-        console.log("clearing list items")
-        if (itemsListUL) {
-            while (itemsListUL.firstElementChild) {
-                console.log("removing:", itemsListUL.firstChild)
-                itemsListUL.removeChild(itemsListUL.firstChild)
-            }
+function clearListItems() {
+    console.log("clearing list items")
+    if (itemsListUL) {
+        while (itemsListUL.firstElementChild) {
+            console.log("removing:", itemsListUL.firstChild)
+            itemsListUL.removeChild(itemsListUL.firstChild)
         }
+    }
 }

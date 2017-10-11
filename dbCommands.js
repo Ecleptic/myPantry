@@ -139,9 +139,9 @@ module.exports = class DbCommands {
             } else if (command == 'newItem') {
                 console.log("creating new item: ",newItem)
                 client
-                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodName") VALUES('${username}','${newItem}');`)
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodName") VALUES('${username}','${newItem}') RETURNING ('username','foodName','qty/weight');`)
                     .then(data => {
-                        resolve("successful insert", data)
+                        resolve(data)
                     })
                     .catch(error => {
                         console.error(error)
