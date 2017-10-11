@@ -20,15 +20,33 @@ module.exports = class dbLink {
     get(req, res) {
         // TODO: Save it to localstorage or in a cache or something.
         let command = req.query.cmd
-        if (command == 'list') {
+        let username = req.query.username
+
+        if (command == 'listUsers') {
             console.log('list')
             dbcommands
-                .listItems()
+                .listUsers()
                 .then(resolve => {
                     console.log(resolve)
                     res
                         .status(200)
-                        .json({status: 'success', data: resolve})
+                        .json({status: 'success', users: resolve})
+                })
+                .catch(error => {
+                    res
+                        .status(500)
+                        .json({status: 'Error', error: error})
+                })
+        }
+        if (command == 'getList') {
+            console.log("getting list in dbLink")
+            dbcommands
+                .getList({username: username})
+                .then(resolve => {
+                    console.log(resolve)
+                    res
+                        .status(200)
+                        .json({status: 'Success', items: resolve})
                 })
                 .catch(error => {
                     res
@@ -48,10 +66,11 @@ module.exports = class dbLink {
         let command = req.query.cmd
         let username = req.query.username
         let password = req.query.password
+        let newItem = req.query.item
 
         if (command == 'register') {
             console.log('register')
-            let register = dbcommands.insert({username: username, password: password})
+            let register = dbcommands.insert({command: 'register', username: username, password: password})
             register.then(resolve => {
                 console.log(resolve)
                 res
@@ -64,7 +83,7 @@ module.exports = class dbLink {
                     .json({status: 'Error', error: error})
             })
         } else if (command == 'login') {
-            let login = dbcommands.getSingle({username: username, password: password})
+            let login = dbcommands.getLogin({username: username, password: password})
             login.then(resolve => {
                 if (resolve) {
                     res
@@ -76,8 +95,20 @@ module.exports = class dbLink {
                     .status(404)
                     .json({status: 'Not Exist', error: error})
             })
+        } else if (command == 'addItem') {
+            console.log("new Item: ", newItem)
+            let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
+            addItem.then(resolve => {
+                console.log(resolve)
+                res
+                    .status(200)
+                    .json({status: 'successful add'})
+            }).catch(error => {
+                res
+                    .status(500)
+                    .json({status: 'Error', error: error})
+            })
         }
-
     }
 
     /**

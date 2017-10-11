@@ -5,6 +5,9 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 const client = pgp(connectionString)
 
 const userTable = "users"
+const foodTable = "foods"
+const listTable = "lists"
+
 module.exports = class DbCommands {
 
     /**
@@ -20,6 +23,7 @@ module.exports = class DbCommands {
             }
         })
     }
+
     /**
      * Disconnect from postgres database.
      */
@@ -32,10 +36,8 @@ module.exports = class DbCommands {
             }
         })
     }
-    /**
-     * List the items in the row of our database
-     */
-    listItems() {
+
+    listUsers() {
         console.log("listing in command")
         return new Promise((resolve, reject) => {
             console.log("promising")
@@ -49,13 +51,14 @@ module.exports = class DbCommands {
                 })
         })
     }
+
     /**
      * Search to see if one tuple exists
      * @param {object} val // val contains a username and password. We have allowed for more inputs if required.
      * @returns {Promise} Resolves to the tuple from the username.
      */
-    getSingle(val) {
-        console.log("getting single")
+    getLogin(val) {
+        console.log("getting login")
         return new Promise((resolve, reject) => {
             if (val.username && val.password) {
                 client
@@ -73,6 +76,23 @@ module.exports = class DbCommands {
             } else {
                 reject('Invalid Username or Password')
             }
+        })
+    }
+
+    getList(val) {
+        return new Promise((resolve, reject) => {
+            client
+                .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}';`)
+                .then(data => {
+                    if (data.length > 0) {
+                        resolve(data)
+                    } else {
+                        reject('Error Could Not Find List')
+                    }
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     }
 
@@ -103,16 +123,31 @@ module.exports = class DbCommands {
      */
     insert(val) {
         return new Promise((resolve, reject) => {
+            let command = val.command
             let username = val.username
             let password = val.password
-            console.log("username, password: " + username + " " + password)
-            client.any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
-            .then(data => {
-                resolve("successful insert", data)
-            })
-            .catch(error => {
-                reject(error)
-            })
+            let newItem = val.newItem
+            if (command == 'register') {
+                client
+                    .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
+                    .then(data => {
+                        resolve("successful insert", data)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            } else if (command == 'newItem') {
+                console.log("creating new item: ",newItem)
+                client
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodName") VALUES('${username}','${newItem}');`)
+                    .then(data => {
+                        resolve("successful insert", data)
+                    })
+                    .catch(error => {
+                        console.error(error)
+                        reject(error)
+                    })
+            }
         })
     }
 

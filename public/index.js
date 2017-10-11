@@ -9,8 +9,11 @@ const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
 
-const listButton = document.querySelector('.ListItemButton')
-listButton.addEventListener('click', listItem)
+const listUserButton = document.querySelector('.ListUserButton')
+listUserButton.addEventListener('click', listUsers)
+
+const listItemButton = document.querySelector('.ListItemButton')
+listItemButton.addEventListener('click', getListItems)
 
 const pantryList = document.querySelector('.pantryList')
 
@@ -22,6 +25,15 @@ const registerButton = document.querySelector('.showRegister')
 const loginButton = document.querySelector('.showLogin')
 const logoutButton = document.querySelector('.logout')
 
+const usernameSpan = document.querySelector('.usernameSpan')
+const itemsListUL = document.querySelector('.itemsList')
+
+const addItemInput = document.querySelector('.addNewItemInput')
+const addItemButton = document.querySelector('.addNewItemButton')
+addItemButton.addEventListener('click', addItem)
+
+let listOfItems = []
+
 /**
  * when the page is loaded, run showPantryList() to check if the user is logged in
  */
@@ -29,8 +41,6 @@ window.onload = () => {
     console.log("loaded")
     showPantryList()
 }
-
-
 
 /**
  * when the button to show register in the modal is clicked, show it and hide the login form
@@ -88,15 +98,13 @@ registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
 
-    console.log(username.value)
-    console.log(password.value)
+    localStorage.setItem('username', username.value)
 
     axios
         .post(`/api/pantry/?cmd=register&username=${username.value}&password=${password.value}`)
         .then(response => {
             console.log("register response", response)
             localStorage.setItem("isLoggedIn", true)
-            localStorage.setItem('username', username.value)
             showPantryList()
             modal.style.display = "none"
         })
@@ -115,14 +123,16 @@ registerForm.onsubmit = () => {
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
     let password = document.querySelector('.LoginFormPassword')
+
+    localStorage.setItem('username', username.value)
     axios
         .post(`/api/pantry/?cmd=login&username=${username.value}&password=${password.value}`)
         .then((response) => {
             console.log("login response", response)
             localStorage.setItem("isLoggedIn", true)
-            localStorage.setItem('username', username.value)
             showPantryList()
             modal.style.display = "none"
+
         })
         .catch((error) => {
             console.log(error)
@@ -176,18 +186,38 @@ function deleteItem() {
 /**
  * Send the command to list everything in the users database (will need to change it to list all questions)
  */
-function listItem() {
-    console.log("list")
+function listUsers() {
+    console.log("listUsers")
     axios
-        .get(`/api/pantry/?cmd=list&username=${ 'username'}`)
+        .get(`/api/pantry/?cmd=listUsers&username=${ 'username'}`)
         .then((response) => {
             console.log("response: ")
-            console.table(response.data.data)
+            console.table(response.data.users)
             // console.table(response.data.foods) console.log(response)
         })
         .catch((error) => {
             console.log(error)
         })
+}
+
+function getListItems() {
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+    let username = localStorage.getItem("username")
+
+    if (isLoggedIn && username) {
+        console.log("getting list of items")
+        axios
+            .get(`/api/pantry?cmd=getList&username=${username}`)
+            .then(response => {
+                let items = response.data.items
+                console.log("Response: " + response)
+                listOfItems.push(...items)
+                showListItems()
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
 }
 
 /**
@@ -197,6 +227,8 @@ function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     if (isLoggedIn == 'true') {
         console.log("logged in")
+        getUserInfo()
+        getListItems()
         pantryList
             .classList
             .remove('hidden')
@@ -213,4 +245,56 @@ function showPantryList() {
             .remove('hidden')
 
     }
+}
+
+function getUserInfo() {
+    let username = localStorage.getItem("username")
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+
+    usernameSpan.innerText = username.toUpperCase()
+}
+
+ function showListItems() {
+        for (let i of listOfItems) {
+            let li = document.createElement('li')
+            let textNode = document.createTextNode(i.foodName)
+            li.appendChild(textNode)
+            itemsListUL.appendChild(li)
+        }
+}
+
+function showNewListItem(newItem){
+    let li = document.createElement('li')
+    let textNode = document.createTextNode()
+
+}
+
+function addItem() {
+    let newItem = addItemInput
+    let username = localStorage.getItem("username")
+
+    console.log("newItemValue: ", newItem.value)
+    axios
+        .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
+        .then(() => {
+            showPantryList()
+            modal.style.display = "none"
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+    newItem.value = ''
+}
+
+/**
+ * Clearing the list holding the items so we can rebuild it
+ */
+  function clearListItems() {
+        console.log("clearing list items")
+        if (itemsListUL) {
+            while (itemsListUL.firstElementChild) {
+                console.log("removing:", itemsListUL.firstChild)
+                itemsListUL.removeChild(itemsListUL.firstChild)
+            }
+        }
 }
