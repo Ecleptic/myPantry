@@ -117,8 +117,7 @@ module.exports = class DbCommands {
     }
     /**
      * Inserts into the dabase from the object
-     * TODO: setup the base items depending on our tables instead of hard coding username and password
-     * @param {object} val //val contains a username and password
+     * @param {object} val //val contains username, password, command, and newItem
      * @returns {Promise} Resolves confirm the successful insert with the username
      */
     insert(val) {
@@ -127,6 +126,7 @@ module.exports = class DbCommands {
             let username = val.username
             let password = val.password
             let newItem = val.newItem
+
             if (command == 'register') {
                 client
                     .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
@@ -137,7 +137,7 @@ module.exports = class DbCommands {
                         reject(error)
                     })
             } else if (command == 'newItem') {
-                console.log("creating new item: ",newItem)
+                console.log("creating new item: ", newItem)
                 client
                     .any(`INSERT INTO "public"."${listTable}" ("username", "foodName") VALUES('${username}','${newItem}') RETURNING ('username','foodName','qty/weight');`)
                     .then(data => {

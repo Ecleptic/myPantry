@@ -34,8 +34,9 @@ function createListsTable() {
                     "username" text,
                     "foodName" text,
                     "qty/weight" text,
+                    "isChecked" BOOLEAN DEFAULT FALSE
                     FOREIGN KEY ("username") REFERENCES "users"("username")
-                )`)
+                );`)
                     .then(() => {
                         console.log('Created Lists Table')
                     })
@@ -63,7 +64,7 @@ function createUsersTable() {
                     "username" text,
                     "password" text,
                     "listName" text,
-                    PRIMARY KEY ("username")
+                    PRIMARY KEY ("username");
                 )`)
                     .then(() => {
                         console.log('Created Users Table')
@@ -94,7 +95,7 @@ function createFoodsTable() {
                     "type" text,
                     "expiration" date,
                     PRIMARY KEY ("foodName")
-                )`)
+                );`)
                     .then(() => {
                         console.log('Created Foods Table')
                     })

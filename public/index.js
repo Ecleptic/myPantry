@@ -99,7 +99,6 @@ registerForm.onsubmit = () => {
     let password = document.querySelector('.RegisterFormPassword')
 
     localStorage.setItem('username', username.value)
-
     axios
         .post(`/api/pantry/?cmd=register&username=${username.value}&password=${password.value}`)
         .then(response => {
@@ -145,7 +144,8 @@ loginForm.onsubmit = () => {
 }
 
 /**
- * When the logout button is clicked, set isLoggedIn to false, remove all data off screen and reload the page
+ * When the logout button is clicked, set isLoggedIn to false,
+ * remove all data off screen and reload the page
  */
 logoutButton.addEventListener('click', () => {
     localStorage.setItem("isLoggedIn", false)
@@ -184,7 +184,8 @@ function deleteItem() {
     deleteInput.value = ''
 }
 /**
- * Send the command to list everything in the users database (will need to change it to list all questions)
+ * Send the command to list everything in the users database
+ * (will need to change it to list all questions)
  */
 function listUsers() {
     console.log("listUsers")
@@ -199,7 +200,10 @@ function listUsers() {
             console.log(error)
         })
 }
-
+/**
+ * Sends a get request for all items with the username saved in localstorage
+ * adds each item separately to the list of items then callse showListItems()
+ */
 function getListItems() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     let username = localStorage.getItem("username")
@@ -211,7 +215,7 @@ function getListItems() {
             .then(response => {
                 let items = response.data.items
                 console.log("Response: " + response)
-                listOfItems.push(...items)
+                listOfItems.push(...items) // push each item separately into the list listOfItems
                 showListItems()
             })
             .catch(error => {
@@ -246,14 +250,20 @@ function showPantryList() {
 
     }
 }
-
+/**
+ * adds username to the text in usernameSpan
+ * TODO: add more to it or put this somewhere else
+ */
 function getUserInfo() {
     let username = localStorage.getItem("username")
     let isLoggedIn = localStorage.getItem("isLoggedIn")
-
-    usernameSpan.innerText = username.toUpperCase()
+    if(isLoggedIn == true)
+        usernameSpan.innerText = username.toUpperCase()
 }
 
+/**
+ * Write a list item on the page for every item in listOfItems
+ */
 function showListItems() {
     for (let i of listOfItems) {
         let li = document.createElement('li')
