@@ -18,7 +18,6 @@ module.exports = class dbLink {
      * @param {Response} res
      */
     get(req, res) {
-        // TODO: Save it to localstorage or in a cache or something.
         let command = req.query.cmd
         let username = req.query.username
 

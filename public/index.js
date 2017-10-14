@@ -273,6 +273,10 @@ function showListItems() {
     }
 }
 
+/**
+ * Whenever a new item is created (instead of pulled from the DB)
+ * we then append it to the end of the current list on the DOM
+ */
 function showNewListItem() {
     let newItem = listOfItems[listOfItems.length - 1]
     let li = document.createElement('li')
@@ -281,6 +285,10 @@ function showNewListItem() {
     itemsListUL.appendChild(li)
 }
 
+/**
+ * Gets the text from the input
+ * and sends an HTTP post request including username and the new item.
+ */
 function addItem() {
     let newItem = addItemInput
     let username = localStorage.getItem("username")
