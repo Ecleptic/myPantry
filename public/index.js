@@ -9,11 +9,11 @@ const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
 
-const listUserButton = document.querySelector('.ListUserButton')
-listUserButton.addEventListener('click', listUsers)
+// const listUserButton = document.querySelector('.ListUserButton')
+// listUserButton.addEventListener('click', listUsers)
 
-const listItemButton = document.querySelector('.ListItemButton')
-listItemButton.addEventListener('click', getListItems)
+// const listItemButton = document.querySelector('.ListItemButton')
+// listItemButton.addEventListener('click', getListItems)
 
 const pantryList = document.querySelector('.pantryList')
 
@@ -27,6 +27,7 @@ const logoutButton = document.querySelector('.logout')
 
 const usernameSpan = document.querySelector('.usernameSpan')
 const itemsListUL = document.querySelector('.itemsList')
+const itemsTable = document.querySelector('.itemsTable')
 
 const addItemInput = document.querySelector('.addNewItemInput')
 const addItemButton = document.querySelector('.addNewItemButton')
@@ -265,6 +266,19 @@ function getUserInfo() {
  * Write a list item on the page for every item in listOfItems
  */
 function showListItems() {
+    // itemsTable
+    for(let i of listOfItems){
+        let table = document.createElement('tr')
+        let foodItemTable = document.createElement('td')
+        let checkBox = document.createElement('td')
+        let deleteItemButton = document.createElement('td')
+        let editItemButton = document.createElement('td')
+
+        let foodItem = document.createTextNode(i.foodName)
+
+
+    }
+
     for (let i of listOfItems) {
         let li = document.createElement('li')
         let textNode = document.createTextNode(i.foodName)
