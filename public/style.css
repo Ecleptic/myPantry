@@ -1,7 +1,10 @@
 html,
 body {
     padding: 10px;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font-family: 'Lobster', cursive;
+    font-family: 'Arvo', serif;
+    font-family: 'Cardo',serif;
+    font: 1rem 'Cardo', "Lucida Grande", Helvetica, Arial, sans-serif;
     height: 100%;
     background: #eee;
 }
