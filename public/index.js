@@ -38,7 +38,6 @@ window.onload = () => {
     showPantryList()
 }
 
-
 /**
  * When the modal is clicked, show it.
  */
@@ -58,7 +57,7 @@ closeSpan.addEventListener('click', () => {
  * When clicking off the modal, hide the modal
  */
 window.onclick = (event) => {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none"
     }
 }
@@ -145,7 +144,7 @@ loginButton.addEventListener('click', () => {
  */
 function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
-    if (isLoggedIn == 'true') {
+    if (isLoggedIn === 'true') {
         console.log("logged in")
         getUserInfo()
         getListItems()
@@ -161,7 +160,7 @@ function showPantryList() {
         logoutButton
             .classList
             .remove('hidden')
-    } else if (isLoggedIn == 'false') {
+    } else if (isLoggedIn === 'false') {
         console.log("not logged in")
         pantryList
             .classList
@@ -185,9 +184,7 @@ function showPantryList() {
  */
 function getUserInfo() {
     let username = localStorage.getItem("username")
-    let isLoggedIn = localStorage.getItem("isLoggedIn")
-    if (isLoggedIn == true)
-        usernameSpan.innerText = username.toUpperCase()
+    usernameSpan.innerText = username.toUpperCase()
 }
 
 /**
@@ -214,21 +211,17 @@ function getListItems() {
     }
 }
 
-
 /**
  * Write a list item on the page for every item in listOfItems
  */
 function showListItems() {
-    // // itemsTable
-    // NOT CERTAIN IF WE WANT TO USE TABLES OR LISTS. PROBABLY LIST.
-    // for (let i of listOfItems) {
-    //     let table = document.createElement('tr')
-    //     let foodItemTable = document.createElement('td')
-    //     let checkBox = document.createElement('td')
-    //     let deleteItemButton = document.createElement('td')
-    //     let editItemButton = document.createElement('td')
-    //     let foodItem = document.createTextNode(i.foodName)
-    // }
+    // // itemsTable NOT CERTAIN IF WE WANT TO USE TABLES OR LISTS. PROBABLY LIST.
+    // for (let i of listOfItems) {     let table = document.createElement('tr') let
+    // foodItemTable = document.createElement('td')     let checkBox =
+    // document.createElement('td')     let deleteItemButton =
+    // document.createElement('td')     let editItemButton =
+    // document.createElement('td')     let foodItem =
+    // document.createTextNode(i.foodName) }
 
     for (let i of listOfItems) {
         let li = document.createElement('li')
@@ -238,14 +231,6 @@ function showListItems() {
         itemsListUL.appendChild(li)
     }
 }
-
-
-
-
-
-
-
-
 
 /**
  * When the logout button is clicked, set isLoggedIn to false,
@@ -305,7 +290,6 @@ function listUsers() {
         })
 }
 
-
 /**
  * Gets the text from the input
  * and sends an HTTP post request including username and the new item.
@@ -315,11 +299,7 @@ function addItem() {
     let username = localStorage.getItem("username")
     let qty = null
 
-    listOfItems.push({
-        'username': username,
-        'foodName': newItem.value,
-        'qty/weight': qty
-    })
+    listOfItems.push({'username': username, 'foodName': newItem.value, 'qty/weight': qty})
 
     axios
         .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
@@ -345,7 +325,6 @@ function showNewListItem() {
     li.appendChild(textNode)
     itemsListUL.appendChild(li)
 }
-
 
 /**
  * Clearing the list holding the items so we can rebuild it

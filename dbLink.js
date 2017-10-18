@@ -42,7 +42,6 @@ module.exports = class dbLink {
             dbcommands
                 .getList({username: username})
                 .then(resolve => {
-                    console.log(resolve)
                     res
                         .status(200)
                         .json({status: 'Success', items: resolve})
@@ -50,7 +49,7 @@ module.exports = class dbLink {
                 .catch(error => {
                     res
                         .status(500)
-                        .json({status: 'Error', error: error})
+                        .json({status: 'Error', error: error, problem: "Error in getList Function"})
                 })
         }
     }
