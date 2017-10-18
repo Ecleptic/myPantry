@@ -33,7 +33,7 @@ ul {
     margin: 10px;
 }
 
-.paragraph-content{
+.paragraph-content {
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: column;
@@ -44,7 +44,7 @@ ul {
     justify-content: flex-start;
     background: white;
     padding: 40px;
-	clear: both;
+    clear: both;
     box-shadow: 10px 10px 5px grey;
 }
 
@@ -58,8 +58,8 @@ ul {
     -webkit-justify-content: center;
     justify-content: center;
     font: bold 30px/30px Georgia, serif;
- }
- 
+}
+
 .container {
     max-width: 400px;
     background-color: #eeeeee;
@@ -108,7 +108,8 @@ ul {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 80vh;
+    height: 50vh;
 }
 
 
@@ -126,4 +127,29 @@ ul {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+.formData input[type=text],
+select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.showRegister,
+.showLogin {
+    background: green;
+    border: none;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    border-radius: .5em;
+    margin: .4em;
 }
