@@ -34,6 +34,8 @@ ul {
 }
 
 .paragraph-content{
+    display: flex;
+    flex-direction: column;
 	margin-top: 100px;
   margin-right: 200px;
 	background: white;
