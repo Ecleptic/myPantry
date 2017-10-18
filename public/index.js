@@ -9,12 +9,6 @@ const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
 deleteButton.addEventListener('click', deleteItem)
 
-// const listUserButton = document.querySelector('.ListUserButton')
-// listUserButton.addEventListener('click', listUsers)
-
-// const listItemButton = document.querySelector('.ListItemButton')
-// listItemButton.addEventListener('click', getListItems)
-
 const pantryList = document.querySelector('.pantryList')
 
 const modalButton = document.querySelector('.loginButton')
@@ -44,29 +38,6 @@ window.onload = () => {
     showPantryList()
 }
 
-/**
- * when the button to show register in the modal is clicked, show it and hide the login form
- */
-registerButton.addEventListener('click', () => {
-    loginForm
-        .classList
-        .add('hidden')
-    registerForm
-        .classList
-        .remove('hidden')
-})
-
-/**
- * when the button to show login in the modal is clicked, show it and hide the register form
- */
-loginButton.addEventListener('click', () => {
-    loginForm
-        .classList
-        .remove('hidden')
-    registerForm
-        .classList
-        .add('hidden')
-})
 
 /**
  * When the modal is clicked, show it.
@@ -146,6 +117,137 @@ loginForm.onsubmit = () => {
 }
 
 /**
+ * when the button to show register in the modal is clicked, show it and hide the login form
+ */
+registerButton.addEventListener('click', () => {
+    loginForm
+        .classList
+        .add('hidden')
+    registerForm
+        .classList
+        .remove('hidden')
+})
+
+/**
+ * when the button to show login in the modal is clicked, show it and hide the register form
+ */
+loginButton.addEventListener('click', () => {
+    loginForm
+        .classList
+        .remove('hidden')
+    registerForm
+        .classList
+        .add('hidden')
+})
+
+/**
+ * shows the div of pantrylist and later list all items in the DB for the user
+ */
+function showPantryList() {
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+    if (isLoggedIn == 'true') {
+        console.log("logged in")
+        getUserInfo()
+        getListItems()
+        pantryList
+            .classList
+            .remove('hidden')
+        modalButton
+            .classList
+            .add('hidden')
+        paragraphBox
+            .classList
+            .add('hidden')
+        logoutButton
+            .classList
+            .remove('hidden')
+    } else if (isLoggedIn == 'false') {
+        console.log("not logged in")
+        pantryList
+            .classList
+            .add('hidden')
+        modalButton
+            .classList
+            .remove('hidden')
+        paragraphBox
+            .classList
+            .remove('hidden')
+        logoutButton
+            .classList
+            .add('hidden')
+
+    }
+}
+
+/**
+ * adds username to the text in usernameSpan
+ * TODO: add more to it or put this somewhere else
+ */
+function getUserInfo() {
+    let username = localStorage.getItem("username")
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+    if (isLoggedIn == true)
+        usernameSpan.innerText = username.toUpperCase()
+}
+
+/**
+ * Sends a get request for all items with the username saved in localstorage
+ * adds each item separately to the list of items then callse showListItems()
+ */
+function getListItems() {
+    let isLoggedIn = localStorage.getItem("isLoggedIn")
+    let username = localStorage.getItem("username")
+
+    if (isLoggedIn && username) {
+        console.log("getting list of items")
+        axios
+            .get(`/api/pantry?cmd=getList&username=${username}`)
+            .then(response => {
+                let items = response.data.items
+                console.log("Response: " + response)
+                listOfItems.push(...items) // push each item separately into the list listOfItems
+                showListItems()
+            })
+            .catch(error => {
+                console.error(error)
+            })
+    }
+}
+
+
+/**
+ * Write a list item on the page for every item in listOfItems
+ */
+function showListItems() {
+    // // itemsTable
+    // NOT CERTAIN IF WE WANT TO USE TABLES OR LISTS. PROBABLY LIST.
+    // for (let i of listOfItems) {
+    //     let table = document.createElement('tr')
+    //     let foodItemTable = document.createElement('td')
+    //     let checkBox = document.createElement('td')
+    //     let deleteItemButton = document.createElement('td')
+    //     let editItemButton = document.createElement('td')
+    //     let foodItem = document.createTextNode(i.foodName)
+    // }
+
+    for (let i of listOfItems) {
+        let li = document.createElement('li')
+        let span = document.createElement('span')
+        let textNode = document.createTextNode(i.foodName)
+        li.appendChild(textNode)
+        itemsListUL.appendChild(li)
+    }
+}
+
+
+
+
+
+
+
+
+
+/**
  * When the logout button is clicked, set isLoggedIn to false,
  * remove all data off screen and reload the page
  */
@@ -202,96 +304,34 @@ function listUsers() {
             console.log(error)
         })
 }
+
+
 /**
- * Sends a get request for all items with the username saved in localstorage
- * adds each item separately to the list of items then callse showListItems()
+ * Gets the text from the input
+ * and sends an HTTP post request including username and the new item.
  */
-function getListItems() {
-    let isLoggedIn = localStorage.getItem("isLoggedIn")
+function addItem() {
+    let newItem = addItemInput
     let username = localStorage.getItem("username")
+    let qty = null
 
-    if (isLoggedIn && username) {
-        console.log("getting list of items")
-        axios
-            .get(`/api/pantry?cmd=getList&username=${username}`)
-            .then(response => {
-                let items = response.data.items
-                console.log("Response: " + response)
-                listOfItems.push(...items) // push each item separately into the list listOfItems
-                showListItems()
-            })
-            .catch(error => {
-                console.error(error)
-            })
-    }
-}
+    listOfItems.push({
+        'username': username,
+        'foodName': newItem.value,
+        'qty/weight': qty
+    })
 
-/**
- * shows the div of pantrylist and later list all items in the DB for the user
- */
-function showPantryList() {
-    let isLoggedIn = localStorage.getItem("isLoggedIn")
-    if (isLoggedIn == 'true') {
-        console.log("logged in")
-        getUserInfo()
-        getListItems()
-        pantryList
-            .classList
-            .remove('hidden')
-        modalButton
-            .classList
-            .add('hidden')
-        paragraphBox
-            .classList
-            .add('hidden')
-    } else if (isLoggedIn == 'false') {
-        console.log("not logged in")
-        pantryList
-            .classList
-            .add('hidden')
-        modalButton
-            .classList
-            .remove('hidden')
-        paragraphBox
-            .classList
-            .remove('hidden')
-
-    }
-}
-/**
- * adds username to the text in usernameSpan
- * TODO: add more to it or put this somewhere else
- */
-function getUserInfo() {
-    let username = localStorage.getItem("username")
-    let isLoggedIn = localStorage.getItem("isLoggedIn")
-    if(isLoggedIn == true)
-        usernameSpan.innerText = username.toUpperCase()
-}
-
-/**
- * Write a list item on the page for every item in listOfItems
- */
-function showListItems() {
-    // itemsTable
-    for(let i of listOfItems){
-        let table = document.createElement('tr')
-        let foodItemTable = document.createElement('td')
-        let checkBox = document.createElement('td')
-        let deleteItemButton = document.createElement('td')
-        let editItemButton = document.createElement('td')
-
-        let foodItem = document.createTextNode(i.foodName)
-
-
-    }
-
-    for (let i of listOfItems) {
-        let li = document.createElement('li')
-        let textNode = document.createTextNode(i.foodName)
-        li.appendChild(textNode)
-        itemsListUL.appendChild(li)
-    }
+    axios
+        .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
+        .then(() => {
+            // showPantryList()
+            showNewListItem()
+            modal.style.display = "none"
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+    newItem.value = ''
 }
 
 /**
@@ -306,30 +346,6 @@ function showNewListItem() {
     itemsListUL.appendChild(li)
 }
 
-/**
- * Gets the text from the input
- * and sends an HTTP post request including username and the new item.
- */
-function addItem() {
-    let newItem = addItemInput
-    let username = localStorage.getItem("username")
-    let qty = null
-
-    listOfItems.push({'username': username, 'foodName': newItem.value, 'qty/weight': qty})
-
-    console.log("newItemValue: ", newItem.value)
-    axios
-        .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
-        .then(() => {
-            // showPantryList()
-            showNewListItem()
-            modal.style.display = "none"
-        })
-        .catch((error) => {
-            console.error(error)
-        });
-    newItem.value = ''
-}
 
 /**
  * Clearing the list holding the items so we can rebuild it
