@@ -31,6 +31,7 @@ const itemsTable = document.querySelector('.itemsTable')
 
 const addItemInput = document.querySelector('.addNewItemInput')
 const addItemButton = document.querySelector('.addNewItemButton')
+const paragraphBox = document.querySelector('.paragraph-content')
 addItemButton.addEventListener('click', addItem)
 
 let listOfItems = []
@@ -240,12 +241,18 @@ function showPantryList() {
         modalButton
             .classList
             .add('hidden')
+        paragraphBox
+            .classList
+            .add('hidden')
     } else if (isLoggedIn == 'false') {
         console.log("not logged in")
         pantryList
             .classList
             .add('hidden')
         modalButton
+            .classList
+            .remove('hidden')
+        paragraphBox
             .classList
             .remove('hidden')
 
