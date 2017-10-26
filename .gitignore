@@ -57,7 +57,7 @@ typings/
 
 # dotenv environment variables file
 .env
-
+.snyk
 
 #Operating System files
 .DS_Store
