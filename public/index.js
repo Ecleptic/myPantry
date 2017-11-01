@@ -15,9 +15,10 @@ const modalButton = document.querySelector('.loginButton')
 const modal = document.querySelector('#myModal')
 const closeSpan = document.querySelector(".close")
 
-const registerButton = document.querySelector('.showRegister')
+const registerButton = document.querySelector('#registerHereButton')
 const loginButton = document.querySelector('.showLogin')
 const logoutButton = document.querySelector('.logout')
+const registerParagraph = document.querySelector('.registerParagraph')
 
 const usernameSpan = document.querySelector('.usernameSpan')
 const itemsListUL = document.querySelector('.itemsList')
@@ -119,12 +120,13 @@ loginForm.onsubmit = () => {
  * when the button to show register in the modal is clicked, show it and hide the login form
  */
 registerButton.addEventListener('click', () => {
-    loginForm
-        .classList
-        .add('hidden')
+    // loginForm     .classList     .add('hidden')
     registerForm
         .classList
         .remove('hidden')
+    registerParagraph
+        .classList
+        .add('hidden')
 })
 
 /**
