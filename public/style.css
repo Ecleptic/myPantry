@@ -10,7 +10,8 @@ body {
     transition: all 0.05s;
     transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
 }
-h2{
+
+h2 {
     font-weight: bolder;
     font-size: 2rem;
 }
@@ -157,9 +158,6 @@ select {
     box-sizing: border-box;
 }
 
-
-
-
 .showRegister,
 .showLogin {
     background: green;
@@ -176,4 +174,19 @@ select {
 
 #registerHereButton {
     text-decoration-line: underline;
+}
+
+
+/* For Mobile Screens!(screens smaller than 500px) */
+
+@media only screen and (max-width: 500px) {
+    .modal-content {
+        width: 85%;
+    }
+    .modal-content * {
+        margin: 2px;
+    }
+    h2 {
+        padding-left: 5rem;
+    }
 }
