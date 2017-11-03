@@ -13,7 +13,7 @@
 
 <body>
     <div class="flexTitle">My Pantry</div>
-    <button class="button logout hidden">Logout</button>
+    <button class="button logout hidden" onclick="logout()">Logout</button>
     <button class="button loginButton">Login/Register</button>
     <div class="paragraph-content">
         <h2>Welcome to MyPantry!</h2>
@@ -42,8 +42,8 @@
                     Username:
                     <input class="LoginFormUsername" type="text"> </br>
                     Password:
-                    <input class="LoginFormPassword" type="text">
-                    <button class="submitButton button" type="submit">Login</button>
+                    <input class="LoginFormPassword" type="password">
+                    <button class="submitButton button " type="submit">Login</button>
                 </form>
                 <p class="registerParagraph">Don't have an account?
                     <span id="registerHereButton">Register Here.</span>
@@ -53,7 +53,7 @@
                     Username:
                     <input class="RegisterFormUsername" type="text"> </br>
                     Password:
-                    <input class="RegisterFormPassword" type="text">
+                    <input class="RegisterFormPassword" type="password">
                     <button class="submitButton button" type="submit">Register</button>
                 </form>
             </div>

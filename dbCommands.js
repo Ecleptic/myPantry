@@ -67,15 +67,35 @@ module.exports = class DbCommands {
                         if (data.length > 0) {
                             resolve(data)
                         } else {
-                            reject('Invalid Username or Password')
+                            reject('Invalid username or Password')
                         }
                     })
                     .catch(err => {
                         reject(err)
                     })
             } else {
-                reject('Invalid Username or Password')
+                reject('Invalid username or Password')
             }
+        })
+    }
+    /**
+     * check if an item is in the foods table
+     * @param {object} val
+     */
+    getItemInList(val) {
+        return new Promise((resolve, reject) => {
+            client
+                .any(`SELECT * FROM ${foodTable} WHERE foodname = '${val.foodname}'`)
+                .then(data => {
+                    if (data.length > 0) {
+                        resolve(200)
+                    } else {
+                        reject(404) //it doesn't exist
+                    }
+                })
+                .catch(err => {
+                    reject(err)
+                })
         })
     }
 
@@ -127,7 +147,7 @@ module.exports = class DbCommands {
             let password = val.password
             let newItem = val.newItem
 
-            if (command == 'register') {
+            if (command === 'register') {
                 client
                     .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
                     .then(data => {
@@ -136,15 +156,26 @@ module.exports = class DbCommands {
                     .catch(error => {
                         reject(error)
                     })
-            } else if (command == 'newItem') {
+            } else if (command === 'newItem') {
                 console.log("creating new item: ", newItem)
                 client
-                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodName") VALUES('${username}','${newItem}') RETURNING ('username','foodName','qty/weight');`)
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','qty/weight');`)
                     .then(data => {
                         resolve(data)
                     })
                     .catch(error => {
                         console.error(error)
+                        reject(error)
+                    })
+            } else if (command === 'addFood') {
+                // Creating a new item in the foods table if there's any issues.
+                console.log("creating new item in foods table: ", newItem)
+                client
+                    .any(`INSERT INTO "public"."${foodTable}" ("foodname") VALUES ('${newItem}') RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+                    .then(data => {
+                        resolve(data)
+                    })
+                    .catch(error => {
                         reject(error)
                     })
             }

@@ -16,7 +16,7 @@ const modal = document.querySelector('#myModal')
 const closeSpan = document.querySelector(".close")
 
 const registerButton = document.querySelector('#registerHereButton')
-const loginButton = document.querySelector('.showLogin')
+// const loginButton = document.querySelector('.showLogin')
 const logoutButton = document.querySelector('.logout')
 const registerParagraph = document.querySelector('.registerParagraph')
 
@@ -132,14 +132,14 @@ registerButton.addEventListener('click', () => {
 /**
  * when the button to show login in the modal is clicked, show it and hide the register form
  */
-loginButton.addEventListener('click', () => {
-    loginForm
-        .classList
-        .remove('hidden')
-    registerForm
-        .classList
-        .add('hidden')
-})
+// loginButton.addEventListener('click', () => {
+//     loginForm
+//         .classList
+//         .remove('hidden')
+//     registerForm
+//         .classList
+//         .add('hidden')
+// })
 
 /**
  * shows the div of pantrylist and later list all items in the DB for the user
@@ -223,12 +223,12 @@ function showListItems() {
     // document.createElement('td')     let deleteItemButton =
     // document.createElement('td')     let editItemButton =
     // document.createElement('td')     let foodItem =
-    // document.createTextNode(i.foodName) }
+    // document.createTextNode(i.foodname) }
 
     for (let i of listOfItems) {
         let li = document.createElement('li')
         let span = document.createElement('span')
-        let textNode = document.createTextNode(i.foodName)
+        let textNode = document.createTextNode(i.foodname)
         li.appendChild(textNode)
         itemsListUL.appendChild(li)
     }
@@ -238,6 +238,12 @@ function showListItems() {
  * When the logout button is clicked, set isLoggedIn to false,
  * remove all data off screen and reload the page
  */
+function logout(){
+    localStorage.setItem("isLoggedIn", false)
+    localStorage.removeItem('username')
+    showPantryList()
+    location.reload()
+}
 logoutButton.addEventListener('click', () => {
     localStorage.setItem("isLoggedIn", false)
     localStorage.removeItem('username')
@@ -301,7 +307,7 @@ function addItem() {
     let username = localStorage.getItem("username")
     let qty = null
 
-    listOfItems.push({'username': username, 'foodName': newItem.value, 'qty/weight': qty})
+    listOfItems.push({'username': username, 'foodname': newItem.value, 'qty/weight': qty})
 
     axios
         .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
@@ -323,7 +329,7 @@ function addItem() {
 function showNewListItem() {
     let newItem = listOfItems[listOfItems.length - 1]
     let li = document.createElement('li')
-    let textNode = document.createTextNode(newItem.foodName)
+    let textNode = document.createTextNode(newItem.foodname)
     li.appendChild(textNode)
     itemsListUL.appendChild(li)
 }

@@ -36,11 +36,11 @@ function createListsTable() {
                     client
                         .any(`
                             CREATE TABLE "public"."lists" (
-                            "userName" text,
-                            "foodName" text,
+                            "username" text,
+                            "foodname" text,
                             "isChecked" boolean DEFAULT 'FALSE',
-                            FOREIGN KEY ("userName") REFERENCES "public"."users"("username"),
-                            FOREIGN KEY ("foodName") REFERENCES "public"."foods"("foodName")
+                            FOREIGN KEY ("username") REFERENCES "public"."users"("username"),
+                            FOREIGN KEY ("foodname") REFERENCES "public"."foods"("foodname")
                             );
                         `)
                         .then(() => {
@@ -109,12 +109,12 @@ function createFoodsTable() {
                     client
                         .any(`
                             CREATE TABLE "public"."foods" (
-                            "foodName" text,
+                            "foodname" text,
                             "category" text,
                             "type" text,
                             "expiration" date,
                             "suggestedStorage" text,
-                            PRIMARY KEY ("foodName")
+                            PRIMARY KEY ("foodname")
                             );
                         `)
                         .then(() => {

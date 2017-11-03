@@ -147,6 +147,7 @@ ul {
 }
 
 .formData input[type=text],
+.formData input[type=password],
 select {
     width: 100%;
     padding: 12px 20px;

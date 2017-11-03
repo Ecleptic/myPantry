@@ -42,6 +42,7 @@ module.exports = class dbLink {
             dbcommands
                 .getList({username: username})
                 .then(resolve => {
+                    console.log(resolve)
                     res
                         .status(200)
                         .json({status: 'Success', items: resolve})
@@ -95,17 +96,45 @@ module.exports = class dbLink {
             })
         } else if (command == 'addItem') {
             console.log("new Item: ", newItem)
-            let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
-            addItem.then(resolve => {
-                console.log(resolve)
-                res
-                    .status(200)
-                    .json({status: 'successful add', items: resolve})
-            }).catch(error => {
-                res
-                    .status(500)
-                    .json({status: 'Error', error: error})
-            })
+            // First Check to make sure that food is in the Database:
+            let checkInFoodList = dbcommands
+                .getItemInList({foodname: newItem})
+                .then(data => {
+                    let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
+                    addItem.then(resolve => {
+                        console.log(resolve)
+                        res
+                            .status(200)
+                            .json({status: 'successful add', items: resolve})
+                    }).catch(error => {
+                        res
+                            .status(500)
+                            .json({status: 'Error', error: error})
+                    })
+                })
+                .catch(error => {
+                    console.log("OMG THERE'S AN ERROR!!! 😵")
+                    // Need to embed thens inside thens to make sure it only pushes it if there are
+                    // no errors....
+                    dbcommands
+                        .insert({command: 'addFood', newItem: newItem})
+                        .then(data => {
+                            console.log("okay now we've added it to the foods table, next is to add it to the list.")
+                            let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
+                            addItem.then(resolve => {
+                                console.log(resolve)
+                                res
+                                    .status(200)
+                                    .json({status: 'successful add', items: resolve})
+                            }).catch(error => {
+                                res
+                                    .status(500)
+                                    .json({status: 'Error', error: error})
+                            })
+                        })
+                    console.error(error)
+                });
+
         } else if (command == 'CreateItem') {
             console.log("create item")
         }
