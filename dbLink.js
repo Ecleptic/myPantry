@@ -97,9 +97,9 @@ module.exports = class dbLink {
         } else if (command == 'addItem') {
             console.log("new Item: ", newItem)
             // First Check to make sure that food is in the Database:
-            let checkInFoodList = dbcommands
+            dbcommands
                 .getItemInList({foodname: newItem})
-                .then(data => {
+                .then(() => {
                     let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
                     addItem.then(resolve => {
                         console.log(resolve)
@@ -118,7 +118,7 @@ module.exports = class dbLink {
                     // no errors....
                     dbcommands
                         .insert({command: 'addFood', newItem: newItem})
-                        .then(data => {
+                        .then(() => {
                             console.log("okay now we've added it to the foods table, next is to add it to the list.")
                             let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
                             addItem.then(resolve => {
