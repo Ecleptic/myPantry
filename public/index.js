@@ -2,6 +2,10 @@
 /**
  * Create all variables and set up listeners for them.
  */
+
+const delImg = "https://png.icons8.com/trash/win8/50/000000"
+const editImg = "https://png.icons8.com/edit/win8/50/000000"
+
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
 
@@ -16,7 +20,6 @@ const modal = document.querySelector('#myModal')
 const closeSpan = document.querySelector(".close")
 
 const registerButton = document.querySelector('#registerHereButton')
-// const loginButton = document.querySelector('.showLogin')
 const logoutButton = document.querySelector('.logout')
 const registerParagraph = document.querySelector('.registerParagraph')
 
@@ -38,37 +41,36 @@ const searchItemInput = document.querySelector('.searchItemInput')
 searchItemInput.addEventListener("change", displayMatches)
 searchItemInput.addEventListener("keyup", displayMatches)
 
-function findMatches(wordToMatch,listOfItems){
-    return listOfItems.filter(food=>{
+function findMatches(wordToMatch, listOfItems) {
+    return listOfItems.filter(food => {
         // find matches
-        const regex = new RegExp(wordToMatch,'gi')
-        return food.foodname.match(regex)
+        const regex = new RegExp(wordToMatch, 'gi')
+        return food
+            .foodname
+            .match(regex)
         // console.log(food.foodname)
     })
 }
 
-function displayMatches(){
+function displayMatches() {
     console.log(this.value)
-    const matchArray = findMatches(this.value,listOfItems)
+    const matchArray = findMatches(this.value, allItems)
     console.log(matchArray)
-    if (this.value === ''){
+    if (this.value === '') {
         listOfItems = allItems
         clearListItems()
         showListItems()
-    }else{
+    } else {
         listOfItems = matchArray
         clearListItems()
         showListItems()
     }
 }
-// /// TODO: also add on change listener for a search bar which will clean up
-// listOfItems. and when search bar is empty, put allItems into ListOfItems
-
-const delImg = "https://png.icons8.com/trash/win8/50/000000"
-const editImg = "https://png.icons8.com/edit/win8/50/000000"
 
 let allItems = []
 let listOfItems = []
+let isEditing = false
+let CurrentEditInput = ''
 
 /**
  * when the page is loaded, run showPantryList() to check if the user is logged in
@@ -247,14 +249,6 @@ function getListItems() {
     }
 }
 
-// /**
-//  * Write a list item on the page for every item in listOfItems  */ function
-// showListItems() {     for (let i of listOfItems) {         let li =
-// document.createElement('li')         let span =
-// document.createElement('span')         let textNode =
-// document.createTextNode(i.foodname)         li.appendChild(textNode)
-// itemsListUL.appendChild(li)     } }
-
 function showListItems() {
     for (let i of listOfItems) {
         let li = document.createElement("li")
@@ -291,7 +285,6 @@ function showListItems() {
 
 function del(e) {
     let username = localStorage.getItem("username")
-
     axios
         .delete(`/api/pantry/?cmd=delItem&item=${e.path[1].childNodes[1].textContent}&username=${username}`)
         .then(response => {
@@ -302,7 +295,46 @@ function del(e) {
         .removeChild(e.path[1])
 }
 function edit(e) {
-    e.path[1].childNodes[1].textContent = "pie"
+    if (!isEditing) {
+        let username = localStorage.getItem("username")
+
+        isEditing = true
+        // e.path[1].childNodes[1].textContent = "pie"
+        let oldText = e.path[1].childNodes[1].textContent
+        let input = document.createElement('input')
+        input.type = 'text'
+        input.className = 'editInput'
+        input.style = 'margin-left:.75rem;'
+        e
+            .path[1]
+            .appendChild(input)
+        let watchInput = document.querySelector('.editInput')
+        watchInput.addEventListener('keyup', (e) => {
+            if (e.keyCode === 13) {
+                axios
+                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}`)
+                    .then(response => {
+                        console.log(response)
+                    })
+                e.path[1].childNodes[1].textContent = CurrentEditInput
+                e
+                    .path[1]
+                    .removeChild(e.path[1].childNodes[4]) // remove old input
+                isEditing = false
+
+            }
+        })
+        watchInput.addEventListener('keyup', getInputText)
+        watchInput.addEventListener('change', getInputText)
+        console.log(watchInput)
+
+        // e.path[1].removeChild(e.path[1].childNodes[1]) // remove old text
+
+    }
+}
+function getInputText() {
+    console.log(this.value)
+    CurrentEditInput = this.value
 }
 
 /**

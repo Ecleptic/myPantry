@@ -194,5 +194,22 @@ module.exports = class DbCommands {
             }
         })
     }
+    editItem(val) {
+        return new Promise((resolve, reject) => {
+            // UPDATE "public"."lists" SET "foodname"='dudethisispie!' WHERE ctid IN (SELECT
+            // ctid FROM "public"."lists" WHERE "username"='Ecleptic' AND
+            // "foodname"='cookie' AND "isChecked"=FALSE LIMIT 1 FOR UPDATE) RETURNING
+            // "username", "foodname", "isChecked";
+            console.log(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}' WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "isChecked";`)
+            client
+                .any(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}' WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "isChecked";`)
+                .then(data => {
+                    resolve(data)
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    }
 
 }

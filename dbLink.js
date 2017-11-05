@@ -66,6 +66,7 @@ module.exports = class dbLink {
         let username = req.query.username
         let password = req.query.password
         let newItem = req.query.item
+        let oldItem = req.query.oldItem
 
         if (command === 'register') {
             console.log('register')
@@ -133,25 +134,53 @@ module.exports = class dbLink {
                             })
                         })
                     console.error(error)
-                });
+                })
 
         } else if (command === 'CreateItem') {
             console.log("create item")
+        } else if (command === 'edit') {
+
+            dbcommands
+                .getItemInList({foodname: newItem})
+                .then(() => {
+                    dbcommands
+                        .editItem({username: username, newItem: newItem, oldItem: oldItem})
+                        .then(resolve => {
+                            console.log(resolve)
+                            res
+                                .status(200)
+                                .json({status: 'successful edit', items: resolve})
+                        })
+                        .catch(error => {
+                            res
+                                .status(500)
+                                .json({status: 'Error', error: error})
+                        })
+                })
+                .catch(error => {
+                    console.log("OMG THERE'S AN ERROR!!! 😵")
+                    // Need to embed thens inside thens to make sure it only pushes it if there are
+                    // no errors....
+                    dbcommands
+                        .insert({command: 'addFood', newItem: newItem})
+                        .then(() => {
+                            dbcommands
+                                .editItem({username: username, newItem: newItem, oldItem: oldItem})
+                                .then(resolve => {
+                                    console.log(resolve)
+                                    res
+                                        .status(200)
+                                        .json({status: 'successful add', items: resolve})
+                                })
+                                .catch(error => {
+                                    res
+                                        .status(500)
+                                        .json({status: 'Error', error: error})
+                                })
+                        })
+                    console.error(error)
+                })
         }
-
-    }
-
-    /**
-     * Does nothing yet, will be to edit an entry TODO:
-     * @param {Request} req
-     * @param {Response} res
-     */
-    update(req, res) {
-        let id = parseInt(req.query.id)
-        console.log(id)
-        res
-            .status(200)
-            .json({status: 'success'})
     }
 
     /**
@@ -183,7 +212,7 @@ module.exports = class dbLink {
                 })
         } else if (cmd === "delItem") {
             dbcommands
-                .deleteListItem({item:item,username:username})
+                .deleteListItem({item: item, username: username})
                 .then(resolve => {
                     console.log("resolve", resolve)
                     if (resolve) {
