@@ -214,3 +214,16 @@ li {
         padding-left: 5rem;
     }
 }
+
+.isChecked {
+    position: relative;
+    display: table;
+}
+.isChecked::before {
+    content: '';
+    border-bottom: 2px solid black;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+}

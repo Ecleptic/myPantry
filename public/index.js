@@ -3,6 +3,7 @@
  * Create all variables and set up listeners for them.
  */
 
+//  TODO: EDIT IsChecked on DB.
 const delImg = "https://png.icons8.com/trash/win8/50/000000"
 const editImg = "https://png.icons8.com/edit/win8/50/000000"
 
@@ -258,6 +259,9 @@ function showListItems() {
         let checkbox = document.createElement("input")
         checkbox.type = "checkbox"
         checkbox.className = "checkbox"
+        checkbox.checked = i.isChecked
+        if (i.isChecked)
+            li.classList.add('isChecked')
 
         let deleteButton = document.createElement("img")
         deleteButton.className = "deleteButton"
@@ -276,11 +280,17 @@ function showListItems() {
         li.appendChild(editButton)
         itemsListUL.appendChild(li)
     }
+    //TODO: Sort items by checked and maybe by alphabetical too.
     let deleteButtons = document.querySelectorAll(".deleteButton")
     deleteButtons.forEach(key => key.addEventListener("click", del))
 
     let editButtons = document.querySelectorAll(".editButton")
     editButtons.forEach(key => key.addEventListener("click", edit))
+
+    let checkboxes = document.querySelectorAll(".checkbox")
+    checkboxes.forEach(key => {
+        key.addEventListener('change', checked)
+    })
 }
 
 function del(e) {
@@ -312,7 +322,7 @@ function edit(e) {
         watchInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
                 axios
-                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}`)
+                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked${ (e.target.checked).toUpperCase}`)
                     .then(response => {
                         console.log(response)
                     })
@@ -331,6 +341,33 @@ function edit(e) {
         // e.path[1].removeChild(e.path[1].childNodes[1]) // remove old text
 
     }
+}
+function checked(e) {
+    console.log("checked")
+    console.log(e.target.checked)
+    let username = localStorage.getItem("username")
+    console.log(e.path[1].childNodes[1].textContent)
+    CurrentEditInput = e.path[1].childNodes[1].textContent
+    if (e.target.checked) {
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${ (e.target.checked)}`).then(response => {
+            console.log(response)
+        })
+        e
+            .path[1]
+            .classList
+            .add('isChecked')
+    } else {
+        console.log("not checked")
+        console.log((e.target.checked))
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${ (e.target.checked)}`).then(response => {
+            console.log(response)
+        })
+        e
+            .path[1]
+            .classList
+            .remove('isChecked')
+    }
+
 }
 function getInputText() {
     console.log(this.value)

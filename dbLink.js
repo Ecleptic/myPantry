@@ -67,6 +67,7 @@ module.exports = class dbLink {
         let password = req.query.password
         let newItem = req.query.item
         let oldItem = req.query.oldItem
+        let isChecked = req.query.isChecked
 
         if (command === 'register') {
             console.log('register')
@@ -139,12 +140,11 @@ module.exports = class dbLink {
         } else if (command === 'CreateItem') {
             console.log("create item")
         } else if (command === 'edit') {
-
             dbcommands
                 .getItemInList({foodname: newItem})
                 .then(() => {
                     dbcommands
-                        .editItem({username: username, newItem: newItem, oldItem: oldItem})
+                        .editItem({username: username, newItem: newItem, oldItem: oldItem,isChecked:isChecked})
                         .then(resolve => {
                             console.log(resolve)
                             res
@@ -165,7 +165,7 @@ module.exports = class dbLink {
                         .insert({command: 'addFood', newItem: newItem})
                         .then(() => {
                             dbcommands
-                                .editItem({username: username, newItem: newItem, oldItem: oldItem})
+                                .editItem({username: username, newItem: newItem, oldItem: oldItem,isChecked:isChecked})
                                 .then(resolve => {
                                     console.log(resolve)
                                     res
