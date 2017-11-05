@@ -295,6 +295,7 @@ function showListItems() {
 
 function del(e) {
     let username = localStorage.getItem("username")
+    isEditing = false
     axios
         .delete(`/api/pantry/?cmd=delItem&item=${e.path[1].childNodes[1].textContent}&username=${username}`)
         .then(response => {
@@ -322,7 +323,7 @@ function edit(e) {
         watchInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
                 axios
-                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked${ (e.target.checked).toUpperCase}`)
+                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${e.target.checked}`)
                     .then(response => {
                         console.log(response)
                     })
@@ -490,13 +491,14 @@ function showNewListItem() {
     editButton.alt = "Edit Button"
     editButton.className = "editButton"
 
+    deleteButton.addEventListener("click", del)
+    editButton.addEventListener("click", edit)
+
     li.appendChild(checkbox)
     li.appendChild(span)
     li.appendChild(deleteButton)
     li.appendChild(editButton)
 
-    itemsListUL.addEventListener("click", del)
-    itemsListUL.addEventListener("click", edit)
 
     itemsListUL.appendChild(li)
 }
