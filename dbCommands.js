@@ -123,15 +123,28 @@ module.exports = class DbCommands {
      * @returns {Promise} Resolves confirm a successful delete
      * TODO: user ternary operator for whether username or whatever id goes there
      */
-    delete(id) {
+    delete(username) {
         return new Promise((resolve, reject) => {
             client
-                .any(`DELETE FROM "public".${userTable} WHERE "username"='${id}'`)
+                .any(`DELETE FROM "public".${userTable} WHERE "username"='${username}'`)
                 .then(data => {
                     resolve("successful Delete", data)
                 })
                 .catch(err => {
                     reject(err)
+                })
+        })
+    }
+    deleteListItem(val) {
+        console.log(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.item}' LIMIT 1 FOR UPDATE);`)
+        return new Promise((resolve, reject) => {
+            client
+                .any(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.item}' LIMIT 1 FOR UPDATE);`)
+                .then(data => {
+                    console.log(data)
+                })
+                .catch(err => {
+                    console.log(data)
                 })
         })
     }

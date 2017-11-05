@@ -21,7 +21,7 @@ module.exports = class dbLink {
         let command = req.query.cmd
         let username = req.query.username
 
-        if (command == 'listUsers') {
+        if (command === 'listUsers') {
             console.log('list')
             dbcommands
                 .listUsers()
@@ -37,7 +37,7 @@ module.exports = class dbLink {
                         .json({status: 'Error', error: error})
                 })
         }
-        if (command == 'getList') {
+        if (command === 'getList') {
             console.log("getting list in dbLink")
             dbcommands
                 .getList({username: username})
@@ -67,7 +67,7 @@ module.exports = class dbLink {
         let password = req.query.password
         let newItem = req.query.item
 
-        if (command == 'register') {
+        if (command === 'register') {
             console.log('register')
             let register = dbcommands.insert({command: 'register', username: username, password: password})
             register.then(resolve => {
@@ -81,7 +81,7 @@ module.exports = class dbLink {
                     .status(500)
                     .json({status: 'Error', error: error})
             })
-        } else if (command == 'login') {
+        } else if (command === 'login') {
             let login = dbcommands.getLogin({username: username, password: password})
             login.then(resolve => {
                 if (resolve) {
@@ -94,7 +94,7 @@ module.exports = class dbLink {
                     .status(404)
                     .json({status: 'Not Exist', error: error})
             })
-        } else if (command == 'addItem') {
+        } else if (command === 'addItem') {
             console.log("new Item: ", newItem)
             // First Check to make sure that food is in the Database:
             dbcommands
@@ -135,7 +135,7 @@ module.exports = class dbLink {
                     console.error(error)
                 });
 
-        } else if (command == 'CreateItem') {
+        } else if (command === 'CreateItem') {
             console.log("create item")
         }
 
@@ -160,23 +160,43 @@ module.exports = class dbLink {
      * @param {Response} res
      */
     delete(req, res) {
-        let id = (req.query.id)
+        let cmd = req.query.cmd
+        let username = req.query.username
+        let item = req.query.item
         console.log("deleting in link")
-        console.log("ID:", id)
-        dbcommands
-            .delete(id)
-            .then(resolve => {
-                console.log("resolve", resolve)
-                if (resolve) {
+        console.log("username:", username)
+        if (cmd === "delUser") {
+            dbcommands
+                .delete(username)
+                .then(resolve => {
+                    console.log("resolve", resolve)
+                    if (resolve) {
+                        res
+                            .status(200)
+                            .json({status: 'success'})
+                    }
+                })
+                .catch(error => {
                     res
-                        .status(200)
-                        .json({status: 'success'})
-                }
-            })
-            .catch(error => {
-                res
-                    .status(500)
-                    .json({status: 'Error', error: error})
-            })
+                        .status(500)
+                        .json({status: 'Error', error: error})
+                })
+        } else if (cmd === "delItem") {
+            dbcommands
+                .deleteListItem({item:item,username:username})
+                .then(resolve => {
+                    console.log("resolve", resolve)
+                    if (resolve) {
+                        res
+                            .status(200)
+                            .json({status: 'success'})
+                    }
+                })
+                .catch(error => {
+                    res
+                        .status(500)
+                        .json({status: 'Error', error: error})
+                })
+        }
     }
 }

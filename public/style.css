@@ -176,6 +176,17 @@ select {
 #registerHereButton {
     text-decoration-line: underline;
 }
+.deleteButton{
+    height: 1rem;
+    width: 1rem;
+  }
+  .editButton{
+    height:1rem;
+    width: 1rem;
+  }
+  li{
+    list-style: none;
+  }
 
 
 /* For Mobile Screens!(screens smaller than 500px) */

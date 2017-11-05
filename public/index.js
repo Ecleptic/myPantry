@@ -7,7 +7,7 @@ const loginForm = document.querySelector('.loginForm')
 
 const deleteInput = document.querySelector('.DeleteItemInput')
 const deleteButton = document.querySelector('.DeleteItemButton')
-deleteButton.addEventListener('click', deleteItem)
+deleteButton.addEventListener('click', deleteUser)
 
 const pantryList = document.querySelector('.pantryList')
 
@@ -22,13 +22,52 @@ const registerParagraph = document.querySelector('.registerParagraph')
 
 const usernameSpan = document.querySelector('.usernameSpan')
 const itemsListUL = document.querySelector('.itemsList')
-const itemsTable = document.querySelector('.itemsTable')
 
 const addItemInput = document.querySelector('.addNewItemInput')
 const addItemButton = document.querySelector('.addNewItemButton')
 const paragraphBox = document.querySelector('.paragraph-content')
 addItemButton.addEventListener('click', addItem)
 
+addItemInput.addEventListener("keyup", (event) => {
+    if (event.keyCode === 13) {
+        addItemButton.click()
+    }
+})
+
+const searchItemInput = document.querySelector('.searchItemInput')
+searchItemInput.addEventListener("change", displayMatches)
+searchItemInput.addEventListener("keyup", displayMatches)
+
+function findMatches(wordToMatch,listOfItems){
+    return listOfItems.filter(food=>{
+        // find matches
+        const regex = new RegExp(wordToMatch,'gi')
+        return food.foodname.match(regex)
+        // console.log(food.foodname)
+    })
+}
+
+function displayMatches(){
+    console.log(this.value)
+    const matchArray = findMatches(this.value,listOfItems)
+    console.log(matchArray)
+    if (this.value === ''){
+        listOfItems = allItems
+        clearListItems()
+        showListItems()
+    }else{
+        listOfItems = matchArray
+        clearListItems()
+        showListItems()
+    }
+}
+// /// TODO: also add on change listener for a search bar which will clean up
+// listOfItems. and when search bar is empty, put allItems into ListOfItems
+
+const delImg = "https://png.icons8.com/trash/win8/50/000000"
+const editImg = "https://png.icons8.com/edit/win8/50/000000"
+
+let allItems = []
 let listOfItems = []
 
 /**
@@ -132,14 +171,8 @@ registerButton.addEventListener('click', () => {
 /**
  * when the button to show login in the modal is clicked, show it and hide the register form
  */
-// loginButton.addEventListener('click', () => {
-//     loginForm
-//         .classList
-//         .remove('hidden')
-//     registerForm
-//         .classList
-//         .add('hidden')
-// })
+// loginButton.addEventListener('click', () => {     loginForm .classList
+// .remove('hidden')     registerForm         .classList    .add('hidden') })
 
 /**
  * shows the div of pantrylist and later list all items in the DB for the user
@@ -205,6 +238,7 @@ function getListItems() {
                 let items = response.data.items
                 console.log("Response: " + response)
                 listOfItems.push(...items) // push each item separately into the list listOfItems
+                allItems.push(...items) // push each item separately into the list listOfItems
                 showListItems()
             })
             .catch(error => {
@@ -213,32 +247,69 @@ function getListItems() {
     }
 }
 
-/**
- * Write a list item on the page for every item in listOfItems
- */
-function showListItems() {
-    // // itemsTable NOT CERTAIN IF WE WANT TO USE TABLES OR LISTS. PROBABLY LIST.
-    // for (let i of listOfItems) {     let table = document.createElement('tr') let
-    // foodItemTable = document.createElement('td')     let checkBox =
-    // document.createElement('td')     let deleteItemButton =
-    // document.createElement('td')     let editItemButton =
-    // document.createElement('td')     let foodItem =
-    // document.createTextNode(i.foodname) }
+// /**
+//  * Write a list item on the page for every item in listOfItems  */ function
+// showListItems() {     for (let i of listOfItems) {         let li =
+// document.createElement('li')         let span =
+// document.createElement('span')         let textNode =
+// document.createTextNode(i.foodname)         li.appendChild(textNode)
+// itemsListUL.appendChild(li)     } }
 
+function showListItems() {
     for (let i of listOfItems) {
-        let li = document.createElement('li')
-        let span = document.createElement('span')
-        let textNode = document.createTextNode(i.foodname)
-        li.appendChild(textNode)
+        let li = document.createElement("li")
+        let span = document.createElement("span")
+        span.textContent = i.foodname
+
+        let checkbox = document.createElement("input")
+        checkbox.type = "checkbox"
+        checkbox.className = "checkbox"
+
+        let deleteButton = document.createElement("img")
+        deleteButton.className = "deleteButton"
+
+        deleteButton.src = delImg
+        deleteButton.alt = "Delete Button"
+
+        let editButton = document.createElement("img")
+        editButton.src = editImg
+        editButton.alt = "Edit Button"
+        editButton.className = "editButton"
+
+        li.appendChild(checkbox)
+        li.appendChild(span)
+        li.appendChild(deleteButton)
+        li.appendChild(editButton)
         itemsListUL.appendChild(li)
     }
+    let deleteButtons = document.querySelectorAll(".deleteButton")
+    deleteButtons.forEach(key => key.addEventListener("click", del))
+
+    let editButtons = document.querySelectorAll(".editButton")
+    editButtons.forEach(key => key.addEventListener("click", edit))
+}
+
+function del(e) {
+    let username = localStorage.getItem("username")
+
+    axios
+        .delete(`/api/pantry/?cmd=delItem&item=${e.path[1].childNodes[1].textContent}&username=${username}`)
+        .then(response => {
+            console.log(response)
+        })
+    e
+        .path[2]
+        .removeChild(e.path[1])
+}
+function edit(e) {
+    e.path[1].childNodes[1].textContent = "pie"
 }
 
 /**
  * When the logout button is clicked, set isLoggedIn to false,
  * remove all data off screen and reload the page
  */
-function logout(){
+function logout() {
     localStorage.setItem("isLoggedIn", false)
     localStorage.removeItem('username')
     showPantryList()
@@ -269,12 +340,13 @@ function createItem() {
 /**
  * sends a new post request to delete an item at id
  */
-function deleteItem() {
+function deleteUser() {
     console.log("deleted")
     let id = deleteInput.value
+    let username = localStorage.getItem("username")
     console.log("delete:", id)
     axios
-        .delete(`/api/pantry/?id=${id}`)
+        .delete(`/api/pantry/?cmd=delUser,id=${id}`)
         .then(response => {
             console.log(response)
         })
@@ -305,9 +377,10 @@ function listUsers() {
 function addItem() {
     let newItem = addItemInput
     let username = localStorage.getItem("username")
-    let qty = null
+    let isChecked = false
 
-    listOfItems.push({'username': username, 'foodname': newItem.value, 'qty/weight': qty})
+    listOfItems.push({'username': username, 'foodname': newItem.value, 'isChecked': isChecked})
+    allItems.push({'username': username, 'foodname': newItem.value, 'isChecked': isChecked})
 
     axios
         .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
@@ -328,9 +401,34 @@ function addItem() {
  */
 function showNewListItem() {
     let newItem = listOfItems[listOfItems.length - 1]
-    let li = document.createElement('li')
-    let textNode = document.createTextNode(newItem.foodname)
-    li.appendChild(textNode)
+
+    let li = document.createElement("li")
+    let span = document.createElement("span")
+    span.textContent = newItem.foodname
+
+    let checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.className = "checkbox"
+
+    let deleteButton = document.createElement("img")
+    deleteButton.className = "deleteButton"
+
+    deleteButton.src = delImg
+    deleteButton.alt = "Delete Button"
+
+    let editButton = document.createElement("img")
+    editButton.src = editImg
+    editButton.alt = "Edit Button"
+    editButton.className = "editButton"
+
+    li.appendChild(checkbox)
+    li.appendChild(span)
+    li.appendChild(deleteButton)
+    li.appendChild(editButton)
+
+    itemsListUL.addEventListener("click", del)
+    itemsListUL.addEventListener("click", edit)
+
     itemsListUL.appendChild(li)
 }
 
@@ -345,4 +443,16 @@ function clearListItems() {
             itemsListUL.removeChild(itemsListUL.firstChild)
         }
     }
+}
+
+function check() {
+    document
+        .getElementById("myCheck")
+        .checked = true;
+}
+
+function uncheck() {
+    document
+        .getElementById("myCheck")
+        .checked = false;
 }
