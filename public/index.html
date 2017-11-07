@@ -37,6 +37,7 @@
             <div class="flexedContent">
                 <form class="loginForm formData">
                     <h2>Login</h2>
+                    <p class="hidden loginError">Your username or password was invalid</p>
                     Username:
                     <input class="LoginFormUsername" type="text"> </br>
                     Password:
@@ -59,8 +60,6 @@
 
     </div>
     <div class="pantryList hidden">
-        <!-- <h3>Logged In Successfully!</h3> -->
-        <hr>
         <h3>Welcome
             <span class="usernameSpan"></span>
         </h3>
@@ -73,6 +72,24 @@
         <div class="itemsListDiv">
             <ul class="itemsList"></ul>
         </div>
+        <div id="itemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="flexedContent">
+                        <h3 class="foodname_h3"></h3>
+                        Category:
+                        <input type="text" class="categoryInput">
+                        Type:
+                        <input type="text" class="typeInput">
+                        Expiration:
+                        <input type="text" class="expirationInput">
+                        Suggested Storage:
+                        <input type="text" class="suggestedStorageInput">
+                        <button class="button updateDescriptionButton">Update</button>
+                    </div>
+                </div>
+
+            </div>
     </div>
     <br>
     <br>

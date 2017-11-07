@@ -193,8 +193,28 @@ select {
     width: 1rem;
 }
 
-li {
+/* li {
     list-style: none;
+} */
+
+.isChecked {
+    position: relative;
+    display: table;
+}
+
+.isChecked::before {
+    content: '';
+    border-bottom: 2px solid black;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    pointer-events: none;
+}
+
+.loginError {
+    color: #ff0000;
+    font-size: .9rem;
 }
 
 
@@ -213,17 +233,4 @@ li {
     h2 {
         padding-left: 5rem;
     }
-}
-
-.isChecked {
-    position: relative;
-    display: table;
-}
-.isChecked::before {
-    content: '';
-    border-bottom: 2px solid black;
-    width: 100%;
-    position: absolute;
-    right: 0;
-    top: 50%;
 }

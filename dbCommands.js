@@ -115,6 +115,35 @@ module.exports = class DbCommands {
                 })
         })
     }
+    getFoodDetails(val) {
+        return new Promise((resolve, reject) => {
+            client
+                .any(`select * from foods where foodname = '${val.foodname}';`)
+                .then(data => {
+                    console.log(data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.error(error)
+                    reject(error)
+                })
+        })
+    }
+    updateFoodDetails(val) {
+        return new Promise((resolve, reject) => {
+            console.log(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+            client
+                .any(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+                .then(data => {
+                    console.log(data)
+                    resolve(data)
+                })
+                .catch(error => {
+                    console.error(error)
+                    reject(error)
+                })
+        })
+    }
 
     /**
      * Deletes the row at the database dbName from id
@@ -172,7 +201,7 @@ module.exports = class DbCommands {
             } else if (command === 'newItem') {
                 console.log("creating new item: ", newItem)
                 client
-                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','qty/weight');`)
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','isChecked');`)
                     .then(data => {
                         resolve(data)
                     })

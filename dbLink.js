@@ -20,6 +20,7 @@ module.exports = class dbLink {
     get(req, res) {
         let command = req.query.cmd
         let username = req.query.username
+        let foodname = req.query.foodname
 
         if (command === 'listUsers') {
             console.log('list')
@@ -36,8 +37,7 @@ module.exports = class dbLink {
                         .status(500)
                         .json({status: 'Error', error: error})
                 })
-        }
-        if (command === 'getList') {
+        } else if (command === 'getList') {
             console.log("getting list in dbLink")
             dbcommands
                 .getList({username: username})
@@ -51,6 +51,22 @@ module.exports = class dbLink {
                     res
                         .status(500)
                         .json({status: 'Error', error: error, problem: "Error in getList Function"})
+                })
+        } else if (command === 'getItemDesc') {
+            console.log(command)
+            console.log(foodname)
+            dbcommands
+                .getFoodDetails({foodname: foodname})
+                .then(data => {
+                    res
+                        .status(200)
+                        .json({status: 'successful edit', items: data})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res
+                        .status(500)
+                        .json({status: 'Error', error: error})
                 })
         }
     }
@@ -144,7 +160,7 @@ module.exports = class dbLink {
                 .getItemInList({foodname: newItem})
                 .then(() => {
                     dbcommands
-                        .editItem({username: username, newItem: newItem, oldItem: oldItem,isChecked:isChecked})
+                        .editItem({username: username, newItem: newItem, oldItem: oldItem, isChecked: isChecked})
                         .then(resolve => {
                             console.log(resolve)
                             res
@@ -165,7 +181,7 @@ module.exports = class dbLink {
                         .insert({command: 'addFood', newItem: newItem})
                         .then(() => {
                             dbcommands
-                                .editItem({username: username, newItem: newItem, oldItem: oldItem,isChecked:isChecked})
+                                .editItem({username: username, newItem: newItem, oldItem: oldItem, isChecked: isChecked})
                                 .then(resolve => {
                                     console.log(resolve)
                                     res
@@ -179,6 +195,27 @@ module.exports = class dbLink {
                                 })
                         })
                     console.error(error)
+                })
+        } else if (command === 'editFoods') {
+            let foodname = req.query.foodname
+            let category = req.query.category
+            let type = req.query.type
+            let expiration = req.query.expiration
+            let storage = req.query.storage
+
+            dbcommands
+                .updateFoodDetails({foodname: foodname, category: category, type: type, expiration: expiration, storage: storage})
+                .then(data => {
+                    console.log(data)
+                    res
+                        .status(200)
+                        .json({status: 'successful edit', items: data})
+                })
+                .catch(error => {
+                    console.error(error)
+                    res
+                        .status(500)
+                        .json({status: 'Error', error: error})
                 })
         }
     }

@@ -18,7 +18,16 @@ const pantryList = document.querySelector('.pantryList')
 
 const modalButton = document.querySelector('.loginButton')
 const modal = document.querySelector('#myModal')
-const closeSpan = document.querySelector(".close")
+const closeSpan = document.querySelectorAll(".close")
+let itemModal = document.querySelector('#itemModal')
+
+let foodname_h3 = document.querySelector('.foodname_h3')
+let categoryInput = document.querySelector('.categoryInput')
+let typeInput = document.querySelector('.typeInput')
+let expirationInput = document.querySelector('.expirationInput')
+let suggestedStorageInput = document.querySelector('.suggestedStorageInput')
+let updateDescriptionButton = document.querySelector('.updateDescriptionButton')
+updateDescriptionButton.addEventListener('click',updateFoodDetails)
 
 const registerButton = document.querySelector('#registerHereButton')
 const logoutButton = document.querySelector('.logout')
@@ -31,6 +40,7 @@ const addItemInput = document.querySelector('.addNewItemInput')
 const addItemButton = document.querySelector('.addNewItemButton')
 const paragraphBox = document.querySelector('.paragraph-content')
 addItemButton.addEventListener('click', addItem)
+addItemButton.addEventListener('touchend', addItem)
 
 addItemInput.addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
@@ -87,14 +97,17 @@ window.onload = () => {
 modalButton.addEventListener('click', () => {
     console.log("click")
     modal.style.display = "block"
+
 })
 
 /**
  * When clicking the 'X' on the modal, hide the modal
  */
-closeSpan.addEventListener('click', () => {
+closeSpan.forEach(key => key.addEventListener("click", () => {
+    console.log('click!')
     modal.style.display = "none"
-})
+    itemModal.style.display = "none"
+}))
 
 /**
  * When clicking off the modal, hide the modal
@@ -102,6 +115,8 @@ closeSpan.addEventListener('click', () => {
 window.onclick = (event) => {
     if (event.target === modal) {
         modal.style.display = "none"
+    } else if (event.target === itemModal) {
+        itemModal.style.display = "none"
     }
 }
 
@@ -113,7 +128,7 @@ registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
 
-    localStorage.setItem('username', username.value)
+    localStorage.setItem('username', username.value.toLowerCase())
     axios
         .post(`/api/pantry/?cmd=register&username=${username.value}&password=${password.value}`)
         .then(response => {
@@ -121,6 +136,7 @@ registerForm.onsubmit = () => {
             localStorage.setItem("isLoggedIn", true)
             showPantryList()
             modal.style.display = "none"
+            itemModal.style.display = "none"
         })
         .catch((error) => {
             console.error(error)
@@ -150,12 +166,20 @@ loginForm.onsubmit = () => {
         })
         .catch((error) => {
             console.log(error)
-            alert(error)
+            showErrorMessage()
+            // alert(error)
         });
     username.value = ''
     password.value = ''
 
     return false
+}
+
+function showErrorMessage() {
+    document
+        .querySelector('.loginError')
+        .classList
+        .remove('hidden')
 }
 
 /**
@@ -222,7 +246,7 @@ function showPantryList() {
  */
 function getUserInfo() {
     let username = localStorage.getItem("username")
-    usernameSpan.innerText = username.toUpperCase()
+    usernameSpan.innerText = username[0].toUpperCase() + username.slice(1)
 }
 
 /**
@@ -255,6 +279,7 @@ function showListItems() {
         let li = document.createElement("li")
         let span = document.createElement("span")
         span.textContent = i.foodname
+        span.className = "itemName"
 
         let checkbox = document.createElement("input")
         checkbox.type = "checkbox"
@@ -291,6 +316,61 @@ function showListItems() {
     checkboxes.forEach(key => {
         key.addEventListener('change', checked)
     })
+    let textItems = document.querySelectorAll('.itemName')
+    textItems.forEach(key => {
+        key.addEventListener('click', itemClick)
+    })
+}
+
+function itemClick(e) {
+    // console.log("clicked item")
+    let foodname = e
+        .srcElement
+        .innerText
+        .toLowerCase()
+    console.log(foodname)
+    // show modal, then send http requests
+
+    axios
+        .get(`/api/pantry/?cmd=getItemDesc&foodname=${foodname}`)
+        .then(response => {
+            console.log("response:")
+            // console.table(response.data.items[0])
+            showItemModal(response.data.items[0])
+        })
+        .catch(error => {
+            console.error(error)
+        })
+}
+function showItemModal(itemsList) {
+
+
+    console.table(itemsList)
+    itemModal.style.display = "block"
+
+    foodname_h3.textContent = itemsList.foodname
+    categoryInput.value = itemsList.category
+    typeInput.value = itemsList.type
+    expirationInput.value = itemsList.expiration
+    suggestedStorageInput.value = itemsList.suggestedStorage
+
+}
+function updateFoodDetails() {
+
+    let foodname = foodname_h3.textContent.toLowerCase()
+    let category = categoryInput.value.toLowerCase()
+    let type = typeInput.value.toLowerCase()
+    let expiration = expirationInput.value.toLowerCase()
+    let storage = suggestedStorageInput.value.toLowerCase()
+
+    axios
+        .post(`/api/pantry/?cmd=editFoods&foodname=${foodname}&category=${category}&type=${type}&expiration=${expiration}&storage=${storage}`)
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.error(error)
+        })
 }
 
 function del(e) {
@@ -320,20 +400,25 @@ function edit(e) {
             .path[1]
             .appendChild(input)
         let watchInput = document.querySelector('.editInput')
+        watchInput.focus()
         watchInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
-                axios
-                    .post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${e.target.checked}`)
-                    .then(response => {
-                        console.log(response)
-                    })
-                e.path[1].childNodes[1].textContent = CurrentEditInput
+                axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput.toLowerCase()}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent.toLowerCase()}&isChecked=${e.target.checked}`).then(response => {
+                    console.log(response)
+                })
+                e.path[1].childNodes[1].textContent = CurrentEditInput.toLowerCase()
                 e
                     .path[1]
-                    .removeChild(e.path[1].childNodes[4]) // remove old input
+                    .removeChild(e.path[1].childNodes[4]) // remove input box
                 isEditing = false
 
             }
+        })
+        watchInput.addEventListener('focusout', e => {
+            e
+                .path[1]
+                .removeChild(e.path[1].childNodes[4])
+            isEditing = false
         })
         watchInput.addEventListener('keyup', getInputText)
         watchInput.addEventListener('change', getInputText)
@@ -344,12 +429,16 @@ function edit(e) {
     }
 }
 function checked(e) {
-    console.log("checked")
-    console.log(e.target.checked)
+    // console.log("checked") console.log(e.target.checked)
     let username = localStorage.getItem("username")
-    console.log(e.path[1].childNodes[1].textContent)
-    CurrentEditInput = e.path[1].childNodes[1].textContent
-    if (e.target.checked) {
+    // console.log(e.path[1].childNodes[1].textContent)
+    CurrentEditInput = e
+        .path[1]
+        .childNodes[1]
+        .textContent
+        .toLowerCase()
+
+    if (e.target.checked === true) {
         axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${ (e.target.checked)}`).then(response => {
             console.log(response)
         })
@@ -446,22 +535,33 @@ function listUsers() {
  */
 function addItem() {
     let newItem = addItemInput
-    let username = localStorage.getItem("username")
+    let username = localStorage
+        .getItem("username")
+        .toLowerCase()
     let isChecked = false
 
-    listOfItems.push({'username': username, 'foodname': newItem.value, 'isChecked': isChecked})
-    allItems.push({'username': username, 'foodname': newItem.value, 'isChecked': isChecked})
+    listOfItems.push({
+        'username': username,
+        'foodname': newItem
+            .value
+            .toLowerCase(),
+        'isChecked': isChecked
+    })
+    allItems.push({
+        'username': username,
+        'foodname': newItem
+            .value
+            .toLowerCase(),
+        'isChecked': isChecked
+    })
 
-    axios
-        .post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value}`)
-        .then(() => {
-            // showPantryList()
-            showNewListItem()
-            modal.style.display = "none"
-        })
-        .catch((error) => {
-            console.error(error)
-        });
+    axios.post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value.toLowerCase()}`).then(() => {
+        // showPantryList()
+        showNewListItem()
+        modal.style.display = "none"
+    }).catch((error) => {
+        console.error(error)
+    });
     newItem.value = ''
 }
 
@@ -493,12 +593,13 @@ function showNewListItem() {
 
     deleteButton.addEventListener("click", del)
     editButton.addEventListener("click", edit)
+    // deleteButton.addEventListener("touchend", del)
+    // editButton.addEventListener("touchend", edit)
 
     li.appendChild(checkbox)
     li.appendChild(span)
     li.appendChild(deleteButton)
     li.appendChild(editButton)
-
 
     itemsListUL.appendChild(li)
 }
