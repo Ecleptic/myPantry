@@ -38,7 +38,7 @@ function createListsTable() {
                             CREATE TABLE "public"."lists" (
                             "username" text,
                             "foodname" text,
-                            "isChecked" boolean DEFAULT 'FALSE',
+                            "checked" boolean DEFAULT 'FALSE',
                             FOREIGN KEY ("username") REFERENCES "public"."users"("username"),
                             FOREIGN KEY ("foodname") REFERENCES "public"."foods"("foodname")
                             );

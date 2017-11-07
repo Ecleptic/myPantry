@@ -102,7 +102,7 @@ module.exports = class DbCommands {
     getList(val) {
         return new Promise((resolve, reject) => {
             client
-                .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}';`)
+                .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}' order by checked,foodname;`)
                 .then(data => {
                     if (data.length > 0) {
                         resolve(data)
@@ -201,7 +201,7 @@ module.exports = class DbCommands {
             } else if (command === 'newItem') {
                 console.log("creating new item: ", newItem)
                 client
-                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','isChecked');`)
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','checked');`)
                     .then(data => {
                         resolve(data)
                     })
@@ -227,11 +227,11 @@ module.exports = class DbCommands {
         return new Promise((resolve, reject) => {
             // UPDATE "public"."lists" SET "foodname"='dudethisispie!' WHERE ctid IN (SELECT
             // ctid FROM "public"."lists" WHERE "username"='Ecleptic' AND
-            // "foodname"='cookie' AND "isChecked"=FALSE LIMIT 1 FOR UPDATE) RETURNING
-            // "username", "foodname", "isChecked";
-            console.log(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"isChecked"=${val.isChecked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "isChecked";`)
+            // "foodname"='cookie' AND "checked"=FALSE LIMIT 1 FOR UPDATE) RETURNING
+            // "username", "foodname", "checked";
+            console.log(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "checked";`)
             client
-                .any(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"isChecked"=${val.isChecked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "isChecked";`)
+                .any(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "checked";`)
                 .then(data => {
                     resolve(data)
                 })

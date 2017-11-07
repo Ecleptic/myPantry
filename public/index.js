@@ -3,7 +3,7 @@
  * Create all variables and set up listeners for them.
  */
 
-//  TODO: EDIT IsChecked on DB.
+//  TODO: EDIT checked on DB.
 const delImg = "https://png.icons8.com/trash/win8/50/000000"
 const editImg = "https://png.icons8.com/edit/win8/50/000000"
 
@@ -284,8 +284,8 @@ function showListItems() {
         let checkbox = document.createElement("input")
         checkbox.type = "checkbox"
         checkbox.className = "checkbox"
-        checkbox.checked = i.isChecked
-        if (i.isChecked)
+        checkbox.checked = i.checked
+        if (i.checked)
             li.classList.add('isChecked')
 
         let deleteButton = document.createElement("img")
@@ -403,7 +403,7 @@ function edit(e) {
         watchInput.focus()
         watchInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
-                axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput.toLowerCase()}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent.toLowerCase()}&isChecked=${e.target.checked}`).then(response => {
+                axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput.toLowerCase()}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent.toLowerCase()}&checked=${e.target.checked}`).then(response => {
                     console.log(response)
                 })
                 e.path[1].childNodes[1].textContent = CurrentEditInput.toLowerCase()
@@ -439,7 +439,7 @@ function checked(e) {
         .toLowerCase()
 
     if (e.target.checked === true) {
-        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${ (e.target.checked)}`).then(response => {
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
             console.log(response)
         })
         e
@@ -449,7 +449,7 @@ function checked(e) {
     } else {
         console.log("not checked")
         console.log((e.target.checked))
-        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&isChecked=${ (e.target.checked)}`).then(response => {
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
             console.log(response)
         })
         e
@@ -538,21 +538,21 @@ function addItem() {
     let username = localStorage
         .getItem("username")
         .toLowerCase()
-    let isChecked = false
+    let checked = false
 
     listOfItems.push({
         'username': username,
         'foodname': newItem
             .value
             .toLowerCase(),
-        'isChecked': isChecked
+        'checked': checked
     })
     allItems.push({
         'username': username,
         'foodname': newItem
             .value
             .toLowerCase(),
-        'isChecked': isChecked
+        'checked': checked
     })
 
     axios.post(`/api/pantry/?cmd=addItem&username=${username}&item=${newItem.value.toLowerCase()}`).then(() => {
