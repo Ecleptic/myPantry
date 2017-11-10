@@ -27,7 +27,7 @@ let typeInput = document.querySelector('.typeInput')
 let expirationInput = document.querySelector('.expirationInput')
 let suggestedStorageInput = document.querySelector('.suggestedStorageInput')
 let updateDescriptionButton = document.querySelector('.updateDescriptionButton')
-updateDescriptionButton.addEventListener('click',updateFoodDetails)
+updateDescriptionButton.addEventListener('click', updateFoodDetails)
 
 const registerButton = document.querySelector('#registerHereButton')
 const logoutButton = document.querySelector('.logout')
@@ -344,7 +344,6 @@ function itemClick(e) {
 }
 function showItemModal(itemsList) {
 
-
     console.table(itemsList)
     itemModal.style.display = "block"
 
@@ -357,11 +356,21 @@ function showItemModal(itemsList) {
 }
 function updateFoodDetails() {
 
-    let foodname = foodname_h3.textContent.toLowerCase()
-    let category = categoryInput.value.toLowerCase()
-    let type = typeInput.value.toLowerCase()
-    let expiration = expirationInput.value.toLowerCase()
-    let storage = suggestedStorageInput.value.toLowerCase()
+    let foodname = foodname_h3
+        .textContent
+        .toLowerCase()
+    let category = categoryInput
+        .value
+        .toLowerCase()
+    let type = typeInput
+        .value
+        .toLowerCase()
+    let expiration = expirationInput
+        .value
+        .toLowerCase()
+    let storage = suggestedStorageInput
+        .value
+        .toLowerCase()
 
     axios
         .post(`/api/pantry/?cmd=editFoods&foodname=${foodname}&category=${category}&type=${type}&expiration=${expiration}&storage=${storage}`)
@@ -377,83 +386,89 @@ function del(e) {
     let username = localStorage.getItem("username")
     isEditing = false
     axios
-        .delete(`/api/pantry/?cmd=delItem&item=${e.path[1].childNodes[1].textContent}&username=${username}`)
+        .delete(`/api/pantry/?cmd=delItem&item=${e.target.parentNode.childNodes[1].textContent}&username=${username}`)
         .then(response => {
             console.log(response)
         })
     e
-        .path[2]
-        .removeChild(e.path[1])
+        .target.parentNode.parentNode
+        .removeChild(e.target.parentNode)
 }
 function edit(e) {
     if (!isEditing) {
         let username = localStorage.getItem("username")
 
         isEditing = true
-        // e.path[1].childNodes[1].textContent = "pie"
-        let oldText = e.path[1].childNodes[1].textContent
+        // e.target.parentNode.childNodes[1].textContent = "pie" let oldText =
+        // e.target.parentNode.childNodes[1].textContent
         let input = document.createElement('input')
         input.type = 'text'
         input.className = 'editInput'
         input.style = 'margin-left:.75rem;'
-        e
-            .path[1]
+        e.target.parentNode
             .appendChild(input)
         let watchInput = document.querySelector('.editInput')
         watchInput.focus()
         watchInput.addEventListener('keyup', (e) => {
             if (e.keyCode === 13) {
-                axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput.toLowerCase()}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent.toLowerCase()}&checked=${e.target.checked}`).then(response => {
+                axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput.toLowerCase()}&username=${username}&oldItem=${e.target.parentNode.childNodes[1].textContent.toLowerCase()}&checked=${e.target.checked}`).then(response => {
                     console.log(response)
                 })
-                e.path[1].childNodes[1].textContent = CurrentEditInput.toLowerCase()
+                e.target.parentNode.childNodes[1].textContent = CurrentEditInput.toLowerCase()
                 e
-                    .path[1]
-                    .removeChild(e.path[1].childNodes[4]) // remove input box
+                    .target.parentNode
+                    .removeChild(e.target.parentNode.childNodes[4]) // remove input box
                 isEditing = false
 
             }
         })
         watchInput.addEventListener('focusout', e => {
             e
-                .path[1]
-                .removeChild(e.path[1].childNodes[4])
+                .target.parentNode
+                .removeChild(e.target.parentNode.childNodes[4])
             isEditing = false
         })
         watchInput.addEventListener('keyup', getInputText)
         watchInput.addEventListener('change', getInputText)
         console.log(watchInput)
 
-        // e.path[1].removeChild(e.path[1].childNodes[1]) // remove old text
+        // e.target.parentNode.removeChild(e.target.parentNode.childNodes[1]) // remove
+        // old text
 
     }
 }
 function checked(e) {
     // console.log("checked") console.log(e.target.checked)
     let username = localStorage.getItem("username")
-    // console.log(e.path[1].childNodes[1].textContent)
+    console.log("E")
+    console.log(e)
+    console.log("path")
+    console.log(e.target.parentNode.parentNode)
+    console.log("target")
+    console.log(e.target.parentNode.parentNode)
+
     CurrentEditInput = e
-        .path[1]
+        .target.parentNode
         .childNodes[1]
         .textContent
         .toLowerCase()
 
     if (e.target.checked === true) {
-        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.target.parentNode.childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
             console.log(response)
         })
         e
-            .path[1]
+            .target.parentNode
             .classList
             .add('isChecked')
     } else {
         console.log("not checked")
         console.log((e.target.checked))
-        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.path[1].childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
+        axios.post(`/api/pantry/?cmd=edit&item=${CurrentEditInput}&username=${username}&oldItem=${e.target.parentNode.childNodes[1].textContent}&checked=${ (e.target.checked)}`).then(response => {
             console.log(response)
         })
         e
-            .path[1]
+            .target.parentNode
             .classList
             .remove('isChecked')
     }
@@ -575,10 +590,13 @@ function showNewListItem() {
     let li = document.createElement("li")
     let span = document.createElement("span")
     span.textContent = newItem.foodname
+    span.className = "itemName"
+
 
     let checkbox = document.createElement("input")
     checkbox.type = "checkbox"
     checkbox.className = "checkbox"
+
 
     let deleteButton = document.createElement("img")
     deleteButton.className = "deleteButton"
@@ -593,8 +611,12 @@ function showNewListItem() {
 
     deleteButton.addEventListener("click", del)
     editButton.addEventListener("click", edit)
+    span.addEventListener('click', itemClick)
+    checkbox.addEventListener('change', checked)
+
     // deleteButton.addEventListener("touchend", del)
     // editButton.addEventListener("touchend", edit)
+
 
     li.appendChild(checkbox)
     li.appendChild(span)
