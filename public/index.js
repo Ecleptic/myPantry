@@ -347,7 +347,7 @@ function showItemModal(itemsList) {
     console.table(itemsList)
     itemModal.style.display = "block"
 
-    foodname_h3.textContent = itemsList.foodname
+    foodname_h3.textContent = itemsList.foodname.toUpperCase()
     categoryInput.value = itemsList.category
     typeInput.value = itemsList.type
     expirationInput.value = itemsList.expiration

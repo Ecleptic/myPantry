@@ -1,160 +1,150 @@
 html,
 body {
-    padding: 10px;
-    font-family: 'Lobster', cursive;
-    font-family: 'Arvo', serif;
-    font-family: 'Cardo', serif;
-    font: 16px 'Cardo', "Lucida Grande", Helvetica, Arial, sans-serif;
-    height: 100%;
-    background: #eee;
-    transition: all 0.05s;
-    transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
-}
+  padding: 10px;
+  font-family: 'Lobster', cursive;
+  font-family: 'Arvo', serif;
+  font-family: 'Cardo', serif;
+  font: 16px 'Cardo', "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  background: #eeeeee;
+  transition: all 0.05s;
+  transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); }
 
 h2 {
-    font-weight: bolder;
-    font-size: 2rem;
-}
+  font-weight: bolder;
+  font-size: 2rem; }
 
 ul {
-    list-style-type: none;
-    padding-left: 10px;
-}
+  list-style-type: none;
+  padding-left: 10px; }
 
 li span,
 li img,
 li input {
-    padding-left: .5rem;
-}
+  padding-left: .5rem; }
 
 .signUpForms {
-    /* display: flex; */
-}
-
-.loginForm {}
-
-.registerForm {}
+  /* display: flex; */ }
 
 .button {
-    background-color: #2F80ED;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    /* display: inline-block; */
-    font-size: 16px;
-    border-radius: 24px;
-    float: right;
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin: 10px;
-}
+  background-color: #2F80ED;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  /* display: inline-block; */
+  font-size: 16px;
+  border-radius: 24px;
+  float: right;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 10px; }
+
+.button:hover {
+  background-color: #173e70; }
 
 .submitButton {
-    background: #219653;
-    float: none;
-    display: block
-}
+  background: #219653;
+  float: none;
+  display: block; }
+
+.submitButton:hover {
+  background: #145a31; }
 
 .paragraph-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background: white;
-    padding: 40px;
-    clear: both;
-    box-shadow: 10px 10px 5px grey;
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: white;
+  padding: 40px;
+  clear: both;
+  box-shadow: 10px 10px 5px #808080;
+  border-radius: 10px; }
+  .paragraph-content #registerHereButton {
+    text-decoration-line: underline; }
+  .paragraph-content .loginError {
+    color: #ff0000;
+    font-size: .9rem; }
 
 .flexTitle {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font: bold 30px/30px Georgia, serif;
-}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font: bold 30px/30px Georgia, serif; }
 
 .container {
-    max-width: 400px;
-    background-color: #eeeeee;
-    border: 1px solid black;
-}
+  max-width: 400px;
+  background-color: #eeeeee;
+  border: 1px solid #000000; }
 
 .header {
-    text-align: center;
-}
+  text-align: center; }
 
-.hidden {
-    display: none;
-}
-
+.pantryList,
+.titleItems {
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+  align-items: center;
+  text-align-last: center; }
+  .pantryList .titleItems,
+  .titleItems .titleItems {
+    align-items: left;
+    text-align-last: auto; }
+  .pantryList h1,
+  .titleItems h1 {
+    margin: .9rem; }
+  .pantryList .button,
+  .titleItems .button {
+    width: auto;
+    height: auto;
+    padding: .5rem;
+    font-size: .69rem;
+    float: none;
+    margin: .2rem; }
+  .pantryList .deleteButton,
+  .titleItems .deleteButton {
+    height: 1rem;
+    width: 1rem; }
+  .pantryList .editButton,
+  .titleItems .editButton {
+    height: 1rem;
+    width: 1rem; }
+  .pantryList .isChecked,
+  .titleItems .isChecked {
+    position: relative;
+    display: table;
+    color: grey; }
+  .pantryList .isChecked::before,
+  .titleItems .isChecked::before {
+    content: '';
+    border-bottom: 2px solid black;
+    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    pointer-events: none; }
+  .pantryList .itemsListDiv,
+  .titleItems .itemsListDiv {
+    width: 50vh;
+    text-align-last: auto; }
 
 /* The Modal (background) */
-
-.modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Sit on top */
-    padding-top: 100px;
-    /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-}
-
-
 /* Modal Content */
-
 .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80vh;
-    margin-top: -10vh;
-}
-
-.flexedContent {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-
-/* The Close Button */
-
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.formData input[type=text],
-.formData input[type=password],
-select {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80vh;
+  margin-top: -10vh; }
+  .modal-content .formData input[type=text],
+  .modal-content .formData input[type=password],
+  .modal-content select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -162,75 +152,57 @@ select {
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
-}
+    box-sizing: border-box; }
+  .modal-content .flexedContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column; }
 
-.showRegister,
-.showLogin {
-    background: green;
-    border: none;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 1em;
-    border-radius: .5em;
-    margin: .4em;
-}
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
 
-#registerHereButton {
-    text-decoration-line: underline;
-}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold; }
 
-.deleteButton {
-    height: 1rem;
-    width: 1rem;
-}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
 
-.editButton {
-    height: 1rem;
-    width: 1rem;
-}
-
-/* li {
-    list-style: none;
-} */
-
-.isChecked {
-    position: relative;
-    display: table;
-}
-
-.isChecked::before {
-    content: '';
-    border-bottom: 2px solid black;
-    width: 100%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    pointer-events: none;
-}
-
-.loginError {
-    color: #ff0000;
-    font-size: .9rem;
-}
-
-
-/* For Mobile Screens!(screens smaller than 500px) */
-
+/* For Mobile Screens */
 @media only screen and (max-width: 500px) {
-    body {
-        font-size: 24px;
-    }
-    .modal-content {
-        width: 85%;
-    }
-    .modal-content * {
-        margin: 2px;
-    }
-    h2 {
-        padding-left: 5rem;
-    }
-}
+  body {
+    font-size: 24px; }
+  .modal-content {
+    width: 85%; }
+  .modal-content * {
+    margin: 2px; }
+  h2 {
+    padding-left: 5rem; } }
+
+.hidden {
+  display: none !important; }
