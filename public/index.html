@@ -15,7 +15,7 @@
     <div class="flexTitle">My Pantry</div>
     <button class="button logout hidden" onclick="logout()">Logout</button>
     <button class="button loginButton">Login/Register</button>
-    <div class="paragraph-content">
+    <div class="paragraphContent">
         <h2>Welcome to MyPantry!</h2>
         <p> Have you ever stopped by the store just to get a few things, only to realize you can’t remember if you still have
             milk in the fridge at home? Our product can help! My Pantry keeps track of all the items currently in your pantry,
@@ -38,14 +38,14 @@
                 <form class="loginForm formData">
                     <h2>Login</h2>
                     <p class="hidden loginError">Your username or password was invalid</p>
-                    <span>
-                    Username:
+                    <span class="usernameSpan">
+                        Username:
+                    </span>
                     <input class="LoginFormUsername" type="text"> </br>
+                    <span class="passwordSpan">
+                        Password:
                     </span>
-                    <span>
-                    Password:
                     <input class="LoginFormPassword" type="password">
-                    </span>
                     <button class="submitButton button" type="submit">Login</button>
                 </form>
                 <p class="registerParagraph">Don't have an account?
@@ -55,14 +55,14 @@
                     <h2>Register</h2>
                     <p class="warning loginError">WARNING! Our password encryption system is not yet finished. </p>
                     <p class="warning loginError">Please do not input a password you might have from another website.</p>
-					<span>
-                    Username:
+                    <span class="usernameSpan">
+                        Username:
+                    </span>
                     <input class="RegisterFormUsername" type="text"> </br>
+                    <span class="passwordSpan">
+                        Password:
                     </span>
-                    <span>
-                    Password:
                     <input class="RegisterFormPassword" type="password">
-                    </span>
                     <button class="submitButton button" type="submit">Register</button>
                 </form>
             </div>
@@ -89,7 +89,7 @@
                 <span class="close">&times;</span>
                 <div class="flexedContent formData">
                     <h3 class="foodname_h3"></h3>
-                    Category:
+                    <span> Category:</span>
                     <input type="text" class="categoryInput"> Type:
                     <input type="text" class="typeInput"> Expiration:
                     <input type="text" class="expirationInput"> Suggested Storage:
@@ -100,15 +100,6 @@
 
         </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <input type="text" class="DeleteItemInput hidden "></input>
-    <button class="DeleteItemButton hidden">Delete DB user</button>
-    <br>
-
 </body>
 <script src="./index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
