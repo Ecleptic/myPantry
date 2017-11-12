@@ -10,10 +10,6 @@ const editImg = "https://png.icons8.com/edit/win8/50/000000"
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
 
-const deleteInput = document.querySelector('.DeleteItemInput')
-const deleteButton = document.querySelector('.DeleteItemButton')
-deleteButton.addEventListener('click', deleteUser)
-
 const pantryList = document.querySelector('.pantryList')
 
 const modalButton = document.querySelector('.loginButton')
