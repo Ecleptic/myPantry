@@ -1,14 +1,15 @@
-html,
-body {
+html {
   padding: 10px;
   font-family: 'Lobster', cursive;
   font-family: 'Arvo', serif;
   font-family: 'Cardo', serif;
   font: 16px 'Cardo', "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
-  background: #eeeeee;
-  transition: all 0.05s;
-  transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); }
+  background: #eeeeee; }
+
+body {
+  display: flex;
+  flex-direction: column; }
 
 h2 {
   font-weight: bolder;
@@ -18,56 +19,12 @@ ul {
   list-style-type: none;
   padding-left: 10px; }
 
-li span,
-li img,
-li input {
-  padding-left: .5rem; }
-
-.signUpForms {
-  /* display: flex; */ }
-
-.button {
-  background-color: #2F80ED;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  /* display: inline-block; */
-  font-size: 16px;
-  border-radius: 24px;
-  float: right;
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin: 10px; }
-
-.button:hover {
-  background-color: #173e70; }
-
-.submitButton {
-  background: #219653;
-  float: none;
-  display: block; }
-
-.submitButton:hover {
-  background: #145a31; }
-
-.paragraph-content {
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  background: white;
-  padding: 40px;
-  clear: both;
-  box-shadow: 10px 10px 5px #808080;
-  border-radius: 10px; }
-  .paragraph-content #registerHereButton {
-    text-decoration-line: underline; }
-  .paragraph-content .loginError {
-    color: #ff0000;
-    font-size: .9rem; }
+  width: 80%;
+  justify-content: center;
+  align-items: center; }
 
 .flexTitle {
   display: flex;
@@ -76,88 +33,52 @@ li input {
   justify-content: center;
   font: bold 30px/30px Georgia, serif; }
 
+.paragraphContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: white;
+  padding: 40px;
+  clear: both;
+  box-shadow: 10px 10px 5px #808080;
+  border-radius: 10px;
+  margin: 1rem; }
+
+.button {
+  border: none;
+  color: white;
+  padding: .8rem 1.8rem;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 24px;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 10px;
+  justify-self: flex-end;
+  align-self: flex-end; }
+
+.loginButton {
+  background-color: #2F80ED; }
+  .loginButton:hover {
+    background-color: #0650B6; }
+
+.loginError {
+  color: red;
+  font-size: .9rem;
+  margin: .5rem; }
+
 .container {
   max-width: 400px;
   background-color: #eeeeee;
-  border: 1px solid #000000; }
+  border: 1px solid black; }
 
 .header {
   text-align: center; }
 
-.pantryList,
-.titleItems {
-  width: 50%;
-  margin: auto;
-  padding: 10px;
-  align-items: center;
-  text-align-last: center; }
-  .pantryList .titleItems,
-  .titleItems .titleItems {
-    align-items: left;
-    text-align-last: auto; }
-  .pantryList h1,
-  .titleItems h1 {
-    margin: .9rem; }
-  .pantryList .button,
-  .titleItems .button {
-    width: auto;
-    height: auto;
-    padding: .5rem;
-    font-size: .69rem;
-    float: none;
-    margin: .2rem; }
-  .pantryList .deleteButton,
-  .titleItems .deleteButton {
-    height: 1rem;
-    width: 1rem; }
-  .pantryList .editButton,
-  .titleItems .editButton {
-    height: 1rem;
-    width: 1rem; }
-  .pantryList .isChecked,
-  .titleItems .isChecked {
-    position: relative;
-    display: table;
-    color: grey; }
-  .pantryList .isChecked::before,
-  .titleItems .isChecked::before {
-    content: '';
-    border-bottom: 2px solid black;
-    width: 100%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    pointer-events: none; }
-  .pantryList .itemsListDiv,
-  .titleItems .itemsListDiv {
-    width: 50vh;
-    text-align-last: auto; }
-
 /* The Modal (background) */
 /* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80vh;
-  margin-top: -10vh; }
-  .modal-content .formData input[type=text],
-  .modal-content .formData input[type=password],
-  .modal-content select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    margin-left: 2rem;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; }
-  .modal-content .flexedContent {
-    display: flex;
-    align-items: center;
-    flex-direction: column; }
-
 .modal {
   display: none;
   /* Hidden by default */
@@ -175,10 +96,57 @@ li input {
   /* Full height */
   overflow: auto;
   /* Enable scroll if needed */
-  background-color: black;
+  background-color: #000000;
   /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
   /* Black w/ opacity */ }
+
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #808080;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+  margin-top: -10vh;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto; }
+  .modal-content .formData input[type=text],
+  .modal-content .formData input[type=password],
+  .modal-content select {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    margin-left: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; }
+  .modal-content span {
+    align-self: left; }
+  .modal-content .flexedContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column; }
+  .modal-content #registerHereButton {
+    text-decoration-line: underline; }
+  .modal-content .submitButton {
+    background: #1DECBE;
+    float: none;
+    display: block; }
+    .modal-content .submitButton:hover {
+      background: #00B38B; }
+
+/* Add Animation */
+@keyframes animatetop {
+  from {
+    top: -300px;
+    opacity: 0; }
+  to {
+    top: 0;
+    opacity: 1; } }
 
 /* The Close Button */
 .close {

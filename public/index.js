@@ -34,7 +34,7 @@ const itemsListUL = document.querySelector('.itemsList')
 
 const addItemInput = document.querySelector('.addNewItemInput')
 const addItemButton = document.querySelector('.addNewItemButton')
-const paragraphBox = document.querySelector('.paragraph-content')
+const paragraphBox = document.querySelector('.paragraphContent')
 addItemButton.addEventListener('click', addItem)
 addItemButton.addEventListener('touchend', addItem)
 
