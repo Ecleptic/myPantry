@@ -3,9 +3,8 @@
  * Create all variables and set up listeners for them.
  */
 
-//  TODO: EDIT checked on DB.
-const delImg = "https://png.icons8.com/trash/win8/50/000000"
-const editImg = "https://png.icons8.com/edit/win8/50/000000"
+const delImg = "svg/closedTrashCan.svg"
+const editImg = "svg/pencil.svg"
 
 const registerForm = document.querySelector('.registerForm')
 const loginForm = document.querySelector('.loginForm')
@@ -29,7 +28,7 @@ const registerButton = document.querySelector('#registerHereButton')
 const logoutButton = document.querySelector('.logout')
 const registerParagraph = document.querySelector('.registerParagraph')
 
-const usernameSpan = document.querySelector('.usernameSpan')
+const usernameTitleSpan = document.querySelector('.usernameTitleSpan')
 const itemsListUL = document.querySelector('.itemsList')
 
 const addItemInput = document.querySelector('.addNewItemInput')
@@ -237,12 +236,12 @@ function showPantryList() {
 }
 
 /**
- * adds username to the text in usernameSpan
+ * adds username to the text in usernameTitleSpan
  * TODO: add more to it or put this somewhere else
  */
 function getUserInfo() {
     let username = localStorage.getItem("username")
-    usernameSpan.innerText = username[0].toUpperCase() + username.slice(1)
+    usernameTitleSpan.innerText = username[0].toUpperCase() + username.slice(1)
 }
 
 /**
