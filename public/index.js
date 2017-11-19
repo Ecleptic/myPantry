@@ -5,6 +5,8 @@
  */
  
 //my svgs :smile: - mike
+//All of the things. the pantry list and buttons and all that - k
+//but I don't know the difference between const and let. Is it that let can be changed? -kaylee
 const delImg = "svg/closedTrashCan.svg"
 const editImg = "svg/pencil.svg"
 
@@ -39,6 +41,7 @@ const paragraphBox = document.querySelector('.paragraphContent')
 addItemButton.addEventListener('click', addItem)
 addItemButton.addEventListener('touchend', addItem)
 
+//don't really know what this does - kaylee
 addItemInput.addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
         addItemButton.click()
@@ -46,6 +49,7 @@ addItemInput.addEventListener("keyup", (event) => {
 })
 
 //not sure what this is - mike
+//I think this is the search, but I don't know what keyup is - kaylee
 const searchItemInput = document.querySelector('.searchItemInput')
 searchItemInput.addEventListener("change", displayMatches)
 searchItemInput.addEventListener("keyup", displayMatches)
@@ -62,6 +66,8 @@ function findMatches(wordToMatch, listOfItems) {
 }
 
 //or this - mike
+//idk what clearlistitems() does, but it looks like this finds the value
+//that was searched and displays it? -kaylee
 function displayMatches() {
     console.log(this.value)
     const matchArray = findMatches(this.value, allItems)
@@ -78,6 +84,7 @@ function displayMatches() {
 }
 
 //create empty lists? - mike
+//agreed -kaylee
 let allItems = []
 let listOfItems = []
 let isEditing = false
@@ -96,6 +103,7 @@ window.onload = () => {
  */
  
 // 'eventlistener' some kind of input from user, click or hover, etc. - mike
+// when what modal is clicked? I though the modal came up automatically - kaylee
 modalButton.addEventListener('click', () => {
     console.log("click")
     modal.style.display = "block"
@@ -105,6 +113,7 @@ modalButton.addEventListener('click', () => {
 /**
  * When clicking the 'X' on the modal, hide the modal
  */
+//I understand -kaylee
 closeSpan.forEach(key => key.addEventListener("click", () => {
     console.log('click!')
     modal.style.display = "none"
@@ -114,6 +123,7 @@ closeSpan.forEach(key => key.addEventListener("click", () => {
 /**
  * When clicking off the modal, hide the modal
  */
+//I also understand - kaylee
 window.onclick = (event) => {
     if (event.target === modal) {
         modal.style.display = "none"
@@ -127,6 +137,7 @@ window.onclick = (event) => {
  *  and then if the response is true, then login, else catch the error
  */
  //register - mike
+ //I agree - kaylee
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
@@ -154,6 +165,7 @@ registerForm.onsubmit = () => {
  *  and then if the response is true, then login, else catch the error
  */
  //login - mike
+ //agree - kaylee
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
     let password = document.querySelector('.LoginFormPassword')
@@ -178,7 +190,7 @@ loginForm.onsubmit = () => {
 
     return false
 }
-
+//if there's an error - kaylee
 function showErrorMessage() {
     document
         .querySelector('.loginError')
@@ -189,6 +201,7 @@ function showErrorMessage() {
 /**
  * when the button to show register in the modal is clicked, show it and hide the login form
  */
+//i understand - kaylee
 registerButton.addEventListener('click', () => {
     // loginForm     .classList     .add('hidden')
     registerForm
@@ -209,6 +222,7 @@ registerButton.addEventListener('click', () => {
  * shows the div of pantrylist and later list all items in the DB for the user
  */
  //display list when user is logged in - mike
+ //showing pantry list and hiding all the other stuff -kaylee
 function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     if (isLoggedIn === 'true') {
@@ -250,6 +264,7 @@ function showPantryList() {
  * adds username to the text in usernameTitleSpan
  * TODO: add more to it or put this somewhere else
  */
+// supposed to be like "welcome username"? add the username to the title? - kaylee
 function getUserInfo() {
     let username = localStorage.getItem("username")
     usernameTitleSpan.innerText = username[0].toUpperCase() + username.slice(1)
@@ -259,6 +274,7 @@ function getUserInfo() {
  * Sends a get request for all items with the username saved in localstorage
  * adds each item separately to the list of items then callse showListItems()
  */
+//get's the specific user's list - kaylee
 function getListItems() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     let username = localStorage.getItem("username")
@@ -279,7 +295,7 @@ function getListItems() {
             })
     }
 }
-
+//shows the user's list and all the delete and edit buttons - kaylee
 function showListItems() {
     for (let i of listOfItems) {
         let li = document.createElement("li")
@@ -312,6 +328,7 @@ function showListItems() {
         itemsListUL.appendChild(li)
     }
     //TODO: Sort items by checked and maybe by alphabetical too.
+    //listen for all of the buttons to be clicked - kaylee
     let deleteButtons = document.querySelectorAll(".deleteButton")
     deleteButtons.forEach(key => key.addEventListener("click", del))
 
@@ -327,7 +344,7 @@ function showListItems() {
         key.addEventListener('click', itemClick)
     })
 }
-
+//don't know - kaylee
 function itemClick(e) {
     // console.log("clicked item")
     let foodname = e
@@ -348,6 +365,7 @@ function itemClick(e) {
             console.error(error)
         })
 }
+//don't know what item modal is - kaylee
 function showItemModal(itemsList) {
 
     console.table(itemsList)
@@ -360,6 +378,8 @@ function showItemModal(itemsList) {
     suggestedStorageInput.value = itemsList.suggestedStorage
 
 }
+// i get that all of these are the attributes in the table
+//but I don't know what it actually does, other than convert it all to lower case - kaylee
 function updateFoodDetails() {
 
     let foodname = foodname_h3
@@ -387,7 +407,7 @@ function updateFoodDetails() {
             console.error(error)
         })
 }
-
+//delete something with the username in the table - kaylee
 function del(e) {
     let username = localStorage.getItem("username")
     isEditing = false
@@ -400,6 +420,7 @@ function del(e) {
         .target.parentNode.parentNode
         .removeChild(e.target.parentNode)
 }
+//edit stuff - kaylee
 function edit(e) {
     if (!isEditing) {
         let username = localStorage.getItem("username")
@@ -443,6 +464,7 @@ function edit(e) {
 
     }
 }
+//if you check the item.. but I don't know what a lot of it means- kaylee
 function checked(e) {
     // console.log("checked") console.log(e.target.checked)
     let username = localStorage.getItem("username")
@@ -489,6 +511,7 @@ function getInputText() {
  * When the logout button is clicked, set isLoggedIn to false,
  * remove all data off screen and reload the page
  */
+//logout. call showpantrylist to reset all the hidden stuff - kaylee
 function logout() {
     localStorage.setItem("isLoggedIn", false)
     localStorage.removeItem('username')
@@ -505,6 +528,7 @@ logoutButton.addEventListener('click', () => {
 /**
  * sends a post request to create a new item
  */
+//i get that this is to create an item, but I don't understand post requests, really - kaylee
 function createItem() {
     console.log("created")
     axios
@@ -520,6 +544,7 @@ function createItem() {
 /**
  * sends a new post request to delete an item at id
  */
+// same as above - kaylee
 function deleteUser() {
     console.log("deleted")
     let id = deleteInput.value
@@ -536,6 +561,7 @@ function deleteUser() {
  * Send the command to list everything in the users database
  * (will need to change it to list all questions)
  */
+//idk - kaylee
 function listUsers() {
     console.log("listUsers")
     axios
@@ -554,6 +580,7 @@ function listUsers() {
  * Gets the text from the input
  * and sends an HTTP post request including username and the new item.
  */
+//add item to listofitems and allitems - kaylee
 function addItem() {
     let newItem = addItemInput
     let username = localStorage
@@ -590,6 +617,7 @@ function addItem() {
  * Whenever a new item is created (instead of pulled from the DB)
  * we then append it to the end of the current list on the DOM
  */
+//don't know that the DOM is - kaylee
 function showNewListItem() {
     let newItem = listOfItems[listOfItems.length - 1]
 
@@ -635,6 +663,9 @@ function showNewListItem() {
 /**
  * Clearing the list holding the items so we can rebuild it
  */
+//I don't at all understand what this does. Does it just set listofitems
+//back to empty, so that we won't have a bunch of duplicate stuff added to it
+//every time the list is modified? - kaylee
 function clearListItems() {
     console.log("clearing list items")
     if (itemsListUL) {
@@ -644,13 +675,13 @@ function clearListItems() {
         }
     }
 }
-
+//check an item off the list? - kaylee
 function check() {
     document
         .getElementById("myCheck")
         .checked = true;
 }
-
+//uncheck the item in the list? -kaylee
 function uncheck() {
     document
         .getElementById("myCheck")

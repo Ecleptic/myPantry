@@ -1,4 +1,5 @@
 /* fonts, bg color, sizes and stuff - mike */
+/*main fonts and stuff - kaylee */
 html {
   padding: 10px;
   font-family: 'Lobster', cursive;
@@ -9,6 +10,7 @@ html {
   background: #eeeeee; }
 
 /* dunno what alot of this stuff is - mike */
+/*personlizing the body, h2, ul, form and stuff. Several are flex containers -kaylee*/
 body {
   display: flex;
   flex-direction: column; }
@@ -36,6 +38,7 @@ form {
   font: bold 30px/30px Georgia, serif; }
 
 /* px is pixel, #808080 is a color, don't recognize much else - mike */
+/* a flex container to put paragraph's of text in - kaylee */
 .paragraphContent {
   display: flex;
   flex-direction: column;
@@ -48,6 +51,7 @@ form {
   border-radius: 10px;
   margin: 1rem; }
 
+  /* tha generic button */
 .button {
   border: none;
   color: white;
@@ -63,6 +67,7 @@ form {
   align-self: flex-end; }
 
 /* login button appearance - mike */
+/* the specific login and logout buttons - kaylee */
 .loginButton,
 .logout {
   background-color: #2F80ED; }
@@ -70,20 +75,22 @@ form {
   .logout:hover {
     background-color: #0650B6; }
 
+/*if there's an error -kaylee*/
 .loginError {
   color: red;
   font-size: .9rem;
   margin: .5rem; }
-
+/*generic container -kaylee */
 .container {
   max-width: 400px;
   background-color: #eeeeee;
   border: 1px solid black; }
-
+/*headers are centered - kaylee */
 .header {
   text-align: center; }
 
 /* checkboxes in item list, does various things, deletion, editing, other - mike */
+/*all the stuff about the pantry list. don't know what .isChecked::before means - kaylee*/
 .pantryList {
   display: flex;
   align-content: center;
@@ -119,6 +126,7 @@ form {
   padding: .5rem 1.8rem; }
 
 /* not sure what this is - mike */
+/*yeah, idk either - kaylee */
 .foodItemModal .formData input[type=text],
 .foodItemModal .formData input[type=password],
 .foodItemModal select {
@@ -137,6 +145,7 @@ form {
 /* Modal Content */
 
 /* not sure what this is either - mike */
+/*modal background formatting - kaylee */
 .modal {
   display: none;
   position: fixed;
@@ -149,7 +158,7 @@ form {
   overflow: auto;
   background-color: #000000;
   background-color: rgba(0, 0, 0, 0.4); }
-
+/*modal content formatting - kaylee */
 .modal-content {
   position: relative;
   background-color: #fefefe;
@@ -163,6 +172,8 @@ form {
   margin-top: -10vh;
   max-height: calc(100vh - 150px);
   overflow-y: auto; }
+  /*idk the difference between the type text and the type password
+  but I'm guessing this is the portion of the model that's a box to enter your login info? - kaylee*/
   .modal-content .formData input[type=text],
   .modal-content .formData input[type=password],
   .modal-content select {
@@ -179,6 +190,7 @@ form {
     display: flex;
     align-items: center;
     flex-direction: column; }
+    /*register buttons - kaylee */
   .modal-content #registerHereButton {
     text-decoration-line: underline; }
   .modal-content .submitButton {
@@ -191,6 +203,7 @@ form {
 /* Add Animation */
 
 /* eh nope - mike */
+/*makes the modal do the cool thing where it comes down from the top for a lil bit -kaylee */
 @keyframes animatetop {
   from {
     top: -300px;
@@ -201,6 +214,7 @@ form {
 
 /* The Close Button */
 /* may be the close button :thinking: - mike */
+/* I support the above statement - kaylee */
 .close {
   color: #aaaaaa;
   float: right;
@@ -208,6 +222,7 @@ form {
   font-weight: bold; }
 
 /* change color when cursor hovers over?? - mike */
+/* this is also my guess - kaylee */
 .close:hover,
 .close:focus {
   color: #000;
@@ -216,6 +231,7 @@ form {
 
 /* mobile stuff, which doesn't work if i remember correctly - mike */
 /* For Mobile Screens */
+/*kaylee does not know this thing*/
 @media only screen and (max-width: 500px) {
   body {
     font-size: 24px; }
