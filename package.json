@@ -1,9 +1,8 @@
-//no idea what this file is for :rage: - mike
 {
   "name": "mypantry",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "pantry app. foods list etc.",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "postinstall": "node createTables.js",

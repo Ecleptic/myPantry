@@ -1,5 +1,8 @@
 /* fonts, bg color, sizes and stuff - mike */
+
+
 /*main fonts and stuff - kaylee */
+
 html {
   padding: 10px;
   font-family: 'Lobster', cursive;
@@ -7,38 +10,52 @@ html {
   font-family: 'Cardo', serif;
   font: 16px 'Cardo', "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
-  background: #eeeeee; }
+  background: #eeeeee;
+}
+
 
 /* dunno what alot of this stuff is - mike */
+
+
 /*personlizing the body, h2, ul, form and stuff. Several are flex containers -kaylee*/
+
 body {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+}
 
 h2 {
   font-weight: bolder;
-  font-size: 2rem; }
+  font-size: 2rem;
+}
 
 ul {
   list-style-type: none;
-  padding-left: 10px; }
+  padding-left: 10px;
+}
 
 form {
   display: flex;
   flex-direction: column;
   width: 80%;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+}
 
 .flexTitle {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font: bold 30px/30px Georgia, serif; }
+  font: bold 30px/30px Georgia, serif;
+}
+
 
 /* px is pixel, #808080 is a color, don't recognize much else - mike */
+
+
 /* a flex container to put paragraph's of text in - kaylee */
+
 .paragraphContent {
   display: flex;
   flex-direction: column;
@@ -49,9 +66,12 @@ form {
   clear: both;
   box-shadow: 10px 10px 5px #808080;
   border-radius: 10px;
-  margin: 1rem; }
+  margin: 1rem;
+}
 
-  /* tha generic button */
+
+/* tha generic button */
+
 .button {
   border: none;
   color: white;
@@ -64,69 +84,112 @@ form {
   justify-content: flex-end;
   margin: 10px;
   justify-self: flex-end;
-  align-self: flex-end; }
+  align-self: flex-end;
+}
+
 
 /* login button appearance - mike */
+
+
 /* the specific login and logout buttons - kaylee */
+
 .loginButton,
 .logout {
-  background-color: #2F80ED; }
-  .loginButton:hover,
-  .logout:hover {
-    background-color: #0650B6; }
+  background-color: #2F80ED;
+}
+
+.loginButton:hover,
+.logout:hover {
+  background-color: #0650B6;
+}
+
 
 /*if there's an error -kaylee*/
+
 .loginError {
   color: red;
   font-size: .9rem;
-  margin: .5rem; }
+  margin: .5rem;
+}
+
+
 /*generic container -kaylee */
+
 .container {
   max-width: 400px;
   background-color: #eeeeee;
-  border: 1px solid black; }
+  border: 1px solid black;
+}
+
+
 /*headers are centered - kaylee */
+
 .header {
-  text-align: center; }
+  text-align: center;
+}
+
 
 /* checkboxes in item list, does various things, deletion, editing, other - mike */
+
+
 /*all the stuff about the pantry list. don't know what .isChecked::before means - kaylee*/
+
 .pantryList {
   display: flex;
   align-content: center;
   flex-direction: column;
-  align-items: center; }
-  .pantryList .itemsListDiv {
-    width: 30%;
-    align-items: flex-start; }
-  .pantryList .isChecked {
-    position: relative;
-    display: table;
-    color: grey; }
-  .pantryList .isChecked::before {
-    content: '';
-    border-bottom: 2px solid black;
-    width: 100%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    pointer-events: none; }
-  .pantryList .button {
-    background: #725DF2; }
-    .pantryList .button:hover {
-      background: #3417EA; }
-  .pantryList .deleteButton {
-    height: .8rem;
-    width: .8rem; }
-  .pantryList .editButton {
-    height: .8rem;
-    width: .8rem; }
+  align-items: center;
+}
+
+.pantryList .itemsListDiv {
+  width: 30%;
+  align-items: flex-start;
+}
+
+.pantryList .isChecked {
+  position: relative;
+  display: table;
+  color: grey;
+}
+
+.pantryList .isChecked::before {
+  content: '';
+  border-bottom: 2px solid black;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  pointer-events: none;
+}
+
+.pantryList .button {
+  background: #725DF2;
+}
+
+.pantryList .button:hover {
+  background: #3417EA;
+}
+
+.pantryList .deleteButton {
+  height: .8rem;
+  width: .8rem;
+}
+
+.pantryList .editButton {
+  height: .8rem;
+  width: .8rem;
+}
 
 .titleItems .button {
-  padding: .5rem 1.8rem; }
+  padding: .5rem 1.8rem;
+}
+
 
 /* not sure what this is - mike */
+
+
 /*yeah, idk either - kaylee */
+
 .foodItemModal .formData input[type=text],
 .foodItemModal .formData input[type=password],
 .foodItemModal select {
@@ -136,16 +199,25 @@ form {
   margin-left: 2rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+}
 
 .foodItemModal span {
-  align-self: left; }
+  align-self: left;
+}
+
 
 /* The Modal (background) */
+
+
 /* Modal Content */
 
+
 /* not sure what this is either - mike */
+
+
 /*modal background formatting - kaylee */
+
 .modal {
   display: none;
   position: fixed;
@@ -157,8 +229,12 @@ form {
   height: 100%;
   overflow: auto;
   background-color: #000000;
-  background-color: rgba(0, 0, 0, 0.4); }
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+
 /*modal content formatting - kaylee */
+
 .modal-content {
   position: relative;
   background-color: #fefefe;
@@ -169,78 +245,127 @@ form {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   animation-name: animatetop;
   animation-duration: 0.4s;
-  margin-top: -10vh;
+  /* margin-top: -10vh; */
   max-height: calc(100vh - 150px);
-  overflow-y: auto; }
-  /*idk the difference between the type text and the type password
+  overflow-y: auto;
+}
+
+
+/*idk the difference between the type text and the type password
   but I'm guessing this is the portion of the model that's a box to enter your login info? - kaylee*/
-  .modal-content .formData input[type=text],
-  .modal-content .formData input[type=password],
-  .modal-content select {
-    width: 90%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    margin-left: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; }
-  .modal-content span {
-    align-self: left; }
-  .modal-content .flexedContent {
-    display: flex;
-    align-items: center;
-    flex-direction: column; }
-    /*register buttons - kaylee */
-  .modal-content #registerHereButton {
-    text-decoration-line: underline; }
-  .modal-content .submitButton {
-    background: #1DECBE;
-    float: none;
-    display: block; }
-    .modal-content .submitButton:hover {
-      background: #00B38B; }
+
+.modal-content .formData input[type=text],
+.modal-content .formData input[type=password],
+.modal-content select {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  margin-left: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.modal-content span {
+  align-self: left;
+}
+
+.modal-content .flexedContent {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+/*register buttons - kaylee */
+
+.modal-content #registerHereButton {
+  text-decoration-line: underline;
+}
+
+.modal-content .submitButton {
+  background: #1DECBE;
+  float: none;
+  display: block;
+}
+
+.modal-content .submitButton:hover {
+  background: #00B38B;
+}
+
 
 /* Add Animation */
 
+
 /* eh nope - mike */
+
+
 /*makes the modal do the cool thing where it comes down from the top for a lil bit -kaylee */
+
 @keyframes animatetop {
   from {
     top: -300px;
-    opacity: 0; }
+    opacity: 0;
+  }
   to {
     top: 0;
-    opacity: 1; } }
+    opacity: 1;
+  }
+}
+
 
 /* The Close Button */
+
+
 /* may be the close button :thinking: - mike */
+
+
 /* I support the above statement - kaylee */
+
 .close {
   color: #aaaaaa;
   float: right;
   font-size: 28px;
-  font-weight: bold; }
+  font-weight: bold;
+}
+
 
 /* change color when cursor hovers over?? - mike */
+
+
 /* this is also my guess - kaylee */
+
 .close:hover,
 .close:focus {
   color: #000;
   text-decoration: none;
-  cursor: pointer; }
+  cursor: pointer;
+}
+
 
 /* mobile stuff, which doesn't work if i remember correctly - mike */
+
+
 /* For Mobile Screens */
+
+
 /*kaylee does not know this thing*/
+
 @media only screen and (max-width: 500px) {
   body {
-    font-size: 24px; }
+    font-size: 24px;
+  }
   .modal-content {
-    width: 85%; }
+    width: 85%;
+  }
   .modal-content * {
-    margin: 2px; }
+    margin: 2px;
+  }
   h2 {
-    padding-left: 5rem; } }
+    padding-left: 5rem;
+  }
+}
 
 .hidden {
-  display: none !important; }
+  display: none !important;
+}

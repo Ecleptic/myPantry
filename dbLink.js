@@ -18,7 +18,7 @@ module.exports = class dbLink {
      * @param {Request} req
      * @param {Response} res
      */
-	//how is it assigning each value? Like how does req.query.cmd, req.query.username, etc. work?- Scott 	
+	//how is it assigning each value? Like how does req.query.cmd, req.query.username, etc. work?- Scott
     get(req, res) {
         let command = req.query.cmd
         let username = req.query.username
@@ -105,7 +105,7 @@ module.exports = class dbLink {
                     .status(500)
                     .json({status: 'Error', error: error})
             })
-            
+
         //login existing user - mike
         } else if (command === 'login') {
             let login = dbcommands.getLogin({username: username, password: password})
@@ -120,13 +120,13 @@ module.exports = class dbLink {
                     .status(404)
                     .json({status: 'Not Exist', error: error})
             })
-        
+
         //add new item to user list - mike
         } else if (command === 'addItem') {
             console.log("new Item: ", newItem)
             // First Check to make sure that food is in the Database:
             dbcommands
-                .getItemInList({foodname: newItem})
+                .getItemInList({foodname: newItem}) //check if item exists in the foods List
                 .then(() => {
                     let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
                     addItem.then(resolve => {
@@ -163,7 +163,7 @@ module.exports = class dbLink {
                         })
                     console.error(error)
                 })
-		
+
 		//edit item attributes - mike
         }  else if (command === 'edit') {
             dbcommands
