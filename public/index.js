@@ -342,7 +342,9 @@ function showItemModal(itemsList) {
     console.table(itemsList)
     itemModal.style.display = "block"
 
-    foodname_h3.textContent = itemsList.foodname.toUpperCase()
+    foodname_h3.textContent = itemsList
+        .foodname
+        .toUpperCase()
     categoryInput.value = itemsList.category
     typeInput.value = itemsList.type
     expirationInput.value = itemsList.expiration
@@ -386,7 +388,9 @@ function del(e) {
             console.log(response)
         })
     e
-        .target.parentNode.parentNode
+        .target
+        .parentNode
+        .parentNode
         .removeChild(e.target.parentNode)
 }
 function edit(e) {
@@ -400,7 +404,9 @@ function edit(e) {
         input.type = 'text'
         input.className = 'editInput'
         input.style = 'margin-left:.75rem;'
-        e.target.parentNode
+        e
+            .target
+            .parentNode
             .appendChild(input)
         let watchInput = document.querySelector('.editInput')
         watchInput.focus()
@@ -411,7 +417,8 @@ function edit(e) {
                 })
                 e.target.parentNode.childNodes[1].textContent = CurrentEditInput.toLowerCase()
                 e
-                    .target.parentNode
+                    .target
+                    .parentNode
                     .removeChild(e.target.parentNode.childNodes[4]) // remove input box
                 isEditing = false
 
@@ -419,7 +426,8 @@ function edit(e) {
         })
         watchInput.addEventListener('focusout', e => {
             e
-                .target.parentNode
+                .target
+                .parentNode
                 .removeChild(e.target.parentNode.childNodes[4])
             isEditing = false
         })
@@ -435,15 +443,10 @@ function edit(e) {
 function checked(e) {
     // console.log("checked") console.log(e.target.checked)
     let username = localStorage.getItem("username")
-    console.log("E")
-    console.log(e)
-    console.log("path")
-    console.log(e.target.parentNode.parentNode)
-    console.log("target")
-    console.log(e.target.parentNode.parentNode)
 
     CurrentEditInput = e
-        .target.parentNode
+        .target
+        .parentNode
         .childNodes[1]
         .textContent
         .toLowerCase()
@@ -453,7 +456,8 @@ function checked(e) {
             console.log(response)
         })
         e
-            .target.parentNode
+            .target
+            .parentNode
             .classList
             .add('isChecked')
     } else {
@@ -463,7 +467,8 @@ function checked(e) {
             console.log(response)
         })
         e
-            .target.parentNode
+            .target
+            .parentNode
             .classList
             .remove('isChecked')
     }
@@ -587,11 +592,9 @@ function showNewListItem() {
     span.textContent = newItem.foodname
     span.className = "itemName"
 
-
     let checkbox = document.createElement("input")
     checkbox.type = "checkbox"
     checkbox.className = "checkbox"
-
 
     let deleteButton = document.createElement("img")
     deleteButton.className = "deleteButton"
@@ -611,7 +614,6 @@ function showNewListItem() {
 
     // deleteButton.addEventListener("touchend", del)
     // editButton.addEventListener("touchend", edit)
-
 
     li.appendChild(checkbox)
     li.appendChild(span)

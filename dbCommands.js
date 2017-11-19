@@ -173,7 +173,7 @@ module.exports = class DbCommands {
                     console.log(data)
                 })
                 .catch(err => {
-                    console.log(data)
+                    console.log(err)
                 })
         })
     }
