@@ -18,6 +18,7 @@ module.exports = class dbLink {
      * @param {Request} req
      * @param {Response} res
      */
+	//how is it assigning each value? Like how does req.query.cmd, req.query.username, etc. work?- Scott 	
     get(req, res) {
         let command = req.query.cmd
         let username = req.query.username
