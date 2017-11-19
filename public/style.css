@@ -1,3 +1,4 @@
+/* fonts, bg color, sizes and stuff - mike */
 html {
   padding: 10px;
   font-family: 'Lobster', cursive;
@@ -7,6 +8,7 @@ html {
   height: 100%;
   background: #eeeeee; }
 
+/* dunno what alot of this stuff is - mike */
 body {
   display: flex;
   flex-direction: column; }
@@ -33,6 +35,7 @@ form {
   justify-content: center;
   font: bold 30px/30px Georgia, serif; }
 
+/* px is pixel, #808080 is a color, don't recognize much else - mike */
 .paragraphContent {
   display: flex;
   flex-direction: column;
@@ -59,6 +62,7 @@ form {
   justify-self: flex-end;
   align-self: flex-end; }
 
+/* login button appearance - mike */
 .loginButton,
 .logout {
   background-color: #2F80ED; }
@@ -79,6 +83,7 @@ form {
 .header {
   text-align: center; }
 
+/* checkboxes in item list, does various things, deletion, editing, other - mike */
 .pantryList {
   display: flex;
   align-content: center;
@@ -113,6 +118,7 @@ form {
 .titleItems .button {
   padding: .5rem 1.8rem; }
 
+/* not sure what this is - mike */
 .foodItemModal .formData input[type=text],
 .foodItemModal .formData input[type=password],
 .foodItemModal select {
@@ -129,6 +135,8 @@ form {
 
 /* The Modal (background) */
 /* Modal Content */
+
+/* not sure what this is either - mike */
 .modal {
   display: none;
   position: fixed;
@@ -181,6 +189,8 @@ form {
       background: #00B38B; }
 
 /* Add Animation */
+
+/* eh nope - mike */
 @keyframes animatetop {
   from {
     top: -300px;
@@ -190,18 +200,21 @@ form {
     opacity: 1; } }
 
 /* The Close Button */
+/* may be the close button :thinking: - mike */
 .close {
   color: #aaaaaa;
   float: right;
   font-size: 28px;
   font-weight: bold; }
 
+/* change color when cursor hovers over?? - mike */
 .close:hover,
 .close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer; }
 
+/* mobile stuff, which doesn't work if i remember correctly - mike */
 /* For Mobile Screens */
 @media only screen and (max-width: 500px) {
   body {

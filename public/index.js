@@ -1,8 +1,10 @@
+//i don't understand alot about what's going on in this file lol - mike
 'use strict'
 /**
  * Create all variables and set up listeners for them.
  */
-
+ 
+//my svgs :smile: - mike
 const delImg = "svg/closedTrashCan.svg"
 const editImg = "svg/pencil.svg"
 
@@ -43,6 +45,7 @@ addItemInput.addEventListener("keyup", (event) => {
     }
 })
 
+//not sure what this is - mike
 const searchItemInput = document.querySelector('.searchItemInput')
 searchItemInput.addEventListener("change", displayMatches)
 searchItemInput.addEventListener("keyup", displayMatches)
@@ -58,6 +61,7 @@ function findMatches(wordToMatch, listOfItems) {
     })
 }
 
+//or this - mike
 function displayMatches() {
     console.log(this.value)
     const matchArray = findMatches(this.value, allItems)
@@ -73,6 +77,7 @@ function displayMatches() {
     }
 }
 
+//create empty lists? - mike
 let allItems = []
 let listOfItems = []
 let isEditing = false
@@ -89,6 +94,8 @@ window.onload = () => {
 /**
  * When the modal is clicked, show it.
  */
+ 
+// 'eventlistener' some kind of input from user, click or hover, etc. - mike
 modalButton.addEventListener('click', () => {
     console.log("click")
     modal.style.display = "block"
@@ -119,6 +126,7 @@ window.onclick = (event) => {
  * When submitting the register form, send a post request to the server with the username and password
  *  and then if the response is true, then login, else catch the error
  */
+ //register - mike
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
@@ -145,6 +153,7 @@ registerForm.onsubmit = () => {
  * When submitting the login form, send a post request to the server with the username and password
  *  and then if the response is true, then login, else catch the error
  */
+ //login - mike
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
     let password = document.querySelector('.LoginFormPassword')
@@ -199,6 +208,7 @@ registerButton.addEventListener('click', () => {
 /**
  * shows the div of pantrylist and later list all items in the DB for the user
  */
+ //display list when user is logged in - mike
 function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     if (isLoggedIn === 'true') {
@@ -235,6 +245,7 @@ function showPantryList() {
     }
 }
 
+//not sure what this is about - mike
 /**
  * adds username to the text in usernameTitleSpan
  * TODO: add more to it or put this somewhere else

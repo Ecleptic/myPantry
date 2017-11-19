@@ -1,9 +1,11 @@
 'use strict'
+//looks like js jargon, i remember cameron talking about 'promises' - mike
 const promise = require('bluebird')
 const pgp = require('pg-promise')({promiseLib: promise})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = pgp(connectionString)
 
+//declare tables - mike
 const userTable = "users"
 const foodTable = "foods"
 const listTable = "lists"
@@ -37,6 +39,7 @@ module.exports = class DbCommands {
         })
     }
 
+//list all entries in the users table - mike
     listUsers() {
         console.log("listing in command")
         return new Promise((resolve, reject) => {
@@ -57,11 +60,13 @@ module.exports = class DbCommands {
      * @param {object} val // val contains a username and password. We have allowed for more inputs if required.
      * @returns {Promise} Resolves to the tuple from the username.
      */
+     //user input login - mike
     getLogin(val) {
         console.log("getting login")
         return new Promise((resolve, reject) => {
             if (val.username && val.password) {
                 client
+                //pull all data on user from specific username/password combo - mike
                     .any(`SELECT * FROM users where username='${val.username}' and password='${val.password}'`)
                     .then(data => {
                         if (data.length > 0) {
@@ -85,6 +90,7 @@ module.exports = class DbCommands {
     getItemInList(val) {
         return new Promise((resolve, reject) => {
             client
+            //function to search list for specific food item? - mike
                 .any(`SELECT * FROM ${foodTable} WHERE foodname = '${val.foodname}'`)
                 .then(data => {
                     if (data.length > 0) {
@@ -102,6 +108,7 @@ module.exports = class DbCommands {
     getList(val) {
         return new Promise((resolve, reject) => {
             client
+            //pull user's list after login - mike
                 .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}' order by checked,foodname;`)
                 .then(data => {
                     if (data.length > 0) {
@@ -118,6 +125,7 @@ module.exports = class DbCommands {
     getFoodDetails(val) {
         return new Promise((resolve, reject) => {
             client
+            //don't know what this is for, getting food attributes maybe? - mike
                 .any(`select * from foods where foodname = '${val.foodname}';`)
                 .then(data => {
                     console.log(data)
@@ -131,6 +139,7 @@ module.exports = class DbCommands {
     }
     updateFoodDetails(val) {
         return new Promise((resolve, reject) => {
+			//user change food attributes - mike
             console.log(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
             client
                 .any(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
@@ -155,6 +164,7 @@ module.exports = class DbCommands {
     delete(username) {
         return new Promise((resolve, reject) => {
             client
+            //delete users from database - mike
                 .any(`DELETE FROM "public".${userTable} WHERE "username"='${username}'`)
                 .then(data => {
                     resolve("successful Delete", data)
@@ -165,6 +175,7 @@ module.exports = class DbCommands {
         })
     }
     deleteListItem(val) {
+		//delete list associated with deleted user - mike
         console.log(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.item}' LIMIT 1 FOR UPDATE);`)
         return new Promise((resolve, reject) => {
             client
@@ -191,6 +202,7 @@ module.exports = class DbCommands {
 
             if (command === 'register') {
                 client
+                //register new user? - mike
                     .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
                     .then(data => {
                         resolve("successful insert", data)
@@ -201,6 +213,7 @@ module.exports = class DbCommands {
             } else if (command === 'newItem') {
                 console.log("creating new item: ", newItem)
                 client
+                //user creates new item? - mike
                     .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','checked');`)
                     .then(data => {
                         resolve(data)
@@ -213,6 +226,7 @@ module.exports = class DbCommands {
                 // Creating a new item in the foods table if there's any issues.
                 console.log("creating new item in foods table: ", newItem)
                 client
+                //don't know the difference newItem and addFood, help dad. - mike
                     .any(`INSERT INTO "public"."${foodTable}" ("foodname") VALUES ('${newItem}') RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
                     .then(data => {
                         resolve(data)
@@ -223,6 +237,7 @@ module.exports = class DbCommands {
             }
         })
     }
+    //edit item attributes? - mike
     editItem(val) {
         return new Promise((resolve, reject) => {
             // UPDATE "public"."lists" SET "foodname"='dudethisispie!' WHERE ctid IN (SELECT
