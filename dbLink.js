@@ -1,5 +1,6 @@
 'use strict'
 
+//call file with sql commands - mike
 const dbCommandFile = require('./dbCommands')
 const dbcommands = new dbCommandFile()
 
@@ -17,11 +18,13 @@ module.exports = class dbLink {
      * @param {Request} req
      * @param {Response} res
      */
+	//how is it assigning each value? Like how does req.query.cmd, req.query.username, etc. work?- Scott 	
     get(req, res) {
         let command = req.query.cmd
         let username = req.query.username
         let foodname = req.query.foodname
 
+//list all users in db - mike
         if (command === 'listUsers') {
             console.log('list')
             dbcommands
@@ -37,6 +40,7 @@ module.exports = class dbLink {
                         .status(500)
                         .json({status: 'Error', error: error})
                 })
+        //get specific list associated with user? - mike
         } else if (command === 'getList') {
             console.log("getting list in dbLink")
             dbcommands
@@ -52,6 +56,7 @@ module.exports = class dbLink {
                         .status(500)
                         .json({status: 'Error', error: error, problem: "Error in getList Function"})
                 })
+        //get item description :smile: - mike
         } else if (command === 'getItemDesc') {
             console.log(command)
             console.log(foodname)
@@ -85,6 +90,7 @@ module.exports = class dbLink {
         let oldItem = req.query.oldItem
         let checked = req.query.checked
 
+		//register new user - mike
         if (command === 'register') {
             console.log('register')
             let register = dbcommands.insert({command: 'register', username: username, password: password})
@@ -99,6 +105,8 @@ module.exports = class dbLink {
                     .status(500)
                     .json({status: 'Error', error: error})
             })
+            
+        //login existing user - mike
         } else if (command === 'login') {
             let login = dbcommands.getLogin({username: username, password: password})
             login.then(resolve => {
@@ -112,6 +120,8 @@ module.exports = class dbLink {
                     .status(404)
                     .json({status: 'Not Exist', error: error})
             })
+        
+        //add new item to user list - mike
         } else if (command === 'addItem') {
             console.log("new Item: ", newItem)
             // First Check to make sure that food is in the Database:
@@ -135,6 +145,7 @@ module.exports = class dbLink {
                     // Need to embed thens inside thens to make sure it only pushes it if there are
                     // no errors....
                     dbcommands
+                    //item added to foods table, then added to list? - mike
                         .insert({command: 'addFood', newItem: newItem})
                         .then(() => {
                             console.log("okay now we've added it to the foods table, next is to add it to the list.")
@@ -152,7 +163,8 @@ module.exports = class dbLink {
                         })
                     console.error(error)
                 })
-
+		
+		//edit item attributes - mike
         }  else if (command === 'edit') {
             dbcommands
                 .getItemInList({foodname: newItem})
@@ -176,6 +188,7 @@ module.exports = class dbLink {
                     // Need to embed thens inside thens to make sure it only pushes it if there are
                     // no errors....
                     dbcommands
+                    //add food to table or list? - mike
                         .insert({command: 'addFood', newItem: newItem})
                         .then(() => {
                             dbcommands
@@ -194,6 +207,7 @@ module.exports = class dbLink {
                         })
                     console.error(error)
                 })
+        //edit food items - mike
         } else if (command === 'editFoods') {
             let foodname = req.query.foodname
             let category = req.query.category
@@ -223,6 +237,7 @@ module.exports = class dbLink {
      * @param {Request} req
      * @param {Response} res
      */
+     //delete user from db - mike
     delete(req, res) {
         let cmd = req.query.cmd
         let username = req.query.username
@@ -245,6 +260,7 @@ module.exports = class dbLink {
                         .status(500)
                         .json({status: 'Error', error: error})
                 })
+        //delete item from list - mike
         } else if (cmd === "delItem") {
             dbcommands
                 .deleteListItem({item: item, username: username})
