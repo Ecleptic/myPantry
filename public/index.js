@@ -3,10 +3,10 @@
 /**
  * Create all variables and set up listeners for them.
  */
- 
-//my svgs :smile: - mike
-//All of the things. the pantry list and buttons and all that - k
-//but I don't know the difference between const and let. Is it that let can be changed? -kaylee
+
+// my svgs :smile: - mike All of the things. the pantry list and buttons and all
+// that - k but I don't know the difference between const and let. Is it that
+// let can be changed? -kaylee
 const delImg = "svg/closedTrashCan.svg"
 const editImg = "svg/pencil.svg"
 
@@ -48,8 +48,8 @@ addItemInput.addEventListener("keyup", (event) => {
     }
 })
 
-//not sure what this is - mike
-//I think this is the search, but I don't know what keyup is - kaylee
+// not sure what this is - mike I think this is the search, but I don't know
+// what keyup is - kaylee
 const searchItemInput = document.querySelector('.searchItemInput')
 searchItemInput.addEventListener("change", displayMatches)
 searchItemInput.addEventListener("keyup", displayMatches)
@@ -65,9 +65,8 @@ function findMatches(wordToMatch, listOfItems) {
     })
 }
 
-//or this - mike
-//idk what clearlistitems() does, but it looks like this finds the value
-//that was searched and displays it? -kaylee
+// or this - mike idk what clearlistitems() does, but it looks like this finds
+// the value that was searched and displays it? -kaylee
 function displayMatches() {
     console.log(this.value)
     const matchArray = findMatches(this.value, allItems)
@@ -83,8 +82,7 @@ function displayMatches() {
     }
 }
 
-//create empty lists? - mike
-//agreed -kaylee
+//create empty lists? - mike agreed -kaylee
 let allItems = []
 let listOfItems = []
 let isEditing = false
@@ -101,7 +99,7 @@ window.onload = () => {
 /**
  * When the modal is clicked, show it.
  */
- 
+
 // 'eventlistener' some kind of input from user, click or hover, etc. - mike
 // when what modal is clicked? I though the modal came up automatically - kaylee
 modalButton.addEventListener('click', () => {
@@ -136,8 +134,7 @@ window.onclick = (event) => {
  * When submitting the register form, send a post request to the server with the username and password
  *  and then if the response is true, then login, else catch the error
  */
- //register - mike
- //I agree - kaylee
+//register - mike I agree - kaylee
 registerForm.onsubmit = () => {
     let username = document.querySelector('.RegisterFormUsername')
     let password = document.querySelector('.RegisterFormPassword')
@@ -164,8 +161,7 @@ registerForm.onsubmit = () => {
  * When submitting the login form, send a post request to the server with the username and password
  *  and then if the response is true, then login, else catch the error
  */
- //login - mike
- //agree - kaylee
+//login - mike agree - kaylee
 loginForm.onsubmit = () => {
     let username = document.querySelector('.LoginFormUsername')
     let password = document.querySelector('.LoginFormPassword')
@@ -221,8 +217,8 @@ registerButton.addEventListener('click', () => {
 /**
  * shows the div of pantrylist and later list all items in the DB for the user
  */
- //display list when user is logged in - mike
- //showing pantry list and hiding all the other stuff -kaylee
+// display list when user is logged in - mike showing pantry list and hiding all
+// the other stuff -kaylee
 function showPantryList() {
     let isLoggedIn = localStorage.getItem("isLoggedIn")
     if (isLoggedIn === 'true') {
@@ -264,7 +260,8 @@ function showPantryList() {
  * adds username to the text in usernameTitleSpan
  * TODO: add more to it or put this somewhere else
  */
-// supposed to be like "welcome username"? add the username to the title? - kaylee
+// supposed to be like "welcome username"? add the username to the title? -
+// kaylee
 function getUserInfo() {
     let username = localStorage.getItem("username")
     usernameTitleSpan.innerText = username[0].toUpperCase() + username.slice(1)
@@ -327,13 +324,19 @@ function showListItems() {
         li.appendChild(editButton)
         itemsListUL.appendChild(li)
     }
-    //TODO: Sort items by checked and maybe by alphabetical too.
-    //listen for all of the buttons to be clicked - kaylee
+    // TODO: Sort items by checked and maybe by alphabetical too. listen for all of
+    // the buttons to be clicked - kaylee
     let deleteButtons = document.querySelectorAll(".deleteButton")
     deleteButtons.forEach(key => key.addEventListener("click", del))
 
+    deleteButtons.forEach(key => key.addEventListener("mouseover", delMouseOver))
+    deleteButtons.forEach(key => key.addEventListener("mouseout", delMouseOut))
+
     let editButtons = document.querySelectorAll(".editButton")
     editButtons.forEach(key => key.addEventListener("click", edit))
+
+    editButtons.forEach(key => key.addEventListener("mouseover", editMouseOver))
+    editButtons.forEach(key => key.addEventListener("mouseout", editMouseOut))
 
     let checkboxes = document.querySelectorAll(".checkbox")
     checkboxes.forEach(key => {
@@ -380,8 +383,28 @@ function showItemModal(itemsList) {
     suggestedStorageInput.value = itemsList.suggestedStorage
 
 }
-// i get that all of these are the attributes in the table
-//but I don't know what it actually does, other than convert it all to lower case - kaylee
+
+function delMouseOver(e) {
+    console.log("mouseovering", e.target.src)
+    e.target.src = "/svg/openedTrashCan.svg"
+}
+function delMouseOut(e) {
+    console.log("mouseouting", e.target.src)
+    e.target.src = "/svg/closedTrashCan.svg"
+
+}
+function editMouseOver(e) {
+    console.log("mouseovering", e.target.src)
+    e.target.src = "/svg/pencilPaper.svg"
+
+}
+function editMouseOut(e) {
+    console.log("mouseouting", e.target.src)
+    e.target.src = "/svg/pencil.svg"
+
+}
+// i get that all of these are the attributes in the table but I don't know what
+// it actually does, other than convert it all to lower case - kaylee
 function updateFoodDetails() {
 
     let foodname = foodname_h3
@@ -533,7 +556,8 @@ logoutButton.addEventListener('click', () => {
 /**
  * sends a post request to create a new item
  */
-//i get that this is to create an item, but I don't understand post requests, really - kaylee
+// i get that this is to create an item, but I don't understand post requests,
+// really - kaylee
 function createItem() {
     console.log("created")
     axios
@@ -647,10 +671,14 @@ function showNewListItem() {
     editButton.className = "editButton"
 
     deleteButton.addEventListener("click", del)
+    deleteButton.addEventListener("mouseover", delMouseOver)
+    deleteButton.addEventListener("mouseover", "mouseout", delMouseOut)
+
     editButton.addEventListener("click", edit)
+    editButton.addEventListener("mouseover", editMouseOver)
+    editButton.addEventListener("mouseout", editMouseOut)
     span.addEventListener('click', itemClick)
     checkbox.addEventListener('change', checked)
-
     // deleteButton.addEventListener("touchend", del)
     // editButton.addEventListener("touchend", edit)
 
@@ -665,9 +693,9 @@ function showNewListItem() {
 /**
  * Clearing the list holding the items so we can rebuild it
  */
-//I don't at all understand what this does. Does it just set listofitems
-//back to empty, so that we won't have a bunch of duplicate stuff added to it
-//every time the list is modified? - kaylee
+// I don't at all understand what this does. Does it just set listofitems back
+// to empty, so that we won't have a bunch of duplicate stuff added to it every
+// time the list is modified? - kaylee
 function clearListItems() {
     console.log("clearing list items")
     if (itemsListUL) {

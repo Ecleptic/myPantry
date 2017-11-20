@@ -82,44 +82,46 @@
     <!-- upon successful login, display username and user's list - mike -->
     <!-- right on -kaylee -->
     <div class="pantryList hidden">
-        <div class="titleItems">
-            <h3>Welcome
-                <span class="usernameTitleSpan"></span>
-            </h3>
-            <!-- add new item - mike -->
-            <!-- My name is Kaylee and I support this comment -kaylee -->
-            <input class="addNewItemInput" type="text" placeholder="Add">
-            <button class="addNewItemButton button">Add</button>
-            <br>
-            <!-- search for specific item in list - mike -->
-            <!-- and also this one -kaylee -->
-            <input class="searchItemInput" type="text" placeholder="Search">
-            <button class="searchItemButton button">Search</button>
-        </div>
-        <h1>PANTRY LIST</h1>
-        <div class="itemsListDiv paragraphContent ">
-            <ul class="itemsList"></ul>
-        </div>
-        <div id="itemModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <div class="flexedContent formData foodItemModal">
-                    <h3 class="foodname_h3"></h3>
-                    <!-- edit item attributes - mike -->
-                    <!-- I agree -kaylee -->
-                    <span class="foodItemModalSpan"> Category:</span>
-                    <input type="text" class="categoryInput">
-                    <span class="foodItemModalSpan"> Type:</span>
-                    <input type="text" class="typeInput" />
-                    <span class="foodItemModalSpan">Expiration: </span>
-                    <input type="text" class="expirationInput">
-                    <span class="foodItemModalSpan"> Suggested Storage:</span>
-                    <input type="text" class="suggestedStorageInput">
-
-                    <button class="button updateDescriptionButton">Update</button>
-                </div>
+        <div class="pantryListBox">
+            <div class="titleItems">
+                <h3>Welcome
+                    <span class="usernameTitleSpan"></span>
+                </h3>
+                <!-- add new item - mike -->
+                <!-- My name is Kaylee and I support this comment -kaylee -->
+                <input class="addNewItemInput" type="text" placeholder="Add">
+                <button class="addNewItemButton button">Add</button>
+                <br>
+                <!-- search for specific item in list - mike -->
+                <!-- and also this one -kaylee -->
+                <input class="searchItemInput" type="text" placeholder="Search">
+                <button class="searchItemButton button">Search</button>
             </div>
+            <h1>PANTRY LIST</h1>
+            <div class="itemsListDiv paragraphContent ">
+                <ul class="itemsList"></ul>
+            </div>
+            <div id="itemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div class="flexedContent formData foodItemModal">
+                        <h3 class="foodname_h3"></h3>
+                        <!-- edit item attributes - mike -->
+                        <!-- I agree -kaylee -->
+                        <span class="foodItemModalSpan"> Category:</span>
+                        <input type="text" class="categoryInput">
+                        <span class="foodItemModalSpan"> Type:</span>
+                        <input type="text" class="typeInput" />
+                        <span class="foodItemModalSpan">Expiration: </span>
+                        <input type="text" class="expirationInput">
+                        <span class="foodItemModalSpan"> Suggested Storage:</span>
+                        <input type="text" class="suggestedStorageInput">
 
+                        <button class="button updateDescriptionButton">Update</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </body>
