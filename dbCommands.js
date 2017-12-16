@@ -4,6 +4,8 @@ const promise = require('bluebird')
 const pgp = require('pg-promise')({promiseLib: promise})
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/pantry'
 const client = pgp(connectionString)
+const SHA256 = require("crypto-js/sha256");
+
 
 //declare tables - mike
 const userTable = "users"
@@ -60,14 +62,13 @@ module.exports = class DbCommands {
      * @param {object} val // val contains a username and password. We have allowed for more inputs if required.
      * @returns {Promise} Resolves to the tuple from the username.
      */
-     //user input login - mike
     getLogin(val) {
         console.log("getting login")
         return new Promise((resolve, reject) => {
             if (val.username && val.password) {
                 client
                 //pull all data on user from specific username/password combo - mike
-                    .any(`SELECT * FROM users where username='${val.username}' and password='${val.password}'`)
+                    .any(`SELECT * FROM users where username='${val.username}' and password='${SHA256(val.password)}'`)
                     .then(data => {
                         if (data.length > 0) {
                             resolve(data)
@@ -202,8 +203,7 @@ module.exports = class DbCommands {
 
             if (command === 'register') {
                 client
-                //register new user? - mike
-                    .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${password}') returning username`)
+                .any(`INSERT INTO "public"."${userTable}"("username","password") VALUES('${username}', '${SHA256(password)}') returning username`)
                     .then(data => {
                         resolve("successful insert", data)
                     })
