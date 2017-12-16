@@ -128,7 +128,9 @@ form {
     width: 1rem; }
 
 .titleItems .button {
-  padding: .5rem 1.8rem; }
+  padding: .5rem 1.8rem;
+  width: 5rem;
+  justify-content: center; }
 
 .foodItemModal .formData input[type=text],
 .foodItemModal .formData input[type=password],
