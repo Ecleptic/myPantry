@@ -92,7 +92,7 @@ module.exports = class DbCommands {
         return new Promise((resolve, reject) => {
             client
             //function to search list for specific food item? - mike
-                .any(`SELECT * FROM ${foodTable} WHERE foodname = '${val.foodname}'`)
+                .any(`SELECT * FROM ${foodTable} WHERE name = '${val.name}'`)
                 .then(data => {
                     if (data.length > 0) {
                         resolve(200)
@@ -110,7 +110,7 @@ module.exports = class DbCommands {
         return new Promise((resolve, reject) => {
             client
             //pull user's list after login - mike
-                .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}' order by checked,foodname;`)
+                .any(`SELECT * FROM ${listTable} WHERE username = '${val.username}' order by checked,name;`)
                 .then(data => {
                     if (data.length > 0) {
                         resolve(data)
@@ -127,7 +127,7 @@ module.exports = class DbCommands {
         return new Promise((resolve, reject) => {
             client
             //don't know what this is for, getting food attributes maybe? - mike
-                .any(`select * from foods where foodname = '${val.foodname}';`)
+                .any(`select * from foods where name = '${val.name}';`)
                 .then(data => {
                     console.log(data)
                     resolve(data)
@@ -141,9 +141,9 @@ module.exports = class DbCommands {
     updateFoodDetails(val) {
         return new Promise((resolve, reject) => {
 			//user change food attributes - mike
-            console.log(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+            console.log(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "name"='${val.name}' RETURNING "name", "category", "type", "expiration", "suggestedStorage";`)
             client
-                .any(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "foodname"='${val.foodname}' RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+                .any(`UPDATE "public"."${foodTable}" SET "category"='${val.category}', "type"='${val.type}', "expiration"='${val.expiration}', "suggestedStorage"='${val.storage}' WHERE "name"='${val.name}' RETURNING "name", "category", "type", "expiration", "suggestedStorage";`)
                 .then(data => {
                     console.log(data)
                     resolve(data)
@@ -177,10 +177,10 @@ module.exports = class DbCommands {
     }
     deleteListItem(val) {
 		//delete list associated with deleted user - mike
-        console.log(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.item}' LIMIT 1 FOR UPDATE);`)
+        console.log(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "name"='${val.item}' LIMIT 1 FOR UPDATE);`)
         return new Promise((resolve, reject) => {
             client
-                .any(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.item}' LIMIT 1 FOR UPDATE);`)
+                .any(`DELETE FROM "public"."${listTable}" WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "name"='${val.item}' LIMIT 1 FOR UPDATE);`)
                 .then(data => {
                     console.log(data)
                 })
@@ -214,7 +214,7 @@ module.exports = class DbCommands {
                 console.log("creating new item: ", newItem)
                 client
                 //user creates new item? - mike
-                    .any(`INSERT INTO "public"."${listTable}" ("username", "foodname") VALUES('${username}','${newItem}') RETURNING ('username','foodname','checked');`)
+                    .any(`INSERT INTO "public"."${listTable}" ("username", "name") VALUES('${username}','${newItem}') RETURNING ('username','name','checked');`)
                     .then(data => {
                         resolve(data)
                     })
@@ -227,7 +227,7 @@ module.exports = class DbCommands {
                 console.log("creating new item in foods table: ", newItem)
                 client
                 //don't know the difference newItem and addFood, help dad. - mike
-                    .any(`INSERT INTO "public"."${foodTable}" ("foodname") VALUES ('${newItem}') RETURNING "foodname", "category", "type", "expiration", "suggestedStorage";`)
+                    .any(`INSERT INTO "public"."${foodTable}" ("name") VALUES ('${newItem}') RETURNING "name", "category", "type", "expiration", "suggestedStorage";`)
                     .then(data => {
                         resolve(data)
                     })
@@ -240,13 +240,13 @@ module.exports = class DbCommands {
     //edit item attributes? - mike
     editItem(val) {
         return new Promise((resolve, reject) => {
-            // UPDATE "public"."lists" SET "foodname"='dudethisispie!' WHERE ctid IN (SELECT
+            // UPDATE "public"."lists" SET "name"='dudethisispie!' WHERE ctid IN (SELECT
             // ctid FROM "public"."lists" WHERE "username"='Ecleptic' AND
-            // "foodname"='cookie' AND "checked"=FALSE LIMIT 1 FOR UPDATE) RETURNING
-            // "username", "foodname", "checked";
-            console.log(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "checked";`)
+            // "name"='cookie' AND "checked"=FALSE LIMIT 1 FOR UPDATE) RETURNING
+            // "username", "name", "checked";
+            console.log(`UPDATE "public"."${listTable}" SET "name"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "name"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "name", "checked";`)
             client
-                .any(`UPDATE "public"."${listTable}" SET "foodname"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "foodname"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "foodname", "checked";`)
+                .any(`UPDATE "public"."${listTable}" SET "name"='${val.newItem}',"checked"=${val.checked} WHERE ctid IN (SELECT ctid FROM "public"."${listTable}" WHERE "username"='${val.username}' AND "name"='${val.oldItem}' LIMIT 1 FOR UPDATE) RETURNING "username", "name", "checked";`)
                 .then(data => {
                     resolve(data)
                 })

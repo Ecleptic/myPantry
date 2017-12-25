@@ -22,7 +22,7 @@ module.exports = class dbLink {
     get(req, res) {
         let command = req.query.cmd
         let username = req.query.username
-        let foodname = req.query.foodname
+        let name = req.query.name
 
 //list all users in db - mike
         if (command === 'listUsers') {
@@ -59,9 +59,9 @@ module.exports = class dbLink {
         //get item description :smile: - mike
         } else if (command === 'getItemDesc') {
             console.log(command)
-            console.log(foodname)
+            console.log(name)
             dbcommands
-                .getFoodDetails({foodname: foodname})
+                .getFoodDetails({name: name})
                 .then(data => {
                     res
                         .status(200)
@@ -90,7 +90,6 @@ module.exports = class dbLink {
         let oldItem = req.query.oldItem
         let checked = req.query.checked
 
-		//register new user - mike
         if (command === 'register') {
             console.log('register')
             let register = dbcommands.insert({command: 'register', username: username, password: password})
@@ -106,7 +105,6 @@ module.exports = class dbLink {
                     .json({status: 'Error', error: error})
             })
 
-        //login existing user - mike
         } else if (command === 'login') {
             let login = dbcommands.getLogin({username: username, password: password})
             login.then(resolve => {
@@ -121,12 +119,11 @@ module.exports = class dbLink {
                     .json({status: 'Not Exist', error: error})
             })
 
-        //add new item to user list - mike
         } else if (command === 'addItem') {
             console.log("new Item: ", newItem)
             // First Check to make sure that food is in the Database:
             dbcommands
-                .getItemInList({foodname: newItem}) //check if item exists in the foods List
+                .getItemInList({name: newItem}) //check if item exists in the foods List
                 .then(() => {
                     let addItem = dbcommands.insert({command: 'newItem', username: username, newItem: newItem})
                     addItem.then(resolve => {
@@ -164,11 +161,12 @@ module.exports = class dbLink {
                     console.error(error)
                 })
 
-		//edit item attributes - mike
         }  else if (command === 'edit') {
+            console.log("editing"+newItem)
             dbcommands
-                .getItemInList({foodname: newItem})
+                .getItemInList({name: newItem})
                 .then(() => {
+                    console.log("got item, editing now")
                     dbcommands
                         .editItem({username: username, newItem: newItem, oldItem: oldItem, checked: checked})
                         .then(resolve => {
@@ -209,14 +207,14 @@ module.exports = class dbLink {
                 })
         //edit food items - mike
         } else if (command === 'editFoods') {
-            let foodname = req.query.foodname
+            let name = req.query.name
             let category = req.query.category
             let type = req.query.type
             let expiration = req.query.expiration
             let storage = req.query.storage
 
             dbcommands
-                .updateFoodDetails({foodname: foodname, category: category, type: type, expiration: expiration, storage: storage})
+                .updateFoodDetails({name: name, category: category, type: type, expiration: expiration, storage: storage})
                 .then(data => {
                     console.log(data)
                     res

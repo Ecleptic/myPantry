@@ -65,5 +65,4 @@ typings/
 # Cameron's stuff
 gulpfile.js
 .vscode/
-style.scss
 /bourbon/

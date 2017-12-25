@@ -31,7 +31,8 @@ form {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font: bold 30px/30px Georgia, serif; }
+  font: bold 30px/30px Georgia, serif;
+  margin: 1rem; }
 
 .paragraphContent {
   display: flex;
@@ -98,6 +99,10 @@ form {
       font-size: 1.5rem; }
     .pantryList .pantryListBox .titleItems {
       margin: auto; }
+      .pantryList .pantryListBox .titleItems .addNewItemInput {
+        display: flex;
+        width: auto;
+        flex-direction: row; }
     .pantryList .pantryListBox h1 {
       margin: auto; }
   .pantryList .itemsListDiv {
@@ -281,7 +286,11 @@ form {
   .modal-content * {
     margin: 2px; }
   h2 {
-    padding-left: 5rem; } }
+    padding-left: 5rem; }
+  .pantryList .pantryListBox {
+    width: 100%; }
+  .pantryList h1 {
+    font-size: 1.4rem; } }
 
 .hidden {
   display: none !important; }
